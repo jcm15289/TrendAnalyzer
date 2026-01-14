@@ -58,7 +58,6 @@ interface ConfigDialogProps {
 interface AllSymsData {
   key: string;
   content: string;
-  lines: string[];
   lineCount: number;
   size: number;
   metadata: any;
@@ -74,8 +73,11 @@ export function ConfigDialog({
   const [localFiles, setLocalFiles] = useState<Record<string, LocalFileInfo>>({});
   const [redisData, setRedisData] = useState<Record<string, RedisInfo>>({});
   const [allSymsData, setAllSymsData] = useState<AllSymsData | null>(null);
+  const [stockData, setStockData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [loadingAllSyms, setLoadingAllSyms] = useState(false);
+  const [loadingStock, setLoadingStock] = useState(false);
+  const [stockError, setStockError] = useState<string | null>(null);
 
   const fetchData = async () => {
     setLoading(true);
@@ -119,6 +121,32 @@ export function ConfigDialog({
       setAllSymsData(null);
     } finally {
       setLoadingAllSyms(false);
+    }
+  };
+
+  const fetchStockData = async (symbol: string = 'GOOGL') => {
+    setLoadingStock(true);
+    setStockError(null);
+    setStockData(null);
+    try {
+      console.log(`[ConfigDialog] Fetching stock data for ${symbol}...`);
+      const response = await fetch(`/api/redis/stock?symbol=${symbol}`);
+      const data = await response.json();
+      console.log(`[ConfigDialog] Stock API response:`, data);
+      
+      if (response.ok && data.success) {
+        setStockData(data);
+        setStockError(null);
+      } else {
+        setStockError(data.error || 'Failed to fetch stock data');
+        setStockData(null);
+      }
+    } catch (error) {
+      console.error('[ConfigDialog] Error fetching stock data:', error);
+      setStockError(error instanceof Error ? error.message : 'Unknown error');
+      setStockData(null);
+    } finally {
+      setLoadingStock(false);
     }
   };
 
@@ -176,6 +204,10 @@ export function ConfigDialog({
             <Button onClick={() => { fetchData(); fetchAllSyms(); }} disabled={loading || loadingAllSyms} size="sm">
               <RefreshCw className={`h-4 w-4 mr-2 ${loading || loadingAllSyms ? 'animate-spin' : ''}`} />
               Refresh
+            </Button>
+            <Button onClick={() => fetchStockData('GOOGL')} disabled={loadingStock} size="sm" variant="outline">
+              <Database className={`h-4 w-4 mr-2 ${loadingStock ? 'animate-spin' : ''}`} />
+              Test Stock API (GOOGL)
             </Button>
           </div>
 
@@ -275,6 +307,93 @@ export function ConfigDialog({
                 </CardContent>
               </Card>
 
+              {/* Stock Data Test */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Database className="h-4 w-4" />
+                    Stock Data Test (GOOGL)
+                  </CardTitle>
+                  <CardDescription>
+                    Test fetching Google stock data from Redis
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {loadingStock ? (
+                    <div className="flex items-center justify-center py-8">
+                      <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
+                      <span className="ml-2 text-muted-foreground">Loading stock data...</span>
+                    </div>
+                  ) : stockError ? (
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2 text-red-600">
+                        <AlertCircle className="h-5 w-5" />
+                        <span className="font-medium">Error: {stockError}</span>
+                      </div>
+                      {stockData?.searchedKeys && (
+                        <div className="text-xs text-muted-foreground">
+                          <p>Searched keys:</p>
+                          <ul className="list-disc list-inside ml-2">
+                            {stockData.searchedKeys.map((key: string, i: number) => (
+                              <li key={i}>{key}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      <Button onClick={() => fetchStockData('GOOGL')} size="sm" variant="outline">
+                        <RefreshCw className="h-4 w-4 mr-2" />
+                        Retry
+                      </Button>
+                    </div>
+                  ) : stockData ? (
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium">✅ Success! Found stock data</p>
+                          <p className="text-xs text-muted-foreground">
+                            Redis Key: {stockData.key} • Symbol: {stockData.symbol} • Data Points: {stockData.dataPointCount}
+                          </p>
+                          {stockData.timestamp && (
+                            <p className="text-xs text-muted-foreground">
+                              Timestamp: {new Date(stockData.timestamp).toLocaleString()}
+                            </p>
+                          )}
+                        </div>
+                        <Button onClick={() => fetchStockData('GOOGL')} size="sm" variant="outline">
+                          <RefreshCw className="h-4 w-4 mr-2" />
+                          Refresh
+                        </Button>
+                      </div>
+                      {stockData.data && stockData.data.length > 0 && (
+                        <div className="border rounded-lg p-4 bg-muted/50 max-h-[400px] overflow-y-auto">
+                          <div className="space-y-2">
+                            <p className="text-xs font-medium text-muted-foreground mb-2">First 5 data points:</p>
+                            {stockData.data.slice(0, 5).map((point: any, index: number) => (
+                              <div key={index} className="bg-background/50 p-2 rounded text-xs font-mono">
+                                <pre>{JSON.stringify(point, null, 2)}</pre>
+                              </div>
+                            ))}
+                            {stockData.data.length > 5 && (
+                              <p className="text-xs text-muted-foreground text-center">
+                                ... and {stockData.data.length - 5} more data points
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <p className="text-muted-foreground mb-4">Click "Test Stock API" to fetch Google stock data</p>
+                      <Button onClick={() => fetchStockData('GOOGL')} size="sm">
+                        <Database className="h-4 w-4 mr-2" />
+                        Test Stock API
+                      </Button>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+
               {/* ALLSYMS File */}
               <Card>
                 <CardHeader>
@@ -308,7 +427,7 @@ export function ConfigDialog({
                       </div>
                       <div className="border rounded-lg p-4 bg-muted/50 max-h-[500px] overflow-y-auto">
                         <div className="font-mono text-xs space-y-1">
-                          {allSymsData.lines.map((line, index) => (
+                          {allSymsData.content.split('\n').map((line, index) => (
                             <div key={index} className="hover:bg-background/50 px-2 py-1 rounded">
                               {line}
                             </div>
