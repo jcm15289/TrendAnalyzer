@@ -10,6 +10,7 @@ let redisClient: RedisClient | null = null;
 let isResolvingClient = false;
 
 function resolveRedisUrl(): string | null {
+  // FORCE use of 250MB Redis DB - ignore environment variables that point to 25MB DB
   const candidates = [
     process.env.REDIS_URL,
     process.env.REDIS_CONNECTION_STRING,
@@ -18,25 +19,26 @@ function resolveRedisUrl(): string | null {
     process.env.NEXT_PUBLIC_REDIS_URL,
   ];
 
-  // Check environment variables first, but validate they point to OLD Redis
+  // Check environment variables, but ONLY use if they point to 250MB Redis
   for (const candidate of candidates) {
     const trimmed = candidate?.trim();
     if (trimmed && (trimmed.startsWith('redis://') || trimmed.startsWith('rediss://'))) {
-      // Prefer 250MB Redis (redis-14969)
+      // ONLY use if it points to 250MB Redis (redis-14969)
       if (trimmed.includes('redis-14969') || trimmed.includes(':14969')) {
         console.log('🚦 Redis: Using 250MB Redis DB (redis-14969) from environment variable');
         return trimmed;
       }
-      // If env var points to old 25MB Redis, warn but allow override
+      // REJECT 25MB Redis - log warning and skip
       if (trimmed.includes('redis-18997') || trimmed.includes(':18997')) {
-        console.warn('🚦 Redis: ⚠️ Environment variable points to 25MB Redis (18997). Consider switching to 250MB Redis (14969).');
+        console.warn('🚦 Redis: ⚠️ Environment variable points to 25MB Redis (18997). Ignoring and using 250MB Redis instead.');
+        continue; // Skip this env var, don't use it
       }
-      console.log('🚦 Redis: Using Redis URL from environment variable');
-      return trimmed;
+      // For other Redis URLs, check if they're valid but warn
+      console.warn('🚦 Redis: Environment variable Redis URL does not match 250MB DB pattern. Using 250MB DB instead.');
     }
   }
 
-  // Always fall back to 250MB Redis (DEFAULT_REDIS_URL)
+  // ALWAYS use 250MB Redis (DEFAULT_REDIS_URL) - this is the source of truth
   if (DEFAULT_REDIS_URL) {
     console.log('🚦 Redis: Using 250MB Redis (redis-14969) - DEFAULT_REDIS_URL');
     return DEFAULT_REDIS_URL;

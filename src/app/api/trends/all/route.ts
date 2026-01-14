@@ -20,8 +20,15 @@ export async function GET(request: NextRequest) {
     // Get all keys matching cache-trends:Trends.*
     const keys = await redis.keys('cache-trends:Trends.*');
     
-    // Filter out metadata keys (those ending with :metadata)
-    const trendKeys = keys.filter(key => !key.endsWith(':metadata'));
+    // Filter out metadata keys (those ending with :metadata) and ensure we only get trend data keys
+    const trendKeys = keys.filter(key => {
+      // Exclude metadata keys
+      if (key.endsWith(':metadata')) {
+        return false;
+      }
+      // Only include keys that start with cache-trends:Trends. and don't have :metadata
+      return key.startsWith('cache-trends:Trends.') && !key.includes(':metadata');
+    });
     
     console.log('🚦 All Trends API: Found keys', {
       total: keys.length,
