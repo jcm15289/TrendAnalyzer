@@ -16,7 +16,7 @@ import {
 import TrendsCard from '@/components/trends-card';
 import { ConfigDialog } from '@/components/config-dialog';
 import { Button } from '@/components/ui/button';
-import { Command, Settings, LayoutGrid, Rows3, List, ChevronDown } from 'lucide-react';
+import { Command, Settings, LayoutGrid, Rows3, List, ChevronDown, TrendingUp } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -546,9 +546,10 @@ export default function Home() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div className="flex items-center gap-2 cursor-help">
+                    <TrendingUp className="h-6 w-6 text-[#FF6B35]" strokeWidth={2.5} />
                     <h1 className={cn(
                       "text-2xl font-bold tracking-tight leading-none",
-                      isLocalhost ? "text-red-600" : "text-primary"
+                      isLocalhost ? "text-red-600" : "text-[#FF6B35]"
                     )}>TrendsAnalyzer</h1>
                       {buildTimeDisplay && (
                         <span
