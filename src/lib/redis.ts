@@ -2,10 +2,9 @@ import { createClient, RedisClientType } from 'redis';
 
 export type RedisClient = RedisClientType<any, any, any>;
 
-// ALWAYS use OLD Redis (redis-18997) - DO NOT CHANGE
-// This is the production Redis database used by Vercel
+// Use 250MB Redis DB (redis-14969)
 const DEFAULT_REDIS_URL =
-  'redis://default:gxrWrXy1C5QJxXjO0sQzAh8JddnAm3il@redis-18997.c289.us-west-1-2.ec2.redns.redis-cloud.com:18997';
+  'redis://default:3oXlvgRqAf5gGtWErDiLFlrBrMCAgTzO@redis-14969.c15.us-east-1-4.ec2.cloud.redislabs.com:14969';
 
 let redisClient: RedisClient | null = null;
 let isResolvingClient = false;
@@ -23,19 +22,23 @@ function resolveRedisUrl(): string | null {
   for (const candidate of candidates) {
     const trimmed = candidate?.trim();
     if (trimmed && (trimmed.startsWith('redis://') || trimmed.startsWith('rediss://'))) {
-      // Ensure we're using OLD Redis (redis-18997), not NEW Redis (redis-14969)
+      // Prefer 250MB Redis (redis-14969)
       if (trimmed.includes('redis-14969') || trimmed.includes(':14969')) {
-        console.error('🚦 Redis: ⚠️ WARNING - Environment variable points to NEW Redis (14969). Using OLD Redis (18997) instead.');
-        break; // Don't use NEW Redis, fall through to DEFAULT_REDIS_URL
+        console.log('🚦 Redis: Using 250MB Redis DB (redis-14969) from environment variable');
+        return trimmed;
+      }
+      // If env var points to old 25MB Redis, warn but allow override
+      if (trimmed.includes('redis-18997') || trimmed.includes(':18997')) {
+        console.warn('🚦 Redis: ⚠️ Environment variable points to 25MB Redis (18997). Consider switching to 250MB Redis (14969).');
       }
       console.log('🚦 Redis: Using Redis URL from environment variable');
       return trimmed;
     }
   }
 
-  // Always fall back to OLD Redis (DEFAULT_REDIS_URL)
+  // Always fall back to 250MB Redis (DEFAULT_REDIS_URL)
   if (DEFAULT_REDIS_URL) {
-    console.log('🚦 Redis: Using OLD Redis (redis-18997) - DEFAULT_REDIS_URL');
+    console.log('🚦 Redis: Using 250MB Redis (redis-14969) - DEFAULT_REDIS_URL');
     return DEFAULT_REDIS_URL;
   }
 

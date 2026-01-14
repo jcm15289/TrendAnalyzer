@@ -978,8 +978,6 @@ const GoogleTrendsChartRedis: React.FC<GoogleTrendsChartProps> = ({ keywords, on
               activeDot={false}
             />
           ))}
-          {/* Add peak annotations AFTER lines so boxes render on top with transparency */}
-          <Customized component={PeakAnnotations} />
         </LineChart>
       </ResponsiveContainer>
     </div>

@@ -19,7 +19,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { MoreVertical, Sparkles, Clock, Trash2, FolderPlus, Plus, Check, Database, PenSquare } from 'lucide-react';
+import { MoreVertical, Clock, Trash2, FolderPlus, Plus, Check, Database, PenSquare } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -33,7 +33,6 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import GoogleTrendsChartRedis from './google-trends-chart-redis';
 import CacheViewer from './cache-viewer';
-import TrendExplainer from './trend-explainer';
 import { KeywordSet } from '@/lib/keywords';
 import { KeywordList } from '@/lib/lists';
 import { Badge } from '@/components/ui/badge';
@@ -84,11 +83,9 @@ export default function TrendsCard({
   showGrowthDetails = true,
   hideMenu = false,
 }: TrendsCardProps) {
-  const [isExplainerOpen, setIsExplainerOpen] = useState(false);
   const [isCacheViewerOpen, setIsCacheViewerOpen] = useState(false);
   const [isChartPreviewOpen, setIsChartPreviewOpen] = useState(false);
   const [isEditKeywordsOpen, setIsEditKeywordsOpen] = useState(false);
-  const [shouldRegenerateOnOpen, setShouldRegenerateOnOpen] = useState(false);
   const [editKeywordsForm, setEditKeywordsForm] = useState(() => [
     keywords[0] ?? '',
     keywords[1] ?? '',
@@ -132,385 +129,9 @@ export default function TrendsCard({
   const [trendData, setTrendData] = useState<any>(null);
   const [newListName, setNewListName] = useState('');
   const [showNewListInput, setShowNewListInput] = useState(false);
-  const [conclusion, setConclusion] = useState<string | null>(null);
-  const [isLoadingConclusion, setIsLoadingConclusion] = useState(false);
-  
-  // Extract conclusion section from explanation text
-  const extractConclusion = (text: string): string | null => {
-    if (!text) return null;
-    
-    // Find the conclusion section - look for "4. Conclusion" or "## Conclusion" etc.
-    // Then extract everything until we hit "Sources" section
-    let conclusionStart = -1;
-    let conclusionEnd = -1;
-    
-    // Pattern 1: "4. A short conclusion" or "4. Conclusion" (numbered section)
-    // More flexible: allows for variations like "4. Conclusion:" or "4.  Conclusion" (extra spaces)
-    const pattern1 = /(?:^|\n)\s*4\.\s+(?:A\s+short\s+)?[Cc]onclusion[:\s]*\n/i;
-    let match = text.match(pattern1);
-    if (match) {
-      conclusionStart = match.index! + match[0].length;
-      console.log('[extractConclusion] ✅ Pattern 1 matched at index:', match.index, 'matched text:', match[0].substring(0, 50));
-    } else {
-      // Pattern 2: "## Conclusion" or "### Conclusion" (markdown heading)
-      const pattern2 = /##+\s+[Cc]onclusion\s*\n/i;
-      match = text.match(pattern2);
-      if (match) {
-        conclusionStart = match.index! + match[0].length;
-        console.log('[extractConclusion] ✅ Pattern 2 matched at index:', match.index, 'matched text:', match[0].substring(0, 50));
-      } else {
-        // Pattern 3: "Conclusion:" or "Conclusion" (plain text heading, not numbered)
-        const pattern3 = /(?:^|\n)\s*[Cc]onclusion[:\s]*\n/i;
-        match = text.match(pattern3);
-        if (match) {
-          conclusionStart = match.index! + match[0].length;
-          console.log('[extractConclusion] ✅ Pattern 3 matched at index:', match.index, 'matched text:', match[0].substring(0, 50));
-        } else {
-          // Pattern 4: Look for "4." followed by conclusion text (more flexible, conclusion can be anywhere in the line)
-          const pattern4 = /(?:^|\n)\s*4\.\s+[^\n]*[Cc]onclusion[^\n]*\n/i;
-          match = text.match(pattern4);
-          if (match) {
-            conclusionStart = match.index! + match[0].length;
-            console.log('[extractConclusion] ✅ Pattern 4 matched at index:', match.index, 'matched text:', match[0].substring(0, 50));
-          } else {
-            // Pattern 5: Look for conclusion near the end (last 30% of text) - sometimes AI puts it at the end
-            const textLines = text.split('\n');
-            const last30Percent = Math.floor(textLines.length * 0.7);
-            const endSection = textLines.slice(last30Percent).join('\n');
-            const pattern5 = /(?:^|\n)\s*[Cc]onclusion[:\s]*\n/i;
-            match = endSection.match(pattern5);
-            if (match) {
-              // Calculate actual index in full text
-              const beforeEndSection = textLines.slice(0, last30Percent).join('\n');
-              conclusionStart = beforeEndSection.length + match.index! + match[0].length;
-              console.log('[extractConclusion] ✅ Pattern 5 matched (near end) at index:', conclusionStart, 'matched text:', match[0].substring(0, 50));
-            } else {
-              // Pattern 6: Look for "4." anywhere in text followed by conclusion-like content
-              const pattern6 = /(?:^|\n)\s*4\.\s+[^\n]{0,100}[Cc]onclusion/i;
-              match = text.match(pattern6);
-              if (match) {
-                // Find the end of this line
-                const afterMatch = text.substring(match.index! + match[0].length);
-                const nextNewline = afterMatch.indexOf('\n');
-                conclusionStart = match.index! + match[0].length + (nextNewline >= 0 ? nextNewline + 1 : 0);
-                console.log('[extractConclusion] ✅ Pattern 6 matched at index:', match.index, 'matched text:', match[0].substring(0, 50));
-              } else {
-                // Pattern 7: Look for conclusion-like paragraph at the end (last paragraph that's substantial)
-                const paragraphs = text.split(/\n\n+/);
-                if (paragraphs.length >= 2) {
-                  // Check last 3 paragraphs for conclusion-like content
-                  const lastParagraphs = paragraphs.slice(-3);
-                  for (let i = lastParagraphs.length - 1; i >= 0; i--) {
-                    const para = lastParagraphs[i];
-                    const lowerPara = para.toLowerCase();
-                    // Check if paragraph mentions conclusion or is conclusion-like (talks about trends/data summary)
-                    if (
-                      lowerPara.includes('conclusion') ||
-                      (lowerPara.length > 100 && (
-                        lowerPara.includes('in summary') ||
-                        lowerPara.includes('overall') ||
-                        lowerPara.includes('in conclusion') ||
-                        lowerPara.includes('to conclude') ||
-                        (lowerPara.includes('trends') && lowerPara.includes('indicate')) ||
-                        (lowerPara.includes('data') && lowerPara.includes('show'))
-                      ))
-                    ) {
-                      // Find this paragraph's start in the full text
-                      const paraIndex = text.lastIndexOf(para);
-                      if (paraIndex !== -1) {
-                        conclusionStart = paraIndex;
-                        console.log('[extractConclusion] ✅ Pattern 7 matched (last paragraph) at index:', conclusionStart);
-                        break;
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-    
-    if (conclusionStart === -1) {
-      console.log('[extractConclusion] ❌ No conclusion section found in text');
-      console.log('[extractConclusion] Text preview (last 1000 chars):', text.substring(Math.max(0, text.length - 1000)));
-      // Try to find any mention of "conclusion" in the text
-      const conclusionMentions = text.match(/[Cc]onclusion/gi);
-      if (conclusionMentions) {
-        console.log('[extractConclusion] Found', conclusionMentions.length, 'mentions of "conclusion" but no matchable pattern');
-        // Show context around each mention
-        conclusionMentions.forEach((_, idx) => {
-          const regex = new RegExp(`.{0,50}[Cc]onclusion.{0,50}`, 'gi');
-          const matches = text.match(regex);
-          if (matches && matches[idx]) {
-            console.log(`[extractConclusion] Context ${idx + 1}:`, matches[idx]);
-          }
-        });
-      }
-      return null;
-    }
-    
-    console.log('[extractConclusion] ✅ Found conclusion start at index:', conclusionStart);
-    console.log('[extractConclusion] Text around start:', text.substring(Math.max(0, conclusionStart - 50), Math.min(text.length, conclusionStart + 200)));
-    
-    // Find where conclusion ends - look for "Sources" section or "SUMMARIES" section
-    // But be careful - "Sources" might be mentioned in the conclusion text itself
-    const remainingText = text.substring(conclusionStart);
-    // First check for SUMMARIES section (should be filtered out)
-    const summariesPattern = /\n\s*(?:##\s*)?SUMMARIES\s*\n/i;
-    const summariesMatch = remainingText.match(summariesPattern);
-    
-    // Enhanced Sources detection - look for:
-    // 1. "Sources:" or "Source:" header
-    // 2. Markdown heading with Sources
-    // 3. Numbered section "5. Sources" or similar
-    // 4. Numbered list that looks like sources (starts with "1. " followed by publication/URL pattern)
-    const sourcesPattern = /\n\s*(?:Sources?[:\s]*\n|##+\s*Sources?\s*\n|5\.\s*Sources?\s*\n|\*\*Sources?\*\*\s*\n)/i;
-    const sourcesMatch = remainingText.match(sourcesPattern);
-    
-    // Also check for numbered list that looks like sources (starts with "1. " and contains publication patterns)
-    const numberedSourcesPattern = /\n\s*1\.\s+[^\n]*(?:[-–]\s*(?:YouTube|WION|EBSCO|Wikipedia|Britannica|Research Starters|The Far Right News|Zocalo Public Square|Holistic News)|\([^)]*(?:YouTube|WION|EBSCO|Wikipedia|Britannica|Research Starters|The Far Right News|Zocalo Public Square|Holistic News)[^)]*\))/i;
-    const numberedSourcesMatch = remainingText.match(numberedSourcesPattern);
-    
-    // Use SUMMARIES as end marker if found (before Sources)
-    let endMarkerIndex = -1;
-    if (summariesMatch) {
-      endMarkerIndex = summariesMatch.index!;
-      console.log('[extractConclusion] Found SUMMARIES section at index:', conclusionStart + endMarkerIndex);
-    }
-    if (sourcesMatch) {
-      const sourcesIndex = sourcesMatch.index!;
-      if (endMarkerIndex === -1 || sourcesIndex < endMarkerIndex) {
-        endMarkerIndex = sourcesIndex;
-        console.log('[extractConclusion] Found Sources section header at index:', conclusionStart + sourcesIndex);
-      }
-    }
-    if (numberedSourcesMatch) {
-      const numberedSourcesIndex = numberedSourcesMatch.index!;
-      if (endMarkerIndex === -1 || numberedSourcesIndex < endMarkerIndex) {
-        endMarkerIndex = numberedSourcesIndex;
-        console.log('[extractConclusion] Found numbered Sources list at index:', conclusionStart + numberedSourcesIndex);
-      }
-    }
-    
-    if (endMarkerIndex >= 0) {
-      // Found SUMMARIES or Sources section - cut there
-      const beforeEnd = remainingText.substring(0, endMarkerIndex).trim();
-      if (beforeEnd.length > 50) { // Only if we have substantial conclusion content
-        conclusionEnd = conclusionStart + endMarkerIndex;
-        console.log('[extractConclusion] Cutting at end marker (SUMMARIES or Sources) at index:', conclusionEnd);
-      } else {
-        // Not enough content before end marker, might be false positive
-        conclusionEnd = text.length;
-        console.log('[extractConclusion] End marker found but conclusion too short before it, taking full text');
-      }
-    } else {
-      // No end marker found, take until end of text
-      conclusionEnd = text.length;
-      console.log('[extractConclusion] No end marker (SUMMARIES or Sources) found, taking until end');
-    }
-    
-    let conclusionText = text.substring(conclusionStart, conclusionEnd).trim();
-    
-    // Clean up markdown formatting but preserve paragraph breaks
-    conclusionText = conclusionText
-      .replace(/\*\*/g, '') // Remove bold markers
-      .replace(/^[-*•]\s+/gm, '') // Remove bullet points
-      .replace(/\n{3,}/g, '\n\n') // Normalize multiple newlines
-      .replace(/The Google Trends data/gi, 'The data') // Replace "The Google Trends data" with "The data" (anywhere in text)
-      .replace(/^4\.\s*/gm, '') // Remove "4." at the start of lines
-      .replace(/^4\.\s*Conclusion:\s*/gi, '') // Remove "4. Conclusion:" pattern
-      .replace(/^Conclusion:\s*/gi, '') // Remove "Conclusion:" at the start
-      .replace(/^Conclusion\s*$/gim, '') // Remove standalone "Conclusion" lines
-      .replace(/^Conclusion\s+/gim, '') // Remove "Conclusion " at the start of lines
-      .trim();
-    
-    // Filter out lines that look like sources (URLs, Wikipedia, etc.)
-    // Enhanced to catch numbered source lists
-    const lines = conclusionText.split('\n');
-    const filteredLines = lines.filter(line => {
-      const trimmed = line.trim();
-      // Skip empty lines
-      if (trimmed.length === 0) return false;
-      
-      // Skip numbered lists that look like sources (e.g., "1. Title - YouTube (WION, 2025-11-05)")
-      if (/^\d+\.\s+[^\n]*(?:[-–]\s*(?:YouTube|WION|EBSCO|Wikipedia|Britannica|Research Starters|The Far Right News|Zocalo Public Square|Holistic News)|\([^)]*(?:YouTube|WION|EBSCO|Wikipedia|Britannica|Research Starters|The Far Right News|Zocalo Public Square|Holistic News)[^)]*\))/i.test(trimmed)) {
-        return false;
-      }
-      
-      // Only skip lines that are CLEARLY sources (not lines that mention sources in context)
-      // Be more conservative - only filter if the ENTIRE line is a source
-      if (
-        /^https?:\/\//i.test(trimmed) || // Full URL
-        /^\[.*\]\(https?:\/\/\)/i.test(trimmed) || // Markdown link
-        (/^[-*•]\s*(Wikipedia|Britannica|EBSCO|Research Starters|The Far Right News|YouTube|WION|Zocalo Public Square|Holistic News)/i.test(trimmed)) || // Bullet point with source name
-        (/^\d{4}-\d{2}-\d{2}\s*[-–]\s*(Wikipedia|Britannica|EBSCO|YouTube|WION)/i.test(trimmed)) // Date - Source format
-      ) {
-        return false;
-      }
-      // Don't filter lines that mention sources in context (like "according to Wikipedia" is OK)
-      return true;
-    });
-    
-    const finalText = filteredLines.join('\n').trim();
-    
-    console.log('[extractConclusion] After filtering:', {
-      originalLines: lines.length,
-      filteredLines: filteredLines.length,
-      finalLength: finalText.length,
-      preview: finalText.substring(0, 100)
-    });
-    
-    // Only return if we have substantial content (at least 30 chars - lowered threshold)
-    if (finalText.length >= 30) {
-      console.log('[extractConclusion] ✅ Conclusion extracted successfully, length:', finalText.length);
-      return finalText;
-    }
-    
-    console.log('[extractConclusion] ❌ Conclusion too short (' + finalText.length + ' chars), returning null');
-    console.log('[extractConclusion] Filtered text was:', finalText);
-    return null;
-  };
   
   // Memoize keywords string to avoid unnecessary re-renders
   const keywordsKey = useMemo(() => keywords.join('|'), [keywords]);
-  
-  // Fetch explanation to extract conclusion when in single view
-  useEffect(() => {
-    if (!isWideLayout || !trendData) {
-      setConclusion(null);
-      return;
-    }
-    
-    setIsLoadingConclusion(true);
-    let pollInterval: NodeJS.Timeout | null = null;
-    
-    const fetchExplanation = async () => {
-      try {
-        console.log('[TrendsCard] Fetching explanation for conclusion, keywords:', keywords);
-        const response = await fetch('/api/explain-trend', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            keywords,
-            trendData,
-            regenerate: false,
-          }),
-        });
-        
-        if (response.ok) {
-          const result = await response.json();
-          console.log('[TrendsCard] API response:', {
-            success: result.success,
-            hasExplanation: !!result.explanation,
-            explanationLength: result.explanation?.length || 0,
-            cached: result.cached,
-          });
-          
-          if (result.success && result.explanation) {
-            console.log('[TrendsCard] Extracting conclusion from explanation, length:', result.explanation.length);
-            console.log('[TrendsCard] Explanation preview (first 500 chars):', result.explanation.substring(0, 500));
-            const extractedConclusion = extractConclusion(result.explanation);
-            console.log('[TrendsCard] Extracted conclusion:', extractedConclusion ? `Found (${extractedConclusion.length} chars)` : 'Not found');
-            if (extractedConclusion) {
-              console.log('[TrendsCard] Conclusion preview:', extractedConclusion.substring(0, 200));
-            }
-            setConclusion(extractedConclusion);
-            setIsLoadingConclusion(false);
-          } else {
-            // No explanation yet - it's being generated in background
-            // Trigger generation in background and poll for completion
-            console.log('[TrendsCard] No explanation found, triggering background generation...');
-            
-            // Fire off generation request (don't wait)
-            fetch('/api/explain-trend', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                keywords,
-                trendData,
-                regenerate: false,
-              }),
-            }).catch(err => {
-              console.error('[TrendsCard] Error triggering background generation:', err);
-            });
-            
-            // Poll for conclusion every 3 seconds (max 10 attempts = 30 seconds)
-            let attempts = 0;
-            const maxAttempts = 10;
-            pollInterval = setInterval(async () => {
-              attempts++;
-              try {
-                const pollResponse = await fetch('/api/explain-trend', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({
-                    keywords,
-                    trendData,
-                    regenerate: false,
-                  }),
-                });
-                
-                if (pollResponse.ok) {
-                  const pollResult = await pollResponse.json();
-                  if (pollResult.success && pollResult.explanation) {
-                    const extractedConclusion = extractConclusion(pollResult.explanation);
-                    if (extractedConclusion) {
-                      console.log('[TrendsCard] ✅ Conclusion generated and extracted after polling');
-                      setConclusion(extractedConclusion);
-                      setIsLoadingConclusion(false);
-                      if (pollInterval) clearInterval(pollInterval);
-                      pollInterval = null;
-                      return;
-                    }
-                  }
-                }
-                
-                if (attempts >= maxAttempts) {
-                  console.log('[TrendsCard] ⏱️ Max polling attempts reached, stopping');
-                  setIsLoadingConclusion(false);
-                  if (pollInterval) clearInterval(pollInterval);
-                  pollInterval = null;
-                }
-              } catch (error) {
-                console.error('[TrendsCard] Error polling for conclusion:', error);
-                if (attempts >= maxAttempts) {
-                  setIsLoadingConclusion(false);
-                  if (pollInterval) clearInterval(pollInterval);
-                  pollInterval = null;
-                }
-              }
-            }, 3000);
-          }
-        } else {
-          const errorText = await response.text();
-          console.log('[TrendsCard] Failed to fetch explanation:', response.status, errorText);
-          setConclusion(null);
-          setIsLoadingConclusion(false);
-        }
-      } catch (error) {
-        console.error('[TrendsCard] Error fetching explanation for conclusion:', error);
-        setConclusion(null);
-        setIsLoadingConclusion(false);
-      }
-    };
-    
-    fetchExplanation();
-    
-    // Cleanup function
-    return () => {
-      if (pollInterval) {
-        clearInterval(pollInterval);
-      }
-    };
-  }, [isWideLayout, trendData, keywordsKey]);
   
   // Check which lists this keyword set belongs to
   const isInList = (listId: string) => {
@@ -1183,19 +804,6 @@ export default function TrendsCard({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuItem onSelect={() => setIsExplainerOpen(true)}>
-                <Sparkles className="mr-2 h-4 w-4" />
-                <span>Explain Trend</span>
-              </DropdownMenuItem>
-              <DropdownMenuItem 
-                onSelect={() => {
-                  setShouldRegenerateOnOpen(true);
-                  setIsExplainerOpen(true);
-                }}
-              >
-                <Sparkles className="mr-2 h-4 w-4" />
-                <span>Generate AI Analysis</span>
-              </DropdownMenuItem>
               <DropdownMenuItem
                 onSelect={() => {
                   setEditKeywordsError(null);
@@ -1310,50 +918,8 @@ export default function TrendsCard({
             />
           </div>
           
-              {/* Conclusion section - only show in single view, before buttons */}
-              {isWideLayout && (
-                <div className="mt-2">
-                  {isLoadingConclusion ? (
-                    <div className="text-center py-2">
-                      <p className="text-sm text-gray-500">Loading conclusion...</p>
-                    </div>
-                  ) : conclusion ? (
-                    <div className="bg-white border border-blue-200 rounded-lg p-4">
-                      <div className="text-base text-gray-900 leading-relaxed flex items-start gap-4">
-                        <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setIsExplainerOpen(true);
-                    }}
-                          className="text-blue-600 hover:text-blue-800 hover:underline font-medium shrink-0 flex flex-col items-center gap-1"
-                  >
-                    <Sparkles className="h-4 w-4" />
-                          <span>AI Analysis</span>
-                        </button>
-                        <div className="whitespace-pre-wrap break-words flex-1">{conclusion}</div>
-                </div>
-              </div>
-                  ) : null}
-                </div>
-              )}
-              
         </CardContent>
       </Card>
-
-          <TrendExplainer
-            keywords={keywords}
-            open={isExplainerOpen}
-            onOpenChange={(open) => {
-              setIsExplainerOpen(open);
-              if (!open) {
-                setShouldRegenerateOnOpen(false);
-              }
-            }}
-            trendData={trendData}
-            regenerateOnOpen={shouldRegenerateOnOpen}
-            hideRegenerate={hideMenu}
-          />
 
           <CacheViewer
             keywords={keywords}
