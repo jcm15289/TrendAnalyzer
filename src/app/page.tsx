@@ -53,6 +53,7 @@ export default function Home() {
   const [growthDebug, setGrowthDebug] = useState(false);
   const [savedOrder, setSavedOrder] = useState<string[] | null>(null);
   const [isLocalhost, setIsLocalhost] = useState(false);
+  const [isLoadingTrends, setIsLoadingTrends] = useState(true);
   
   useEffect(() => {
     setIsLocalhost(typeof window !== 'undefined' && window.location.hostname === 'localhost');
@@ -88,6 +89,7 @@ export default function Home() {
   // Load all trends from Redis cache-trends:Trends.* (250MB DB) - NO FALLBACKS
   useEffect(() => {
     const loadAllTrends = async () => {
+      setIsLoadingTrends(true);
       console.log('🚦 Page: Loading trends from 250MB Redis DB...');
       
       // Clear old localStorage keywords FIRST to prevent loading old geopolitics data
@@ -101,8 +103,9 @@ export default function Home() {
         if (!response.ok) {
           console.error('🚦 Page: API response not OK:', response.status, response.statusText);
           setKeywords([]);
-          return;
-        }
+          setIsLoadingTrends(false);
+              return;
+            }
         
         const result = await response.json();
         console.log('🚦 Page: API response:', {
@@ -121,16 +124,15 @@ export default function Home() {
             count: keywordSets.length,
             keywords: keywordSets.slice(0, 10).map((ks: string[]) => ks[0]),
           });
-          return;
         } else {
           console.warn('🚦 Page: No trends found in API response');
           setKeywords([]);
-          return;
         }
       } catch (error) {
         console.error('❌ Page: Could not load trends from Redis:', error);
         setKeywords([]);
-        return;
+      } finally {
+        setIsLoadingTrends(false);
       }
     };
 
@@ -693,7 +695,7 @@ export default function Home() {
               onGrowthComputed={handleGrowthComputed}
             />
           ))}
-            {sortedKeywords.length === 0 && (
+            {!isLoadingTrends && sortedKeywords.length === 0 && (
             <div className="col-span-full flex h-[50vh] flex-col items-center justify-center rounded-lg border-2 border-dashed bg-card/50">
                 <h2 className="text-2xl font-bold tracking-tight">
                   {selectedListId !== 'all' ? 'No keywords in this list' : 'No keywords to track'}
@@ -701,6 +703,12 @@ export default function Home() {
                 <p className="text-muted-foreground">
                   {selectedListId !== 'all' ? 'Add keywords to this list or select a different list.' : 'Add new keywords to get started.'}
                 </p>
+            </div>
+          )}
+          {isLoadingTrends && (
+            <div className="col-span-full flex h-[50vh] flex-col items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              <p className="text-muted-foreground mt-4">Loading trends...</p>
             </div>
           )}
         </div>
