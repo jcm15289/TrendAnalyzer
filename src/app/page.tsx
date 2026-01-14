@@ -15,7 +15,6 @@ import {
 } from '@/lib/lists';
 import TrendsCard from '@/components/trends-card';
 import { ConfigDialog } from '@/components/config-dialog';
-import StateOfWorld from '@/components/state-of-world';
 import { Button } from '@/components/ui/button';
 import { Command, Settings, LayoutGrid, Rows3, List, ChevronDown } from 'lucide-react';
 import {
@@ -674,7 +673,6 @@ export default function Home() {
         </div>
       </header>
       <main className="flex-1 p-4 md:p-6">
-        <StateOfWorld keywords={sortedKeywords} growthMetrics={growthMetrics} />
         <div className={
           layoutMode === 'single' 
             ? "grid grid-cols-1 gap-6" 
