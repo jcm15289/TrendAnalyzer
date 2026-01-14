@@ -14,29 +14,11 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { 
   Database, 
-  FileText, 
   Clock, 
-  Upload, 
-  Download, 
-  Trash2, 
-  Plus,
   RefreshCw,
   CheckCircle,
-  XCircle,
-  AlertCircle,
-  Sparkles
+  XCircle
 } from 'lucide-react';
-import { AddKeywordDialog } from './add-keyword-dialog';
-import { type KeywordSet } from '@/lib/keywords';
-
-interface LocalFileInfo {
-  filename: string;
-  path: string;
-  created: string;
-  modified: string;
-  size: number;
-  exists: boolean;
-}
 
 interface RedisInfo {
   key: string;
@@ -63,11 +45,8 @@ export function ConfigDialog({
   onAddKeyword, 
   onRemoveKeyword 
 }: ConfigDialogProps) {
-  const [localFiles, setLocalFiles] = useState<Record<string, LocalFileInfo>>({});
   const [redisData, setRedisData] = useState<Record<string, RedisInfo>>({});
   const [loading, setLoading] = useState(false);
-  const [isAddDialogOpen, setAddDialogOpen] = useState(false);
-  const [isRegenerating, setIsRegenerating] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -126,33 +105,6 @@ export function ConfigDialog({
     if (diffHours > 0) return `${diffHours}h ago`;
     if (diffMins > 0) return `${diffMins}m ago`;
     return 'Just now';
-  };
-
-  const handleRegenerateAll = async () => {
-    setIsRegenerating(true);
-    try {
-      const response = await fetch('/api/regenerate-all-explanations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        console.log('[ConfigDialog] Regeneration started:', result);
-        alert(`Started regenerating ${result.count} explanations in the background. Check the console for progress.`);
-      } else {
-        const error = await response.json();
-        console.error('[ConfigDialog] Regeneration failed:', error);
-        alert(`Failed to start regeneration: ${error.error || 'Unknown error'}`);
-      }
-    } catch (error) {
-      console.error('[ConfigDialog] Error triggering regeneration:', error);
-      alert('Failed to start regeneration. Check the console for details.');
-    } finally {
-      setIsRegenerating(false);
-    }
   };
 
   const redisCount = Object.keys(redisData).length;
@@ -274,11 +226,6 @@ export function ConfigDialog({
         </DialogContent>
       </Dialog>
 
-      <AddKeywordDialog
-        open={isAddDialogOpen}
-        onOpenChange={setAddDialogOpen}
-        onAddKeyword={onAddKeyword}
-      />
     </>
   );
 }
