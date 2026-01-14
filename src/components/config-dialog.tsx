@@ -72,18 +72,26 @@ export function ConfigDialog({
   const fetchData = async () => {
     setLoading(true);
     try {
-      // Fetch local files info
-      const localResponse = await fetch('/api/config/local-files');
-      if (localResponse.ok) {
-        const localData = await localResponse.json();
-        setLocalFiles(localData.files || {});
-      }
-
-      // Fetch Redis data info
-      const redisResponse = await fetch('/api/config/redis-data');
+      // Fetch Redis trends data (cache-trends:Trends.*)
+      const redisResponse = await fetch('/api/trends/all');
       if (redisResponse.ok) {
-        const redisData = await redisResponse.json();
-        setRedisData(redisData.data || {});
+        const result = await redisResponse.json();
+        if (result.success && result.trends) {
+          // Convert trends to RedisInfo format
+          const redisDataMap: Record<string, RedisInfo> = {};
+          result.trends.forEach((trend: any) => {
+            redisDataMap[trend.keyword] = {
+              key: trend.key,
+              filename: trend.keyword,
+              size: trend.data?.length || 0,
+              type: 'trend',
+              folder: 'cache-trends',
+              uploaded: trend.timestamp || new Date().toISOString(),
+              exists: true
+            };
+          });
+          setRedisData(redisDataMap);
+        }
       }
     } catch (error) {
       console.error('Error fetching config data:', error);
@@ -147,14 +155,8 @@ export function ConfigDialog({
     }
   };
 
-  const allKeywords = new Set([...Object.keys(localFiles), ...Object.keys(redisData)]);
-  const sortedKeywords = Array.from(allKeywords).sort();
-
-  const localCount = Object.keys(localFiles).length;
   const redisCount = Object.keys(redisData).length;
-  const bothCount = Object.keys(localFiles).filter(key => redisData[key]).length;
-  const localOnlyCount = localCount - bothCount;
-  const redisOnlyCount = redisCount - bothCount;
+  const sortedRedisKeys = Object.keys(redisData).sort();
 
   return (
     <>
@@ -166,7 +168,7 @@ export function ConfigDialog({
               Configuration & Cache Status
             </DialogTitle>
             <DialogDescription>
-              View cache files, Redis data, and manage keywords
+              View Redis trends data (cache-trends:Trends.*)
             </DialogDescription>
           </DialogHeader>
 
@@ -175,232 +177,98 @@ export function ConfigDialog({
               <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
               Refresh
             </Button>
-            <Button onClick={() => setAddDialogOpen(true)} size="sm" variant="outline">
-              <Plus className="h-4 w-4 mr-2" />
-              Add Keywords
-            </Button>
-            <Button 
-              onClick={handleRegenerateAll} 
-              disabled={isRegenerating || keywords.length === 0} 
-              size="sm" 
-              variant="outline"
-              className="bg-purple-50 border-purple-200 text-purple-700 hover:bg-purple-100"
-            >
-              <Sparkles className={`h-4 w-4 mr-2 ${isRegenerating ? 'animate-pulse' : ''}`} />
-              {isRegenerating ? 'Regenerating...' : 'Regenerate All Explanations'}
-            </Button>
           </div>
 
           <div className="flex-1 overflow-y-auto overflow-x-hidden pr-4">
             <div className="space-y-6">
-              {/* Summary Cards */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-medium flex items-center gap-2">
-                      <FileText className="h-4 w-4" />
-                      Local Files
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold text-green-600">{localCount}</div>
-                    <p className="text-xs text-muted-foreground">Cache files</p>
-                  </CardContent>
-                </Card>
-
+              {/* Summary Card */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm font-medium flex items-center gap-2">
                       <Database className="h-4 w-4" />
-                      Redis Entries
+                      Redis Trends
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-blue-600">{redisCount}</div>
-                    <p className="text-xs text-muted-foreground">Uploaded data</p>
+                    <div className="text-2xl font-bold text-[#FF6B35]">{redisCount}</div>
+                    <p className="text-xs text-muted-foreground">Trends in Redis cache</p>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader className="pb-2">
                     <CardTitle className="text-sm font-medium flex items-center gap-2">
-                      <CheckCircle className="h-4 w-4" />
-                      Synced
+                      <Clock className="h-4 w-4" />
+                      Last Updated
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="text-2xl font-bold text-cyan-600">{bothCount}</div>
-                    <p className="text-xs text-muted-foreground">Both local & Redis</p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-sm font-medium flex items-center gap-2">
-                      <AlertCircle className="h-4 w-4" />
-                      Issues
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold text-yellow-600">{localOnlyCount + redisOnlyCount}</div>
-                    <p className="text-xs text-muted-foreground">Local only + Redis only</p>
+                    <div className="text-sm font-medium">
+                      {redisCount > 0 && Object.values(redisData)[0]?.uploaded 
+                        ? formatTimeAgo(Object.values(redisData)[0].uploaded)
+                        : 'N/A'}
+                    </div>
+                    <p className="text-xs text-muted-foreground">Most recent trend</p>
                   </CardContent>
                 </Card>
               </div>
 
-              {/* Current Keywords */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Plus className="h-4 w-4" />
-                    Current Keywords ({keywords.length})
-                  </CardTitle>
-                  <CardDescription>
-                    Keywords currently being tracked
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {keywords.map((keywordSet, index) => (
-                      <div key={index} className="flex items-center gap-2">
-                        <Badge variant="outline" className="flex items-center gap-1">
-                          {keywordSet.join(', ')}
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="h-4 w-4 p-0 hover:bg-destructive hover:text-destructive-foreground"
-                            onClick={() => onRemoveKeyword(keywordSet)}
-                          >
-                            <XCircle className="h-3 w-3" />
-                          </Button>
-                        </Badge>
-                      </div>
-                    ))}
-                    {keywords.length === 0 && (
-                      <p className="text-muted-foreground text-sm">No keywords configured</p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Detailed Comparison */}
+              {/* Redis Trends */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Database className="h-4 w-4" />
-                    Cache Status Details
+                    Redis Trends Data
                   </CardTitle>
                   <CardDescription>
-                    Detailed comparison between local files and Redis data
+                    All trends stored in Redis cache (cache-trends:Trends.*)
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {sortedKeywords.map((keyword) => {
-                      const local = localFiles[keyword];
-                      const redis = redisData[keyword];
-                      
-                      return (
-                        <div key={keyword} className="border rounded-lg p-4">
-                          <div className="flex items-center justify-between mb-3">
-                            <h4 className="font-medium text-lg">{keyword.toUpperCase()}</h4>
-                            <div className="flex gap-2">
-                              {local && redis ? (
-                                <Badge variant="default" className="bg-green-100 text-green-800">
-                                  <CheckCircle className="h-3 w-3 mr-1" />
-                                  Synced
-                                </Badge>
-                              ) : local ? (
-                                <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-                                  <FileText className="h-3 w-3 mr-1" />
-                                  Local Only
-                                </Badge>
-                              ) : redis ? (
-                                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                                  <Database className="h-3 w-3 mr-1" />
-                                  Redis Only
-                                </Badge>
-                              ) : null}
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {/* Local File Info */}
-                            <div className="space-y-2">
-                              <h5 className="font-medium text-sm flex items-center gap-2">
-                                <FileText className="h-4 w-4" />
-                                Local File
-                              </h5>
-                              {local ? (
-                                <div className="space-y-1 text-sm">
-                                  <p><span className="font-medium">File:</span> {local.filename}</p>
-                                  <p><span className="font-medium">Size:</span> {formatFileSize(local.size)}</p>
-                                  <p><span className="font-medium">Created:</span> {new Date(local.created).toLocaleString()}</p>
-                                  <p><span className="font-medium">Modified:</span> {new Date(local.modified).toLocaleString()}</p>
-                                  <p className="text-muted-foreground">({formatTimeAgo(local.modified)})</p>
+                  {loading ? (
+                    <div className="flex items-center justify-center py-8">
+                      <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
+                      <span className="ml-2 text-muted-foreground">Loading Redis data...</span>
+                    </div>
+                  ) : (
+                    <div className="space-y-4">
+                      {Object.keys(redisData).length === 0 ? (
+                        <p className="text-muted-foreground text-sm">No Redis trends data found</p>
+                      ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                          {sortedRedisKeys.map((keyword) => {
+                            const info = redisData[keyword];
+                            return (
+                              <div key={keyword} className="border rounded-lg p-3 hover:bg-muted/50 transition-colors">
+                                <div className="flex items-start justify-between">
+                                  <div className="flex-1 min-w-0">
+                                    <h4 className="font-medium text-sm truncate">{info.filename || keyword}</h4>
+                                    <div className="mt-2 space-y-1 text-xs text-muted-foreground">
+                                      <p><span className="font-medium">Key:</span> <span className="font-mono text-[10px]">{info.key}</span></p>
+                                      <p><span className="font-medium">Data Points:</span> {info.size || 0}</p>
+                                      <p><span className="font-medium">Uploaded:</span> {formatTimeAgo(info.uploaded)}</p>
+                                      <p className="text-[10px] text-muted-foreground/70 mt-1">
+                                        {new Date(info.uploaded).toLocaleString()}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  {info.exists ? (
+                                    <CheckCircle className="h-4 w-4 text-green-600 flex-shrink-0 ml-2" />
+                                  ) : (
+                                    <XCircle className="h-4 w-4 text-red-600 flex-shrink-0 ml-2" />
+                                  )}
                                 </div>
-                              ) : (
-                                <p className="text-muted-foreground text-sm">No local file found</p>
-                              )}
-                            </div>
-
-                            {/* Redis Info */}
-                            <div className="space-y-2">
-                              <h5 className="font-medium text-sm flex items-center gap-2">
-                                <Database className="h-4 w-4" />
-                                Redis Data
-                              </h5>
-                              {redis ? (
-                                <div className="space-y-1 text-sm">
-                                  <p><span className="font-medium">Key:</span> {redis.key}</p>
-                                  <p><span className="font-medium">Size:</span> {formatFileSize(redis.size)}</p>
-                                  <p><span className="font-medium">Uploaded:</span> {new Date(redis.uploaded).toLocaleString()}</p>
-                                  <p className="text-muted-foreground">({formatTimeAgo(redis.uploaded)})</p>
-                                </div>
-                              ) : (
-                                <p className="text-muted-foreground text-sm">Not uploaded to Redis</p>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Time Gap Analysis */}
-                          {local && redis && (
-                            <div className="mt-3 pt-3 border-t">
-                              <div className="flex items-center gap-2 text-sm">
-                                <Clock className="h-4 w-4" />
-                                <span className="font-medium">Time Gap:</span>
-                                <span>
-                                  {(() => {
-                                    const fileModified = new Date(local.modified);
-                                    const redisUpload = new Date(redis.uploaded);
-                                    const timeDiff = redisUpload.getTime() - fileModified.getTime();
-                                    const hours = Math.floor(timeDiff / (1000 * 60 * 60));
-                                    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-                                    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-                                    return `${hours}h ${minutes}m ${seconds}s`;
-                                  })()}
-                                </span>
-                                <span className="text-muted-foreground">from file modification to upload</span>
                               </div>
-                              {local.size === redis.size ? (
-                                <div className="flex items-center gap-2 text-sm text-green-600 mt-1">
-                                  <CheckCircle className="h-4 w-4" />
-                                  File sizes match
-                                </div>
-                              ) : (
-                                <div className="flex items-center gap-2 text-sm text-red-600 mt-1">
-                                  <XCircle className="h-4 w-4" />
-                                  File sizes don't match
-                                </div>
-                              )}
-                            </div>
-                          )}
+                            );
+                          })}
                         </div>
-                      );
-                    })}
-                  </div>
+                      )}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
+
             </div>
           </div>
         </DialogContent>
