@@ -1,0 +1,106 @@
+'use client';
+
+import { useState } from 'react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { MoreVertical, Sparkles, Trash2 } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import GoogleTrendsChart from './google-trends-chart';
+import { TrendExplainer } from './trend-explainer';
+import { KeywordSet } from '@/lib/keywords';
+
+interface TrendsCardProps {
+  keywords: KeywordSet;
+  onRemove: () => void;
+}
+
+export default function TrendsCard({ keywords, onRemove }: TrendsCardProps) {
+  const [isExplainerOpen, setIsExplainerOpen] = useState(false);
+
+  const title = keywords.join(' vs ');
+  const description = '5-year trend data from Google Trends.';
+
+  return (
+    <>
+      <Card className="flex flex-col animate-fade-in shadow-md hover:shadow-xl transition-shadow duration-300">
+        <CardHeader className="flex flex-row items-start justify-between">
+          <div className="space-y-1.5">
+            <CardTitle className="text-xl">{title}</CardTitle>
+            <CardDescription>{description}</CardDescription>
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="h-8 w-8 shrink-0">
+                <MoreVertical className="h-4 w-4" />
+                <span className="sr-only">More options</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onSelect={() => setIsExplainerOpen(true)}>
+                <Sparkles className="mr-2 h-4 w-4" />
+                <span>Explain Trend</span>
+              </DropdownMenuItem>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <DropdownMenuItem
+                    onSelect={(e) => e.preventDefault()}
+                    className="text-destructive focus:bg-destructive/10 focus:text-destructive"
+                  >
+                    <Trash2 className="mr-2 h-4 w-4" />
+                    <span>Remove</span>
+                  </DropdownMenuItem>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This will remove the topic "{title}" from your tracking
+                      list. This action cannot be undone.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={onRemove} className="bg-destructive hover:bg-destructive/90">
+                      Remove
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </CardHeader>
+        <CardContent className="flex-grow">
+          <GoogleTrendsChart keywords={keywords} />
+        </CardContent>
+      </Card>
+
+      <TrendExplainer
+        keywords={keywords}
+        open={isExplainerOpen}
+        onOpenChange={setIsExplainerOpen}
+      />
+    </>
+  );
+}

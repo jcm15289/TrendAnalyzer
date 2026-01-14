@@ -1,0 +1,1084 @@
+2025-09-20 16:12:27.233014	  SUCCESS Democrat tries:0/5. Browser:safari15_5
+2025-09-20 16:13:51.563207	  SUCCESS Democrat tries:0/5. Browser:safari15_5
+2025-09-20 16:14:05.280695	  SUCCESS Republican tries:0/5. Browser:safari15_5
+2025-09-20 16:15:11.327869	  SUCCESS Democrat tries:0/5. Browser:safari15_5
+2025-09-20 16:15:38.977500	  SUCCESS Democrat,Republican tries:0/5. Browser:safari15_5
+2025-09-20 16:15:50.544619	  SUCCESS Democrat,Republican tries:0/5. Browser:safari15_5
+2025-09-20 16:16:06.374608	  SUCCESS Democrat tries:0/5. Browser:safari15_5
+2025-09-20 17:02:54.445994	  SUCCESS Democrat tries:0/5. Browser:safari15_5
+2025-09-20 17:03:08.630356	  SUCCESS Democrat tries:0/5. Browser:safari15_5
+2025-09-20 17:03:53.078133	  SUCCESS election fraud tries:0/5. Browser:safari15_5
+2025-09-20 17:03:53.152726	  SUCCESS liberal,conservative tries:0/5. Browser:safari15_5
+2025-09-20 17:03:53.169753	  SUCCESS voter suppression tries:0/5. Browser:safari15_5
+2025-09-20 17:03:53.262703	  SUCCESS Democrat,Republican tries:0/5. Browser:safari15_5
+2025-09-20 17:03:53.326663	  SUCCESS Black Lives Matter,Blue Lives Matter tries:0/5. Browser:safari15_5
+2025-09-20 17:03:53.363252	  SUCCESS MAGA,progressive tries:0/5. Browser:safari15_5
+2025-09-20 17:04:01.639325	  SUCCESS mass shooting protests tries:0/5. Browser:safari15_5
+2025-09-20 17:04:01.642519	  SUCCESS mail-in ballots tries:0/5. Browser:safari15_5
+2025-09-20 17:04:01.762850	  SUCCESS Trump,Biden tries:0/5. Browser:safari15_5
+2025-09-20 17:04:01.763480	  SUCCESS gun control,2nd amendment tries:0/5. Browser:safari15_5
+2025-09-20 17:04:01.937271	  SUCCESS police reform,George Floyd protests tries:0/5. Browser:safari15_5
+2025-09-20 17:05:18.289178	  SUCCESS liberal,conservative tries:0/5. Browser:safari15_5
+2025-09-20 17:05:18.361497	  SUCCESS Democrat,Republican tries:0/5. Browser:safari15_5
+2025-09-20 17:05:18.452709	  SUCCESS MAGA,progressive tries:0/5. Browser:safari15_5
+2025-09-20 17:05:18.457982	  SUCCESS Trump,Biden tries:0/5. Browser:safari15_5
+2025-09-20 17:05:18.640286	  SUCCESS election fraud tries:0/5. Browser:safari15_5
+2025-09-20 17:05:18.694179	  SUCCESS voter suppression tries:0/5. Browser:safari15_5
+2025-09-20 17:05:26.953437	  SUCCESS Black Lives Matter,Blue Lives Matter tries:0/5. Browser:safari15_5
+2025-09-20 17:05:26.953558	  SUCCESS police reform,George Floyd protests tries:0/5. Browser:safari15_5
+2025-09-20 17:05:26.954282	  SUCCESS mail-in ballots tries:0/5. Browser:safari15_5
+2025-09-20 17:05:26.971866	  SUCCESS gun control,2nd amendment tries:0/5. Browser:safari15_5
+2025-09-20 17:05:27.065537	  SUCCESS mass shooting protests tries:0/5. Browser:safari15_5
+2025-09-20 17:07:57.766007	  CACHE MISS: Fetching fresh data for ['Democrat']
+2025-09-20 17:08:05.883782	  SUCCESS Democrat tries:0/5. Browser:safari15_5
+2025-09-20 17:08:05.888226	  CACHE SAVE: Saved to cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-20 17:08:13.705892	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-20 17:08:13.705913	  SUCCESS: Using cached data for ['Democrat']
+2025-09-20 17:08:26.394069	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-20 17:08:26.394106	  SUCCESS: Using cached data for ['Democrat']
+2025-09-20 17:09:37.332202	  CACHE MISS: Fetching fresh data for ['Democrat,Republican']
+2025-09-20 17:09:45.111472	  SUCCESS Democrat,Republican tries:0/5. Browser:safari15_5
+2025-09-20 17:09:45.114832	  CACHE SAVE: Saved to cache file Cache/117813a29d387780f135bf66f6cdc8c7.json
+2025-09-20 17:09:37.341059	  CACHE MISS: Fetching fresh data for ['election fraud']
+2025-09-20 17:09:45.133640	  SUCCESS election fraud tries:0/5. Browser:safari15_5
+2025-09-20 17:09:45.136684	  CACHE SAVE: Saved to cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-20 17:09:37.392363	  CACHE MISS: Fetching fresh data for ['MAGA,progressive']
+2025-09-20 17:09:45.142630	  SUCCESS MAGA,progressive tries:0/5. Browser:safari15_5
+2025-09-20 17:09:45.144226	  CACHE SAVE: Saved to cache file Cache/f909ebc23b233da80ea4051674eda6ac.json
+2025-09-20 17:09:37.328694	  CACHE MISS: Fetching fresh data for ['liberal,conservative']
+2025-09-20 17:09:45.152610	  SUCCESS liberal,conservative tries:0/5. Browser:safari15_5
+2025-09-20 17:09:45.154695	  CACHE SAVE: Saved to cache file Cache/9546478ac23e0ba173ee000cb51b2362.json
+2025-09-20 17:09:37.350605	  CACHE MISS: Fetching fresh data for ['Trump,Biden']
+2025-09-20 17:09:45.166245	  SUCCESS Trump,Biden tries:0/5. Browser:safari15_5
+2025-09-20 17:09:45.170606	  CACHE SAVE: Saved to cache file Cache/808b94bfe12bfb1b47c7693f12527d9c.json
+2025-09-20 17:09:37.431264	  CACHE MISS: Fetching fresh data for ['voter suppression']
+2025-09-20 17:09:45.175976	  SUCCESS voter suppression tries:0/5. Browser:safari15_5
+2025-09-20 17:09:45.180583	  CACHE SAVE: Saved to cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-20 17:09:45.940593	  CACHE MISS: Fetching fresh data for ['mail-in ballots']
+2025-09-20 17:09:53.822749	  SUCCESS mail-in ballots tries:0/5. Browser:safari15_5
+2025-09-20 17:09:53.827410	  CACHE SAVE: Saved to cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-20 17:09:45.921564	  CACHE MISS: Fetching fresh data for ['mass shooting protests']
+2025-09-20 17:09:53.822752	  SUCCESS mass shooting protests tries:0/5. Browser:safari15_5
+2025-09-20 17:09:53.827453	  CACHE SAVE: Saved to cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-20 17:09:45.964799	  CACHE MISS: Fetching fresh data for ['police reform,George Floyd protests']
+2025-09-20 17:09:53.822590	  SUCCESS police reform,George Floyd protests tries:0/5. Browser:safari15_5
+2025-09-20 17:09:53.827863	  CACHE SAVE: Saved to cache file Cache/8be0622f7b7312fbf5157eaee3a27dce.json
+2025-09-20 17:09:45.960166	  CACHE MISS: Fetching fresh data for ['gun control,2nd amendment']
+2025-09-20 17:09:53.824655	  SUCCESS gun control,2nd amendment tries:0/5. Browser:safari15_5
+2025-09-20 17:09:53.829113	  CACHE SAVE: Saved to cache file Cache/4a6a0ebe8dd998da1a10120e2f1385c7.json
+2025-09-20 17:09:45.974003	  CACHE MISS: Fetching fresh data for ['Black Lives Matter,Blue Lives Matter']
+2025-09-20 17:09:53.843536	  SUCCESS Black Lives Matter,Blue Lives Matter tries:0/5. Browser:safari15_5
+2025-09-20 17:09:53.848668	  CACHE SAVE: Saved to cache file Cache/4339c9be6904250c96c3c6253f7d4f03.json
+2025-09-20 17:11:11.024546	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-20 17:11:11.024583	  SUCCESS: Using cached data for ['election fraud']
+2025-09-20 17:11:11.035921	  CACHE HIT: Loading from cache file Cache/f909ebc23b233da80ea4051674eda6ac.json
+2025-09-20 17:11:11.035951	  SUCCESS: Using cached data for ['MAGA,progressive']
+2025-09-20 17:11:11.043927	  CACHE HIT: Loading from cache file Cache/9546478ac23e0ba173ee000cb51b2362.json
+2025-09-20 17:11:11.043958	  SUCCESS: Using cached data for ['liberal,conservative']
+2025-09-20 17:11:11.044757	  CACHE HIT: Loading from cache file Cache/117813a29d387780f135bf66f6cdc8c7.json
+2025-09-20 17:11:11.044795	  SUCCESS: Using cached data for ['Democrat,Republican']
+2025-09-20 17:11:11.092744	  CACHE HIT: Loading from cache file Cache/808b94bfe12bfb1b47c7693f12527d9c.json
+2025-09-20 17:11:11.092793	  SUCCESS: Using cached data for ['Trump,Biden']
+2025-09-20 17:11:11.331621	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-20 17:11:11.331658	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-20 17:11:11.800832	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-20 17:11:11.800867	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-20 17:11:11.830107	  CACHE HIT: Loading from cache file Cache/4a6a0ebe8dd998da1a10120e2f1385c7.json
+2025-09-20 17:11:11.830140	  SUCCESS: Using cached data for ['gun control,2nd amendment']
+2025-09-20 17:11:11.835662	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-20 17:11:11.835705	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-20 17:11:11.943062	  CACHE HIT: Loading from cache file Cache/4339c9be6904250c96c3c6253f7d4f03.json
+2025-09-20 17:11:11.943096	  SUCCESS: Using cached data for ['Black Lives Matter,Blue Lives Matter']
+2025-09-20 17:11:11.974970	  CACHE HIT: Loading from cache file Cache/8be0622f7b7312fbf5157eaee3a27dce.json
+2025-09-20 17:11:11.975006	  SUCCESS: Using cached data for ['police reform,George Floyd protests']
+2025-09-20 17:13:01.115809	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-20 17:13:01.115846	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-20 17:13:01.131301	  CACHE HIT: Loading from cache file Cache/9546478ac23e0ba173ee000cb51b2362.json
+2025-09-20 17:13:01.131334	  SUCCESS: Using cached data for ['liberal,conservative']
+2025-09-20 17:13:01.147184	  CACHE HIT: Loading from cache file Cache/117813a29d387780f135bf66f6cdc8c7.json
+2025-09-20 17:13:01.147220	  SUCCESS: Using cached data for ['Democrat,Republican']
+2025-09-20 17:13:01.149779	  CACHE HIT: Loading from cache file Cache/808b94bfe12bfb1b47c7693f12527d9c.json
+2025-09-20 17:13:01.149816	  SUCCESS: Using cached data for ['Trump,Biden']
+2025-09-20 17:13:01.210841	  CACHE HIT: Loading from cache file Cache/f909ebc23b233da80ea4051674eda6ac.json
+2025-09-20 17:13:01.210876	  SUCCESS: Using cached data for ['MAGA,progressive']
+2025-09-20 17:13:01.344966	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-20 17:13:01.345009	  SUCCESS: Using cached data for ['election fraud']
+2025-09-20 17:13:02.051032	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-20 17:13:02.051078	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-20 17:13:02.098056	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-20 17:13:02.098097	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-20 17:13:02.125899	  CACHE HIT: Loading from cache file Cache/4a6a0ebe8dd998da1a10120e2f1385c7.json
+2025-09-20 17:13:02.125944	  SUCCESS: Using cached data for ['gun control,2nd amendment']
+2025-09-20 17:13:02.187395	  CACHE HIT: Loading from cache file Cache/8be0622f7b7312fbf5157eaee3a27dce.json
+2025-09-20 17:13:02.187436	  SUCCESS: Using cached data for ['police reform,George Floyd protests']
+2025-09-20 17:13:02.199998	  CACHE HIT: Loading from cache file Cache/4339c9be6904250c96c3c6253f7d4f03.json
+2025-09-20 17:13:02.200049	  SUCCESS: Using cached data for ['Black Lives Matter,Blue Lives Matter']
+2025-09-20 17:18:51.465919	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-20 17:18:51.465954	  SUCCESS: Using cached data for ['Democrat']
+2025-09-20 17:18:51.330126	  CACHE MISS: Fetching fresh data for ['MAGA']
+LOG: MAGA Error 429 while fetching token, retrying 1/5. Browser:safari15_5
+LOG: MAGA Error 429 while fetching token, retrying 2/5. Browser:safari15_5
+LOG: MAGA Error 429 while fetching token, retrying 3/5. Browser:safari15_5
+LOG: MAGA Error 429 while fetching token, retrying 4/5. Browser:safari15_5
+LOG: MAGA Error 429 while fetching token, retrying 5/5. Browser:safari15_5
+2025-09-20 17:19:04.090877	  FAILED MAGA Exceeded maximum 4 attempts (5) while fetching token. Browser:safari15_5. Exiting...
+2025-09-20 17:18:51.360029	  CACHE MISS: Fetching fresh data for ['liberal']
+LOG: liberal Error 429 while fetching token, retrying 1/5. Browser:safari15_5
+LOG: liberal Error 429 while fetching token, retrying 2/5. Browser:safari15_5
+LOG: liberal Error 429 while fetching token, retrying 3/5. Browser:safari15_5
+LOG: liberal Error 429 while fetching token, retrying 4/5. Browser:safari15_5
+LOG: liberal Error 429 while fetching token, retrying 5/5. Browser:safari15_5
+2025-09-20 17:19:04.090877	  FAILED liberal Exceeded maximum 4 attempts (5) while fetching token. Browser:safari15_5. Exiting...
+2025-09-20 17:18:51.336597	  CACHE MISS: Fetching fresh data for ['conservative']
+LOG: conservative Error 429 while fetching token, retrying 1/5. Browser:safari15_5
+LOG: conservative Error 429 while fetching token, retrying 2/5. Browser:safari15_5
+LOG: conservative Error 429 while fetching token, retrying 3/5. Browser:safari15_5
+LOG: conservative Error 429 while fetching token, retrying 4/5. Browser:safari15_5
+LOG: conservative Error 429 while fetching token, retrying 5/5. Browser:safari15_5
+2025-09-20 17:19:04.091034	  FAILED conservative Exceeded maximum 4 attempts (5) while fetching token. Browser:safari15_5. Exiting...
+2025-09-20 17:18:51.305818	  CACHE MISS: Fetching fresh data for ['Republican']
+LOG: Republican Error 429 while fetching token, retrying 1/5. Browser:safari15_5
+LOG: Republican Error 429 while fetching token, retrying 2/5. Browser:safari15_5
+LOG: Republican Error 429 while fetching token, retrying 3/5. Browser:safari15_5
+LOG: Republican Error 429 while fetching token, retrying 4/5. Browser:safari15_5
+LOG: Republican Error 429 while fetching token, retrying 5/5. Browser:safari15_5
+2025-09-20 17:19:04.124001	  FAILED Republican Exceeded maximum 4 attempts (5) while fetching token. Browser:safari15_5. Exiting...
+2025-09-20 17:18:51.315793	  CACHE MISS: Fetching fresh data for ['progressive']
+LOG: progressive Error 429 while fetching token, retrying 1/5. Browser:safari15_5
+LOG: progressive Error 429 while fetching token, retrying 2/5. Browser:safari15_5
+LOG: progressive Error 429 while fetching token, retrying 3/5. Browser:safari15_5
+LOG: progressive Error 429 while fetching token, retrying 4/5. Browser:safari15_5
+LOG: progressive Error 429 while fetching token, retrying 5/5. Browser:safari15_5
+2025-09-20 17:19:04.149824	  FAILED progressive Exceeded maximum 4 attempts (5) while fetching token. Browser:safari15_5. Exiting...
+2025-09-20 17:18:51.913609	  CACHE MISS: Fetching fresh data for ['Biden']
+LOG: Biden Error 429 while fetching token, retrying 1/5. Browser:safari15_5
+LOG: Biden Error 429 while fetching token, retrying 2/5. Browser:safari15_5
+LOG: Biden Error 429 while fetching token, retrying 3/5. Browser:safari15_5
+LOG: Biden Error 429 while fetching token, retrying 4/5. Browser:safari15_5
+LOG: Biden Error 429 while fetching token, retrying 5/5. Browser:safari15_5
+2025-09-20 17:19:04.865555	  FAILED Biden Exceeded maximum 4 attempts (5) while fetching token. Browser:safari15_5. Exiting...
+2025-09-20 17:19:04.883142	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-20 17:19:04.883177	  SUCCESS: Using cached data for ['election fraud']
+2025-09-20 17:19:04.883467	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-20 17:19:04.883497	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-20 17:19:04.930942	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-20 17:19:04.930989	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-20 17:19:05.571107	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-20 17:19:05.571143	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-20 17:19:04.864886	  CACHE MISS: Fetching fresh data for ['Trump']
+LOG: Trump Error 429 while fetching token, retrying 1/5. Browser:safari15_5
+LOG: Trump Error 429 while fetching token, retrying 2/5. Browser:safari15_5
+LOG: Trump Error 429 while fetching token, retrying 3/5. Browser:safari15_5
+LOG: Trump Error 429 while fetching token, retrying 4/5. Browser:safari15_5
+LOG: Trump Error 429 while fetching token, retrying 5/5. Browser:safari15_5
+2025-09-20 17:19:17.615400	  FAILED Trump Exceeded maximum 4 attempts (5) while fetching token. Browser:safari15_5. Exiting...
+2025-09-20 17:19:05.084111	  CACHE MISS: Fetching fresh data for ['gun control']
+LOG: gun control Error 429 while fetching token, retrying 1/5. Browser:safari15_5
+LOG: gun control Error 429 while fetching token, retrying 2/5. Browser:safari15_5
+LOG: gun control Error 429 while fetching token, retrying 3/5. Browser:safari15_5
+LOG: gun control Error 429 while fetching token, retrying 4/5. Browser:safari15_5
+LOG: gun control Error 429 while fetching token, retrying 5/5. Browser:safari15_5
+2025-09-20 17:19:17.615828	  FAILED gun control Exceeded maximum 4 attempts (5) while fetching token. Browser:safari15_5. Exiting...
+2025-09-20 17:19:05.522610	  CACHE MISS: Fetching fresh data for ['2nd amendment']
+LOG: 2nd amendment Error 429 while fetching token, retrying 1/5. Browser:safari15_5
+LOG: 2nd amendment Error 429 while fetching token, retrying 2/5. Browser:safari15_5
+LOG: 2nd amendment Error 429 while fetching token, retrying 3/5. Browser:safari15_5
+LOG: 2nd amendment Error 429 while fetching token, retrying 4/5. Browser:safari15_5
+LOG: 2nd amendment Error 429 while fetching token, retrying 5/5. Browser:safari15_5
+2025-09-20 17:19:18.153219	  FAILED 2nd amendment Exceeded maximum 4 attempts (5) while fetching token. Browser:safari15_5. Exiting...
+2025-09-20 17:19:05.522308	  CACHE MISS: Fetching fresh data for ['Black Lives Matter']
+LOG: Black Lives Matter Error 429 while fetching token, retrying 1/5. Browser:safari15_5
+LOG: Black Lives Matter Error 429 while fetching token, retrying 2/5. Browser:safari15_5
+LOG: Black Lives Matter Error 429 while fetching token, retrying 3/5. Browser:safari15_5
+LOG: Black Lives Matter Error 429 while fetching token, retrying 4/5. Browser:safari15_5
+LOG: Black Lives Matter Error 429 while fetching token, retrying 5/5. Browser:safari15_5
+2025-09-20 17:19:18.156921	  FAILED Black Lives Matter Exceeded maximum 4 attempts (5) while fetching token. Browser:safari15_5. Exiting...
+2025-09-20 17:19:05.598898	  CACHE MISS: Fetching fresh data for ['Blue Lives Matter']
+LOG: Blue Lives Matter Error 429 while fetching token, retrying 1/5. Browser:safari15_5
+LOG: Blue Lives Matter Error 429 while fetching token, retrying 2/5. Browser:safari15_5
+LOG: Blue Lives Matter Error 429 while fetching token, retrying 3/5. Browser:safari15_5
+LOG: Blue Lives Matter Error 429 while fetching token, retrying 4/5. Browser:safari15_5
+LOG: Blue Lives Matter Error 429 while fetching token, retrying 5/5. Browser:safari15_5
+2025-09-20 17:19:18.517206	  FAILED Blue Lives Matter Exceeded maximum 4 attempts (5) while fetching token. Browser:safari15_5. Exiting...
+2025-09-20 17:19:05.955941	  CACHE MISS: Fetching fresh data for ['police reform']
+LOG: police reform Error 429 while fetching token, retrying 1/5. Browser:safari15_5
+LOG: police reform Error 429 while fetching token, retrying 2/5. Browser:safari15_5
+LOG: police reform Error 429 while fetching token, retrying 3/5. Browser:safari15_5
+LOG: police reform Error 429 while fetching token, retrying 4/5. Browser:safari15_5
+LOG: police reform Error 429 while fetching token, retrying 5/5. Browser:safari15_5
+2025-09-20 17:19:18.925283	  FAILED police reform Exceeded maximum 4 attempts (5) while fetching token. Browser:safari15_5. Exiting...
+2025-09-20 17:19:17.977392	  CACHE MISS: Fetching fresh data for ['George Floyd protests']
+LOG: George Floyd protests Error 429 while fetching token, retrying 1/5. Browser:safari15_5
+LOG: George Floyd protests Error 429 while fetching token, retrying 2/5. Browser:safari15_5
+LOG: George Floyd protests Error 429 while fetching token, retrying 3/5. Browser:safari15_5
+LOG: George Floyd protests Error 429 while fetching token, retrying 4/5. Browser:safari15_5
+LOG: George Floyd protests Error 429 while fetching token, retrying 5/5. Browser:safari15_5
+2025-09-20 17:19:31.137239	  FAILED George Floyd protests Exceeded maximum 4 attempts (5) while fetching token. Browser:safari15_5. Exiting...
+2025-09-21 11:14:27.970914	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:14:27.970955	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:14:27.963097	  CACHE MISS: Fetching fresh data for ['Trump']
+2025-09-21 11:14:35.987245	  SUCCESS Trump tries:0/5. Browser:safari15_5
+2025-09-21 11:14:35.990741	  CACHE SAVE: Saved to cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:14:27.964723	  CACHE MISS: Fetching fresh data for ['liberal']
+2025-09-21 11:14:36.536036	  SUCCESS liberal tries:0/5. Browser:safari15_5
+2025-09-21 11:14:36.540497	  CACHE SAVE: Saved to cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:14:27.968164	  CACHE MISS: Fetching fresh data for ['conservative']
+2025-09-21 11:14:36.566949	  SUCCESS conservative tries:0/5. Browser:safari15_5
+2025-09-21 11:14:36.571494	  CACHE SAVE: Saved to cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:14:28.516504	  CACHE MISS: Fetching fresh data for ['progressive']
+2025-09-21 11:14:36.643216	  SUCCESS progressive tries:0/5. Browser:safari15_5
+2025-09-21 11:14:36.647104	  CACHE SAVE: Saved to cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:14:27.963065	  CACHE MISS: Fetching fresh data for ['Republican']
+2025-09-21 11:14:36.749921	  SUCCESS Republican tries:0/5. Browser:safari15_5
+2025-09-21 11:14:36.753984	  CACHE SAVE: Saved to cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:14:27.963392	  CACHE MISS: Fetching fresh data for ['MAGA']
+2025-09-21 11:14:37.054497	  SUCCESS MAGA tries:0/5. Browser:safari15_5
+2025-09-21 11:14:37.058787	  CACHE SAVE: Saved to cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:14:37.667826	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:14:37.667862	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:14:37.705596	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:14:37.705640	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:14:37.769870	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:14:37.769910	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:14:37.909318	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:14:37.909357	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:14:39.508617	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:14:39.508657	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:14:36.511500	  CACHE MISS: Fetching fresh data for ['Biden']
+2025-09-21 11:14:44.775887	  SUCCESS Biden tries:0/5. Browser:safari15_5
+2025-09-21 11:14:44.779622	  CACHE SAVE: Saved to cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:14:38.032038	  CACHE MISS: Fetching fresh data for ['gun control']
+2025-09-21 11:14:46.324990	  SUCCESS gun control tries:0/5. Browser:safari15_5
+2025-09-21 11:14:46.328884	  CACHE SAVE: Saved to cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:14:38.654286	  CACHE MISS: Fetching fresh data for ['George Floyd protests']
+2025-09-21 11:14:46.593640	  SUCCESS George Floyd protests tries:0/5. Browser:safari15_5
+2025-09-21 11:14:46.597619	  CACHE SAVE: Saved to cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:14:38.631242	  CACHE MISS: Fetching fresh data for ['Blue Lives Matter']
+2025-09-21 11:14:46.608609	  SUCCESS Blue Lives Matter tries:0/5. Browser:safari15_5
+2025-09-21 11:14:46.611963	  CACHE SAVE: Saved to cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:14:38.471886	  CACHE MISS: Fetching fresh data for ['2nd amendment']
+2025-09-21 11:14:46.761038	  SUCCESS 2nd amendment tries:0/5. Browser:safari15_5
+2025-09-21 11:14:46.764012	  CACHE SAVE: Saved to cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:14:38.492319	  CACHE MISS: Fetching fresh data for ['Black Lives Matter']
+2025-09-21 11:14:46.993406	  SUCCESS Black Lives Matter tries:0/5. Browser:safari15_5
+2025-09-21 11:14:46.997553	  CACHE SAVE: Saved to cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:14:44.111279	  CACHE MISS: Fetching fresh data for ['Biden']
+2025-09-21 11:14:51.900813	  SUCCESS Biden tries:0/5. Browser:safari15_5
+2025-09-21 11:14:51.904563	  CACHE SAVE: Saved to cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:14:45.233926	  CACHE MISS: Fetching fresh data for ['police reform']
+2025-09-21 11:14:53.304943	  SUCCESS police reform tries:0/5. Browser:safari15_5
+2025-09-21 11:14:53.308566	  CACHE SAVE: Saved to cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:15:18.380671	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:15:18.380705	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:15:18.392133	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:15:18.392165	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:15:18.400352	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:15:18.403674	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 11:15:18.500201	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:15:18.500244	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 11:15:18.545182	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:15:18.545215	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:15:18.579487	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:15:18.579518	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:15:19.237669	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:15:19.237702	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:15:19.270555	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:15:19.270591	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:15:19.280223	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:15:19.280268	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:15:19.408131	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:15:19.408170	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 11:15:19.554002	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:15:19.554036	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:15:19.569725	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:15:19.569761	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:15:20.138320	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:15:20.138352	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 11:15:20.157209	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:15:20.157248	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 11:15:20.188543	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:15:20.188579	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:15:20.298959	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:15:20.298996	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 11:15:20.315952	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:15:20.315996	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 11:15:20.354215	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:15:20.354263	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 11:30:05.899675	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:30:05.899705	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 11:30:05.905307	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:30:05.905345	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:30:05.925600	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:30:05.925639	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:30:05.963129	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:30:05.963168	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:30:05.963396	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:30:05.963427	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:30:06.002590	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:30:06.002642	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:30:06.878808	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:30:06.878841	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 11:30:06.885461	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:30:06.885498	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:30:06.888016	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:30:06.888055	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:30:06.949552	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:30:06.949592	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:30:06.966059	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:30:06.966092	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 11:30:07.206282	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:30:07.206325	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:30:07.795746	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:30:07.795779	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 11:30:07.804120	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:30:07.804154	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:30:07.827523	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:30:07.827561	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 11:30:07.934029	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:30:07.934066	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 11:30:07.942414	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:30:07.942450	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 11:30:08.016618	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:30:08.016657	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 11:31:07.327216	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:31:07.327253	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:31:07.336991	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:31:07.337024	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:31:07.356431	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:31:07.356467	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 11:31:07.367451	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:31:07.367487	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:31:07.372844	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:31:07.372895	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:31:07.596545	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:31:07.596569	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:31:08.253223	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:31:08.253259	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 11:31:08.273763	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:31:08.273802	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:31:08.308800	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:31:08.308837	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:31:08.326504	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:31:08.326540	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:31:08.412503	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:31:08.412549	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:31:08.572282	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:31:08.572329	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 11:31:09.220064	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:31:09.220098	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 11:31:09.243259	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:31:09.243293	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:31:09.283646	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:31:09.283680	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 11:31:09.348931	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:31:09.348968	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 11:31:09.353315	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:31:09.353355	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 11:31:09.451217	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:31:09.451256	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 11:31:59.779846	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:31:59.779883	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:31:59.834662	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:31:59.834696	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:31:59.838798	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:31:59.838836	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:31:59.844196	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:31:59.844238	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:31:59.888420	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:31:59.888465	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 11:32:00.129673	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:32:00.129706	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:32:00.697070	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:32:00.697108	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:32:00.798649	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:32:00.798682	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 11:32:00.816701	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:32:00.816737	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:32:00.871091	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:32:00.871458	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:32:00.927027	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:32:00.927066	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:32:00.959362	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:32:00.959406	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 11:32:01.832085	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:32:01.832125	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 11:32:01.837868	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:32:01.837904	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 11:32:01.847293	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:32:01.847341	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:32:01.871916	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:32:01.871954	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 11:32:01.909636	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:32:01.909687	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 11:32:01.985903	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:32:01.985941	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 11:32:47.127041	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:32:47.127085	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:32:47.184181	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:32:47.184215	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:32:47.187299	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:32:47.187336	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:32:47.369868	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:32:47.369902	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:32:47.373509	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:32:47.373541	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 11:32:47.667918	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:32:47.667961	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:32:48.088499	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:32:48.088532	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:32:48.206233	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:32:48.206270	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:32:48.296054	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:32:48.296104	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 11:32:48.332303	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:32:48.332334	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:32:48.519078	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:32:48.519122	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 11:32:48.638030	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:32:48.638070	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 11:32:49.041718	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:32:49.041752	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:32:49.188240	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:32:49.188272	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:32:49.223582	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:32:49.223617	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 11:32:49.257155	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:32:49.257196	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 11:32:49.331946	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:32:49.331984	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 11:32:49.421754	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:32:49.421795	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 11:33:27.860500	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:33:27.860535	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:33:27.870981	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:33:27.871016	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:33:27.892452	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:33:27.892492	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:33:27.916030	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:33:27.916073	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:33:28.078531	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:33:28.078580	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 11:33:28.373340	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:33:28.373386	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:33:28.727456	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:33:28.727490	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 11:33:28.853304	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:33:28.853334	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:33:28.890911	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:33:28.890948	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:33:29.085531	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:33:29.085564	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 11:33:29.089822	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:33:29.089863	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:33:29.209276	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:33:29.209308	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:33:29.601981	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:33:29.602017	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:33:29.765702	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:33:29.765741	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 11:33:29.899969	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:33:29.900015	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 11:33:30.078754	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:33:30.078791	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 11:33:30.108287	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:33:30.108335	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 11:33:30.304691	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:33:30.304721	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 11:34:09.704513	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:34:09.704554	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:34:09.721217	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:34:09.721250	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:34:09.723317	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:34:09.723354	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:34:09.732697	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:34:09.732735	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:34:09.737715	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:34:09.737752	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 11:34:09.743233	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:34:09.743273	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:34:10.536644	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:34:10.536679	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:34:10.572305	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:34:10.572341	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 11:34:10.573687	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:34:10.573727	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:34:10.596903	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:34:10.596959	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:34:10.655996	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:34:10.656038	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 11:34:10.773552	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:34:10.773591	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:34:11.423403	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:34:11.423439	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 11:34:11.426401	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:34:11.426439	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 11:34:11.439427	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:34:11.439462	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:34:11.617808	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:34:11.617877	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 11:34:11.642461	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:34:11.642495	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 11:34:11.716652	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:34:11.716699	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 11:34:45.939875	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:34:45.939910	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:34:46.136339	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:34:46.136385	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:34:46.151289	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:34:46.151322	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:34:46.161817	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:34:46.161848	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:34:46.334601	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:34:46.334638	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:34:46.605994	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:34:46.606026	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:34:46.672810	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:34:46.672850	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:34:46.690936	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:34:46.690978	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 11:34:46.716638	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:34:46.716680	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:34:46.764447	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:34:46.764481	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:34:46.824272	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:34:46.824315	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:34:47.520618	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:34:47.520651	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 11:34:47.640328	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:34:47.640364	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:34:47.647690	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:34:47.647732	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 11:34:47.726887	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:34:47.726919	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:34:47.795720	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:34:47.795768	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 11:34:48.024037	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:34:48.024073	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:34:48.421839	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:34:48.421884	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:34:48.580654	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:34:48.580691	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:34:48.597478	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:34:48.597518	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 11:34:48.620207	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:34:48.620244	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 11:34:48.633479	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:34:48.633521	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 11:34:48.735042	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:34:48.735071	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 11:36:01.275466	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:36:01.275507	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:36:01.298850	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:36:01.298893	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:36:01.367171	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:36:01.367224	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 11:36:01.373506	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:36:01.373545	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:36:01.386312	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:36:01.386353	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:36:01.388503	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:36:01.388547	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:36:02.596401	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:36:02.596441	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:36:02.693127	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:36:02.693164	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 11:36:02.804325	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:36:02.804358	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:36:02.874035	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:36:02.874070	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:36:02.993719	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:36:02.993922	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:36:03.026838	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:36:03.026875	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 11:36:03.767731	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:36:03.767767	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 11:36:03.848955	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:36:03.848994	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:36:03.894611	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:36:03.894645	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 11:36:03.910569	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:36:03.910607	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 11:36:03.989149	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:36:03.989189	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 11:36:04.008447	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:36:04.008485	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 11:36:38.320688	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:36:38.320722	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:36:38.361914	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:36:38.361947	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:36:38.364839	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:36:38.364871	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:36:38.370480	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:36:38.370518	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 11:36:38.407874	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:36:38.407923	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:36:38.582198	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:36:38.582240	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:36:39.256376	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:36:39.256409	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 11:36:39.287002	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:36:39.287049	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:36:39.321659	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:36:39.321701	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:36:39.338775	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:36:39.338823	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:36:39.505140	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:36:39.505175	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:36:39.588085	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:36:39.588131	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 11:36:40.199181	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:36:40.199217	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 11:36:40.222108	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:36:40.222142	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 11:36:40.314217	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:36:40.314259	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:36:40.341252	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:36:40.341290	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 11:36:40.391852	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:36:40.391888	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 11:36:40.446422	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:36:40.446462	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 11:37:04.746011	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:37:04.746045	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:37:04.753071	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:37:04.753104	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:37:04.756448	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:37:04.756481	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:37:04.790570	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:37:04.790611	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 11:37:04.870319	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:37:04.870360	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:37:04.979569	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:37:04.979609	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:37:05.636445	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:37:05.636482	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 11:37:05.652129	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:37:05.652170	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:37:05.697301	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:37:05.697346	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:37:05.729057	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:37:05.729100	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:37:05.993334	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:37:05.993371	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:37:06.102329	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:37:06.102371	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 11:37:06.685634	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:37:06.685669	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 11:37:06.821117	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:37:06.821152	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 11:37:06.823737	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:37:06.823767	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:37:07.039154	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:37:07.039194	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 11:37:07.086496	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:37:07.086537	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 11:37:07.157459	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:37:07.157499	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 11:53:21.543881	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:53:21.543916	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:53:21.564479	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:53:21.564512	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:53:21.566966	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:53:21.567000	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:53:21.624006	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:53:21.624057	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:53:21.641269	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:53:21.641311	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:53:21.887224	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:53:21.887248	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:53:22.401923	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:53:22.401959	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 11:53:22.409279	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:53:22.409323	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:53:22.444382	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:53:22.444419	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 11:53:22.646428	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:53:22.646467	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:53:22.648518	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:53:22.648551	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:53:22.710008	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:53:22.710048	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 11:53:23.263019	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:53:23.263057	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 11:53:23.294547	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:53:23.294584	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:53:23.383185	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:53:23.383222	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 11:53:23.425650	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:53:23.425687	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 11:53:23.456045	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:53:23.456092	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 11:53:23.527331	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:53:23.527379	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 11:55:43.827854	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:55:43.827892	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:55:43.836108	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:55:43.836136	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 11:55:43.863922	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:55:43.863960	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:55:43.865353	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:55:43.865394	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:55:43.873937	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:55:43.873984	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:55:44.158025	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:55:44.158064	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:55:44.771247	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:55:44.771282	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:55:44.812805	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:55:44.812841	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 11:55:44.790885	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:55:44.815252	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:55:44.847693	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:55:44.847735	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:55:44.864934	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:55:44.864975	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 11:55:45.223570	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:55:45.223610	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 11:55:45.624727	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:55:45.624760	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:55:45.661633	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:55:45.661668	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:55:45.705146	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:55:45.705186	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 11:55:45.810005	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:55:45.810045	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 11:55:45.847465	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:55:45.847505	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 11:55:45.898191	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:55:45.898220	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 11:55:47.739586	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 11:55:47.739616	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 11:55:47.791640	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 11:55:47.791685	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 11:55:47.801471	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 11:55:47.801511	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 11:55:47.805542	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 11:55:47.805581	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 11:55:47.812394	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 11:55:47.812434	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 11:55:47.846111	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 11:55:47.846151	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 11:55:48.872623	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 11:55:48.872662	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 11:55:48.948319	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 11:55:48.948352	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 11:55:48.948393	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 11:55:48.948422	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 11:55:48.957974	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 11:55:48.958008	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 11:55:49.047095	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 11:55:49.047129	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 11:55:49.240364	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 11:55:49.240406	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 11:55:49.895646	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 11:55:49.895678	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 11:55:49.936662	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 11:55:49.936698	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 11:55:49.948859	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 11:55:49.948896	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 11:55:49.970979	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 11:55:49.971020	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 11:55:50.113143	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 11:55:50.113182	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 11:55:50.165364	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 11:55:50.165402	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 12:40:26.648303	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 12:40:26.648337	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 12:40:26.655169	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 12:40:26.655202	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 12:40:26.757901	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 12:40:26.757940	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 12:40:26.946733	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 12:40:26.946774	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 12:40:26.979889	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 12:40:26.979936	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 12:40:27.144509	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 12:40:27.144545	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 12:40:27.614072	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 12:40:27.614106	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 12:40:27.633158	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 12:40:27.633204	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 12:40:27.670293	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 12:40:27.670333	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 12:40:27.991567	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 12:40:27.991605	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 12:40:28.043332	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 12:40:28.043365	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 12:40:28.172468	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 12:40:28.172503	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 12:40:28.641122	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 12:40:28.641156	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 12:40:28.660557	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 12:40:28.660590	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 12:40:28.697487	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 12:40:28.697531	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 12:40:28.852664	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 12:40:28.852704	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 12:40:28.922828	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 12:40:28.922866	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 12:40:28.943695	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 12:40:28.944332	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 12:42:33.116465	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 12:42:33.116503	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 12:42:33.150162	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 12:42:33.150194	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 12:42:33.159958	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 12:42:33.159994	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 12:42:33.253752	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 12:42:33.253788	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 12:42:33.287872	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 12:42:33.287903	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 12:42:33.557541	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 12:42:33.557579	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 12:42:33.567184	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 12:42:33.567216	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 12:42:33.553473	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 12:42:33.578656	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 12:42:33.635946	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 12:42:33.636011	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 12:42:33.720999	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 12:42:33.721038	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 12:42:33.891960	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 12:42:33.892375	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 12:42:34.471137	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 12:42:34.471171	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 12:42:34.473660	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 12:42:34.473694	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 12:42:34.545383	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 12:42:34.545410	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 12:42:34.638169	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 12:42:34.638206	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 12:42:34.824057	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 12:42:34.824095	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 12:42:34.937511	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 12:42:34.937554	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 12:42:35.361911	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 12:42:35.361946	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 12:42:35.363168	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 12:42:35.363207	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 12:42:35.478590	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 12:42:35.478630	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 12:42:35.522786	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 12:42:35.522823	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 12:42:35.565511	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 12:42:35.565552	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 12:42:35.602872	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 12:42:35.602961	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 12:42:48.510720	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 12:42:48.510754	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 12:42:48.544390	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 12:42:48.544498	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 12:42:48.594354	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 12:42:48.594390	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 12:42:48.949900	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 12:42:48.949924	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 12:42:48.951446	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 12:42:48.951483	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 12:42:49.272068	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 12:42:49.272104	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 12:42:49.705090	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 12:42:49.705127	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 12:42:49.781015	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 12:42:49.781050	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 12:42:50.147620	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 12:42:50.147651	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 12:42:50.217301	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 12:42:50.217433	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 12:42:50.233577	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 12:42:50.233626	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 12:42:50.725837	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 12:42:50.725870	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 12:42:50.726056	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 12:42:50.726092	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 12:42:50.922462	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 12:42:50.922510	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 12:42:51.142555	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 12:42:51.142625	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 12:42:51.337096	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 12:42:51.337134	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 12:42:51.417125	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 12:42:51.417173	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 12:42:51.502862	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 12:42:51.502907	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 12:46:22.389038	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 12:46:22.389072	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 12:46:22.447876	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 12:46:22.447917	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 12:46:22.601755	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 12:46:22.601800	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 12:46:22.735989	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 12:46:22.736040	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 12:46:23.029233	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 12:46:23.029270	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 12:46:23.032585	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 12:46:23.032618	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 12:46:23.718332	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 12:46:23.718367	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 12:46:23.739755	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 12:46:23.739793	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 12:46:23.847703	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 12:46:23.847743	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 12:46:23.907654	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 12:46:23.907687	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 12:46:23.905657	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 12:46:23.905753	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 12:46:24.107134	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 12:46:24.107175	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 12:46:24.702447	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 12:46:24.702480	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 12:46:24.904374	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 12:46:24.904405	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 12:46:24.930285	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 12:46:24.930327	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 12:46:24.946834	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 12:46:24.946879	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 12:46:25.043160	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 12:46:25.043199	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 12:46:25.137074	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 12:46:25.137118	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 12:47:30.676180	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 12:47:30.676221	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 12:47:30.725328	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 12:47:30.725360	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 12:47:30.728677	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 12:47:30.728709	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 12:47:30.764831	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 12:47:30.764880	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 12:47:30.930852	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 12:47:30.930888	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 12:47:31.367635	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 12:47:31.367669	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 12:47:31.828381	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 12:47:31.828420	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 12:47:32.033481	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 12:47:32.033518	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 12:47:32.133845	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 12:47:32.133881	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 12:47:32.159093	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 12:47:32.159128	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 12:47:32.595176	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 12:47:32.595213	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 12:47:32.709036	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 12:47:32.709075	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 12:47:32.749062	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 12:47:32.749103	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 12:47:32.951970	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 12:47:32.952003	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 12:47:32.994963	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 12:47:32.994998	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 12:47:33.066307	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 12:47:33.066341	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 12:47:33.231550	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 12:47:33.231586	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 12:47:33.266957	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 12:47:33.266997	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 12:50:26.988264	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 12:50:26.988304	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 12:50:55.254536	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 12:50:55.254566	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 12:50:55.442781	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 12:50:55.442814	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 12:50:55.470320	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 12:50:55.470352	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 12:50:55.592492	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 12:50:55.592535	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 12:50:55.656528	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 12:50:55.656567	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 12:50:56.308855	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 12:50:56.308897	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 12:50:56.747580	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 12:50:56.747620	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 12:50:56.819939	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 12:50:56.819977	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 12:50:57.096397	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 12:50:57.096431	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 12:50:57.114957	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 12:50:57.114999	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 12:50:57.404961	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 12:50:57.404996	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 12:50:57.598144	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 12:50:57.598178	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 12:50:57.706867	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 12:50:57.706912	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 12:50:57.915990	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 12:50:57.916016	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 12:50:58.013656	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 12:50:58.013692	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 12:50:58.031641	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 12:50:58.031678	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 12:50:58.377553	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 12:50:58.377587	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 12:50:58.530494	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 12:50:58.530527	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 12:56:04.697254	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 12:56:04.697290	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 12:56:04.724778	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 12:56:04.724813	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 12:56:05.658381	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 12:56:05.658413	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 12:56:05.708121	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 12:56:05.708153	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 12:56:06.185080	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 12:56:06.185109	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 12:56:06.253834	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 12:56:06.253869	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 12:56:06.456175	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 12:56:06.456221	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 12:56:06.975185	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 12:56:06.975224	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 12:56:07.079631	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 12:56:07.079667	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 12:56:07.303322	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 12:56:07.303355	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 12:56:07.925901	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 12:56:07.925936	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 12:56:08.010483	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 12:56:08.010521	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 12:56:08.168437	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 12:56:08.168482	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 12:56:08.287678	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 12:56:08.287711	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 12:56:08.304388	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 12:56:08.304426	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 12:56:08.488349	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 12:56:08.488385	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 12:56:08.749422	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 12:56:08.749456	  SUCCESS: Using cached data for ['George Floyd protests']
+2025-09-21 12:56:08.825579	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 12:56:08.825616	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 13:00:44.095735	  CACHE HIT: Loading from cache file Cache/28486074f85f0391acf58d8f9236fd4b.json
+2025-09-21 13:00:44.095768	  SUCCESS: Using cached data for ['Republican']
+2025-09-21 13:00:44.174052	  CACHE HIT: Loading from cache file Cache/54086a07ef7b77359a8fe88e382ef9ed.json
+2025-09-21 13:00:44.174085	  SUCCESS: Using cached data for ['Democrat']
+2025-09-21 13:00:44.853480	  CACHE HIT: Loading from cache file Cache/17e876b687424b747a51731ddf26d322.json
+2025-09-21 13:00:44.853516	  SUCCESS: Using cached data for ['liberal']
+2025-09-21 13:00:44.936082	  CACHE HIT: Loading from cache file Cache/8cdb54955a2f9e45fea720cf3f666d93.json
+2025-09-21 13:00:44.936122	  SUCCESS: Using cached data for ['progressive']
+2025-09-21 13:00:44.938370	  CACHE HIT: Loading from cache file Cache/99245514d9f1985f784dd742394b928f.json
+2025-09-21 13:00:44.938409	  SUCCESS: Using cached data for ['MAGA']
+2025-09-21 13:00:45.030600	  CACHE HIT: Loading from cache file Cache/45f1cbae951b837ae1cbbddc2e97e23d.json
+2025-09-21 13:00:45.030658	  SUCCESS: Using cached data for ['conservative']
+2025-09-21 13:00:45.390346	  CACHE HIT: Loading from cache file Cache/a9638fa318fa8bb1283ac962f9052812.json
+2025-09-21 13:00:45.390385	  SUCCESS: Using cached data for ['Trump']
+2025-09-21 13:00:45.477792	  CACHE HIT: Loading from cache file Cache/1456bc0f6e0e4cf65c78a09688a2c920.json
+2025-09-21 13:00:45.477835	  SUCCESS: Using cached data for ['Biden']
+2025-09-21 13:00:46.147505	  CACHE HIT: Loading from cache file Cache/2b0db3673666cb882549939d4992faa2.json
+2025-09-21 13:00:46.147534	  SUCCESS: Using cached data for ['election fraud']
+2025-09-21 13:00:46.536922	  CACHE HIT: Loading from cache file Cache/d349bab19764955d73d795c5cb75fd80.json
+2025-09-21 13:00:46.536956	  SUCCESS: Using cached data for ['gun control']
+2025-09-21 13:00:46.543989	  CACHE HIT: Loading from cache file Cache/997f76b164dffb958c3f84d472b94eac.json
+2025-09-21 13:00:46.544039	  SUCCESS: Using cached data for ['voter suppression']
+2025-09-21 13:00:46.656075	  CACHE HIT: Loading from cache file Cache/aa7dece34dc0a4a4e9211448a1d3693a.json
+2025-09-21 13:00:46.656102	  SUCCESS: Using cached data for ['2nd amendment']
+2025-09-21 13:00:46.943882	  CACHE HIT: Loading from cache file Cache/ce18670da79376933f424c2604b6f6c7.json
+2025-09-21 13:00:46.943918	  SUCCESS: Using cached data for ['mail-in ballots']
+2025-09-21 13:00:47.297980	  CACHE HIT: Loading from cache file Cache/52225a032ae7188a8d685da910dfa9c3.json
+2025-09-21 13:00:47.298004	  SUCCESS: Using cached data for ['mass shooting protests']
+2025-09-21 13:00:47.434475	  CACHE HIT: Loading from cache file Cache/ccc5d59136fe35b4753cb6adffb5aebd.json
+2025-09-21 13:00:47.434501	  SUCCESS: Using cached data for ['Black Lives Matter']
+2025-09-21 13:00:47.757654	  CACHE HIT: Loading from cache file Cache/52f3ed19d80501e3f2f5c6debe6c38aa.json
+2025-09-21 13:00:47.757697	  SUCCESS: Using cached data for ['Blue Lives Matter']
+2025-09-21 13:00:47.903691	  CACHE HIT: Loading from cache file Cache/945ec0fdd49cce7848d2dfe6a9ae09d3.json
+2025-09-21 13:00:47.903728	  SUCCESS: Using cached data for ['police reform']
+2025-09-21 13:00:47.979117	  CACHE HIT: Loading from cache file Cache/cfd4c294384e17076b8a523275ce5886.json
+2025-09-21 13:00:47.979156	  SUCCESS: Using cached data for ['George Floyd protests']

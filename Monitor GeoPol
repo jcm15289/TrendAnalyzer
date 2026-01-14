@@ -1,0 +1,3 @@
+#Running Monitor, use Chromium. Logs saved in MonitorLogs
+cd /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/StockScanMyMac
+MONITOR_URL=http://localhost:9002 npx tsx debug/monitor-console-logs.ts > /tmp/GeoPolMonitorLogs

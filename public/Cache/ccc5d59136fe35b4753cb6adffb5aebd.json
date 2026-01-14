@@ -1,0 +1,1056 @@
+{
+  "success": true,
+  "data": [
+    {
+      "date": "2020-09-20",
+      "Black Lives Matter": 100
+    },
+    {
+      "date": "2020-09-27",
+      "Black Lives Matter": 75
+    },
+    {
+      "date": "2020-10-04",
+      "Black Lives Matter": 60
+    },
+    {
+      "date": "2020-10-11",
+      "Black Lives Matter": 49
+    },
+    {
+      "date": "2020-10-18",
+      "Black Lives Matter": 52
+    },
+    {
+      "date": "2020-10-25",
+      "Black Lives Matter": 54
+    },
+    {
+      "date": "2020-11-01",
+      "Black Lives Matter": 58
+    },
+    {
+      "date": "2020-11-08",
+      "Black Lives Matter": 45
+    },
+    {
+      "date": "2020-11-15",
+      "Black Lives Matter": 39
+    },
+    {
+      "date": "2020-11-22",
+      "Black Lives Matter": 32
+    },
+    {
+      "date": "2020-11-29",
+      "Black Lives Matter": 33
+    },
+    {
+      "date": "2020-12-06",
+      "Black Lives Matter": 39
+    },
+    {
+      "date": "2020-12-13",
+      "Black Lives Matter": 32
+    },
+    {
+      "date": "2020-12-20",
+      "Black Lives Matter": 21
+    },
+    {
+      "date": "2020-12-27",
+      "Black Lives Matter": 27
+    },
+    {
+      "date": "2021-01-03",
+      "Black Lives Matter": 56
+    },
+    {
+      "date": "2021-01-10",
+      "Black Lives Matter": 43
+    },
+    {
+      "date": "2021-01-17",
+      "Black Lives Matter": 37
+    },
+    {
+      "date": "2021-01-24",
+      "Black Lives Matter": 32
+    },
+    {
+      "date": "2021-01-31",
+      "Black Lives Matter": 41
+    },
+    {
+      "date": "2021-02-07",
+      "Black Lives Matter": 30
+    },
+    {
+      "date": "2021-02-14",
+      "Black Lives Matter": 23
+    },
+    {
+      "date": "2021-02-21",
+      "Black Lives Matter": 26
+    },
+    {
+      "date": "2021-02-28",
+      "Black Lives Matter": 24
+    },
+    {
+      "date": "2021-03-07",
+      "Black Lives Matter": 24
+    },
+    {
+      "date": "2021-03-14",
+      "Black Lives Matter": 27
+    },
+    {
+      "date": "2021-03-21",
+      "Black Lives Matter": 22
+    },
+    {
+      "date": "2021-03-28",
+      "Black Lives Matter": 26
+    },
+    {
+      "date": "2021-04-04",
+      "Black Lives Matter": 21
+    },
+    {
+      "date": "2021-04-11",
+      "Black Lives Matter": 40
+    },
+    {
+      "date": "2021-04-18",
+      "Black Lives Matter": 42
+    },
+    {
+      "date": "2021-04-25",
+      "Black Lives Matter": 25
+    },
+    {
+      "date": "2021-05-02",
+      "Black Lives Matter": 23
+    },
+    {
+      "date": "2021-05-09",
+      "Black Lives Matter": 20
+    },
+    {
+      "date": "2021-05-16",
+      "Black Lives Matter": 20
+    },
+    {
+      "date": "2021-05-23",
+      "Black Lives Matter": 34
+    },
+    {
+      "date": "2021-05-30",
+      "Black Lives Matter": 22
+    },
+    {
+      "date": "2021-06-06",
+      "Black Lives Matter": 21
+    },
+    {
+      "date": "2021-06-13",
+      "Black Lives Matter": 21
+    },
+    {
+      "date": "2021-06-20",
+      "Black Lives Matter": 21
+    },
+    {
+      "date": "2021-06-27",
+      "Black Lives Matter": 18
+    },
+    {
+      "date": "2021-07-04",
+      "Black Lives Matter": 17
+    },
+    {
+      "date": "2021-07-11",
+      "Black Lives Matter": 22
+    },
+    {
+      "date": "2021-07-18",
+      "Black Lives Matter": 15
+    },
+    {
+      "date": "2021-07-25",
+      "Black Lives Matter": 14
+    },
+    {
+      "date": "2021-08-01",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2021-08-08",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2021-08-15",
+      "Black Lives Matter": 11
+    },
+    {
+      "date": "2021-08-22",
+      "Black Lives Matter": 11
+    },
+    {
+      "date": "2021-08-29",
+      "Black Lives Matter": 11
+    },
+    {
+      "date": "2021-09-05",
+      "Black Lives Matter": 13
+    },
+    {
+      "date": "2021-09-12",
+      "Black Lives Matter": 13
+    },
+    {
+      "date": "2021-09-19",
+      "Black Lives Matter": 14
+    },
+    {
+      "date": "2021-09-26",
+      "Black Lives Matter": 13
+    },
+    {
+      "date": "2021-10-03",
+      "Black Lives Matter": 13
+    },
+    {
+      "date": "2021-10-10",
+      "Black Lives Matter": 13
+    },
+    {
+      "date": "2021-10-17",
+      "Black Lives Matter": 13
+    },
+    {
+      "date": "2021-10-24",
+      "Black Lives Matter": 17
+    },
+    {
+      "date": "2021-10-31",
+      "Black Lives Matter": 16
+    },
+    {
+      "date": "2021-11-07",
+      "Black Lives Matter": 14
+    },
+    {
+      "date": "2021-11-14",
+      "Black Lives Matter": 16
+    },
+    {
+      "date": "2021-11-21",
+      "Black Lives Matter": 17
+    },
+    {
+      "date": "2021-11-28",
+      "Black Lives Matter": 15
+    },
+    {
+      "date": "2021-12-05",
+      "Black Lives Matter": 14
+    },
+    {
+      "date": "2021-12-12",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2021-12-19",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2021-12-26",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2022-01-02",
+      "Black Lives Matter": 11
+    },
+    {
+      "date": "2022-01-09",
+      "Black Lives Matter": 11
+    },
+    {
+      "date": "2022-01-16",
+      "Black Lives Matter": 11
+    },
+    {
+      "date": "2022-01-23",
+      "Black Lives Matter": 13
+    },
+    {
+      "date": "2022-01-30",
+      "Black Lives Matter": 18
+    },
+    {
+      "date": "2022-02-06",
+      "Black Lives Matter": 18
+    },
+    {
+      "date": "2022-02-13",
+      "Black Lives Matter": 18
+    },
+    {
+      "date": "2022-02-20",
+      "Black Lives Matter": 15
+    },
+    {
+      "date": "2022-02-27",
+      "Black Lives Matter": 13
+    },
+    {
+      "date": "2022-03-06",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2022-03-13",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2022-03-20",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2022-03-27",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2022-04-03",
+      "Black Lives Matter": 23
+    },
+    {
+      "date": "2022-04-10",
+      "Black Lives Matter": 16
+    },
+    {
+      "date": "2022-04-17",
+      "Black Lives Matter": 13
+    },
+    {
+      "date": "2022-04-24",
+      "Black Lives Matter": 13
+    },
+    {
+      "date": "2022-05-01",
+      "Black Lives Matter": 14
+    },
+    {
+      "date": "2022-05-08",
+      "Black Lives Matter": 13
+    },
+    {
+      "date": "2022-05-15",
+      "Black Lives Matter": 16
+    },
+    {
+      "date": "2022-05-22",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2022-05-29",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2022-06-05",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2022-06-12",
+      "Black Lives Matter": 14
+    },
+    {
+      "date": "2022-06-19",
+      "Black Lives Matter": 10
+    },
+    {
+      "date": "2022-06-26",
+      "Black Lives Matter": 10
+    },
+    {
+      "date": "2022-07-03",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2022-07-10",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2022-07-17",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2022-07-24",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2022-07-31",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2022-08-07",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2022-08-14",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2022-08-21",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2022-08-28",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2022-09-04",
+      "Black Lives Matter": 18
+    },
+    {
+      "date": "2022-09-11",
+      "Black Lives Matter": 9
+    },
+    {
+      "date": "2022-09-18",
+      "Black Lives Matter": 9
+    },
+    {
+      "date": "2022-09-25",
+      "Black Lives Matter": 9
+    },
+    {
+      "date": "2022-10-02",
+      "Black Lives Matter": 16
+    },
+    {
+      "date": "2022-10-09",
+      "Black Lives Matter": 17
+    },
+    {
+      "date": "2022-10-16",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2022-10-23",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2022-10-30",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2022-11-06",
+      "Black Lives Matter": 10
+    },
+    {
+      "date": "2022-11-13",
+      "Black Lives Matter": 11
+    },
+    {
+      "date": "2022-11-20",
+      "Black Lives Matter": 10
+    },
+    {
+      "date": "2022-11-27",
+      "Black Lives Matter": 10
+    },
+    {
+      "date": "2022-12-04",
+      "Black Lives Matter": 10
+    },
+    {
+      "date": "2022-12-11",
+      "Black Lives Matter": 9
+    },
+    {
+      "date": "2022-12-18",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2022-12-25",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2023-01-01",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2023-01-08",
+      "Black Lives Matter": 11
+    },
+    {
+      "date": "2023-01-15",
+      "Black Lives Matter": 10
+    },
+    {
+      "date": "2023-01-22",
+      "Black Lives Matter": 11
+    },
+    {
+      "date": "2023-01-29",
+      "Black Lives Matter": 14
+    },
+    {
+      "date": "2023-02-05",
+      "Black Lives Matter": 11
+    },
+    {
+      "date": "2023-02-12",
+      "Black Lives Matter": 11
+    },
+    {
+      "date": "2023-02-19",
+      "Black Lives Matter": 10
+    },
+    {
+      "date": "2023-02-26",
+      "Black Lives Matter": 10
+    },
+    {
+      "date": "2023-03-05",
+      "Black Lives Matter": 9
+    },
+    {
+      "date": "2023-03-12",
+      "Black Lives Matter": 9
+    },
+    {
+      "date": "2023-03-19",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2023-03-26",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2023-04-02",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2023-04-09",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2023-04-16",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2023-04-23",
+      "Black Lives Matter": 9
+    },
+    {
+      "date": "2023-04-30",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2023-05-07",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2023-05-14",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2023-05-21",
+      "Black Lives Matter": 12
+    },
+    {
+      "date": "2023-05-28",
+      "Black Lives Matter": 9
+    },
+    {
+      "date": "2023-06-04",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2023-06-11",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2023-06-18",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2023-06-25",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2023-07-02",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2023-07-09",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2023-07-16",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2023-07-23",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2023-07-30",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2023-08-06",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2023-08-13",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2023-08-20",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2023-08-27",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2023-09-03",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2023-09-10",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2023-09-17",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2023-09-24",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2023-10-01",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2023-10-08",
+      "Black Lives Matter": 15
+    },
+    {
+      "date": "2023-10-15",
+      "Black Lives Matter": 9
+    },
+    {
+      "date": "2023-10-22",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2023-10-29",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2023-11-05",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2023-11-12",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2023-11-19",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2023-11-26",
+      "Black Lives Matter": 9
+    },
+    {
+      "date": "2023-12-03",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2023-12-10",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2023-12-17",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2023-12-24",
+      "Black Lives Matter": 4
+    },
+    {
+      "date": "2023-12-31",
+      "Black Lives Matter": 4
+    },
+    {
+      "date": "2024-01-07",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2024-01-14",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2024-01-21",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2024-01-28",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-02-04",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2024-02-11",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-02-18",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-02-25",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-03-03",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-03-10",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-03-17",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-03-24",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2024-03-31",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2024-04-07",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-04-14",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-04-21",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-04-28",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2024-05-05",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-05-12",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-05-19",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-05-26",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2024-06-02",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2024-06-09",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2024-06-16",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2024-06-23",
+      "Black Lives Matter": 4
+    },
+    {
+      "date": "2024-06-30",
+      "Black Lives Matter": 4
+    },
+    {
+      "date": "2024-07-07",
+      "Black Lives Matter": 4
+    },
+    {
+      "date": "2024-07-14",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2024-07-21",
+      "Black Lives Matter": 10
+    },
+    {
+      "date": "2024-07-28",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2024-08-04",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2024-08-11",
+      "Black Lives Matter": 4
+    },
+    {
+      "date": "2024-08-18",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2024-08-25",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2024-09-01",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2024-09-08",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2024-09-15",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2024-09-22",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2024-09-29",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2024-10-06",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2024-10-13",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2024-10-20",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2024-10-27",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-11-03",
+      "Black Lives Matter": 9
+    },
+    {
+      "date": "2024-11-10",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-11-17",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-11-24",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2024-12-01",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2024-12-08",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2024-12-15",
+      "Black Lives Matter": 4
+    },
+    {
+      "date": "2024-12-22",
+      "Black Lives Matter": 3
+    },
+    {
+      "date": "2024-12-29",
+      "Black Lives Matter": 3
+    },
+    {
+      "date": "2025-01-05",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2025-01-12",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2025-01-19",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2025-01-26",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2025-02-02",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2025-02-09",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2025-02-16",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2025-02-23",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2025-03-02",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2025-03-09",
+      "Black Lives Matter": 18
+    },
+    {
+      "date": "2025-03-16",
+      "Black Lives Matter": 8
+    },
+    {
+      "date": "2025-03-23",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2025-03-30",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2025-04-06",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2025-04-13",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2025-04-20",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2025-04-27",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2025-05-04",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2025-05-11",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2025-05-18",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2025-05-25",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2025-06-01",
+      "Black Lives Matter": 6
+    },
+    {
+      "date": "2025-06-08",
+      "Black Lives Matter": 7
+    },
+    {
+      "date": "2025-06-15",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2025-06-22",
+      "Black Lives Matter": 4
+    },
+    {
+      "date": "2025-06-29",
+      "Black Lives Matter": 3
+    },
+    {
+      "date": "2025-07-06",
+      "Black Lives Matter": 4
+    },
+    {
+      "date": "2025-07-13",
+      "Black Lives Matter": 4
+    },
+    {
+      "date": "2025-07-20",
+      "Black Lives Matter": 4
+    },
+    {
+      "date": "2025-07-27",
+      "Black Lives Matter": 4
+    },
+    {
+      "date": "2025-08-03",
+      "Black Lives Matter": 4
+    },
+    {
+      "date": "2025-08-10",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2025-08-17",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2025-08-24",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2025-08-31",
+      "Black Lives Matter": 5
+    },
+    {
+      "date": "2025-09-07",
+      "Black Lives Matter": 14
+    },
+    {
+      "date": "2025-09-14",
+      "Black Lives Matter": 9
+    },
+    {
+      "date": "2025-09-21",
+      "Black Lives Matter": 5
+    }
+  ],
+  "keywords": [
+    "Black Lives Matter"
+  ]
+}

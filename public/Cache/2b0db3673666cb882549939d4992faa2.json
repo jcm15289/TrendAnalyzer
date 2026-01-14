@@ -1,0 +1,1056 @@
+{
+  "success": true,
+  "data": [
+    {
+      "date": "2020-09-20",
+      "election fraud": 1
+    },
+    {
+      "date": "2020-09-27",
+      "election fraud": 1
+    },
+    {
+      "date": "2020-10-04",
+      "election fraud": 1
+    },
+    {
+      "date": "2020-10-11",
+      "election fraud": 1
+    },
+    {
+      "date": "2020-10-18",
+      "election fraud": 1
+    },
+    {
+      "date": "2020-10-25",
+      "election fraud": 1
+    },
+    {
+      "date": "2020-11-01",
+      "election fraud": 100
+    },
+    {
+      "date": "2020-11-08",
+      "election fraud": 79
+    },
+    {
+      "date": "2020-11-15",
+      "election fraud": 30
+    },
+    {
+      "date": "2020-11-22",
+      "election fraud": 15
+    },
+    {
+      "date": "2020-11-29",
+      "election fraud": 25
+    },
+    {
+      "date": "2020-12-06",
+      "election fraud": 19
+    },
+    {
+      "date": "2020-12-13",
+      "election fraud": 11
+    },
+    {
+      "date": "2020-12-20",
+      "election fraud": 9
+    },
+    {
+      "date": "2020-12-27",
+      "election fraud": 9
+    },
+    {
+      "date": "2021-01-03",
+      "election fraud": 21
+    },
+    {
+      "date": "2021-01-10",
+      "election fraud": 13
+    },
+    {
+      "date": "2021-01-17",
+      "election fraud": 7
+    },
+    {
+      "date": "2021-01-24",
+      "election fraud": 3
+    },
+    {
+      "date": "2021-01-31",
+      "election fraud": 5
+    },
+    {
+      "date": "2021-02-07",
+      "election fraud": 5
+    },
+    {
+      "date": "2021-02-14",
+      "election fraud": 3
+    },
+    {
+      "date": "2021-02-21",
+      "election fraud": 2
+    },
+    {
+      "date": "2021-02-28",
+      "election fraud": 2
+    },
+    {
+      "date": "2021-03-07",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-03-14",
+      "election fraud": 2
+    },
+    {
+      "date": "2021-03-21",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-03-28",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-04-04",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-04-11",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-04-18",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-04-25",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-05-02",
+      "election fraud": 2
+    },
+    {
+      "date": "2021-05-09",
+      "election fraud": 2
+    },
+    {
+      "date": "2021-05-16",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-05-23",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-05-30",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-06-06",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-06-13",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-06-20",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-06-27",
+      "election fraud": 2
+    },
+    {
+      "date": "2021-07-04",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-07-11",
+      "election fraud": 3
+    },
+    {
+      "date": "2021-07-18",
+      "election fraud": 2
+    },
+    {
+      "date": "2021-07-25",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-08-01",
+      "election fraud": 2
+    },
+    {
+      "date": "2021-08-08",
+      "election fraud": 2
+    },
+    {
+      "date": "2021-08-15",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-08-22",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-08-29",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-09-05",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-09-12",
+      "election fraud": 2
+    },
+    {
+      "date": "2021-09-19",
+      "election fraud": 2
+    },
+    {
+      "date": "2021-09-26",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-10-03",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-10-10",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-10-17",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-10-24",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-10-31",
+      "election fraud": 2
+    },
+    {
+      "date": "2021-11-07",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-11-14",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-11-21",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-11-28",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-12-05",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-12-12",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-12-19",
+      "election fraud": 1
+    },
+    {
+      "date": "2021-12-26",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-01-02",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-01-09",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-01-16",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-01-23",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-01-30",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-02-06",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-02-13",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-02-20",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-02-27",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-03-06",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-03-13",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-03-20",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-03-27",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-04-03",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-04-10",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-04-17",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-04-24",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-05-01",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-05-08",
+      "election fraud": 2
+    },
+    {
+      "date": "2022-05-15",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-05-22",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-05-29",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-06-05",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-06-12",
+      "election fraud": 2
+    },
+    {
+      "date": "2022-06-19",
+      "election fraud": 2
+    },
+    {
+      "date": "2022-06-26",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-07-03",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-07-10",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-07-17",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-07-24",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-07-31",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-08-07",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-08-14",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-08-21",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-08-28",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-09-04",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-09-11",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-09-18",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-09-25",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-10-02",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-10-09",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-10-16",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-10-23",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-10-30",
+      "election fraud": 2
+    },
+    {
+      "date": "2022-11-06",
+      "election fraud": 8
+    },
+    {
+      "date": "2022-11-13",
+      "election fraud": 3
+    },
+    {
+      "date": "2022-11-20",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-11-27",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-12-04",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-12-11",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-12-18",
+      "election fraud": 1
+    },
+    {
+      "date": "2022-12-25",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-01-01",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-01-08",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-01-15",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-01-22",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-01-29",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-02-05",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-02-12",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-02-19",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-02-26",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-03-05",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-03-12",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-03-19",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-03-26",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-04-02",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-04-09",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-04-16",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-04-23",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-04-30",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-05-07",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-05-14",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-05-21",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-05-28",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-06-04",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-06-11",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-06-18",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-06-25",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-07-02",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-07-09",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-07-16",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-07-23",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-07-30",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-08-06",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-08-13",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-08-20",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-08-27",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-09-03",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-09-10",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-09-17",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-09-24",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-10-01",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-10-08",
+      "election fraud": 0
+    },
+    {
+      "date": "2023-10-15",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-10-22",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-10-29",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-11-05",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-11-12",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-11-19",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-11-26",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-12-03",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-12-10",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-12-17",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-12-24",
+      "election fraud": 1
+    },
+    {
+      "date": "2023-12-31",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-01-07",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-01-14",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-01-21",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-01-28",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-02-04",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-02-11",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-02-18",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-02-25",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-03-03",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-03-10",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-03-17",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-03-24",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-03-31",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-04-07",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-04-14",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-04-21",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-04-28",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-05-05",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-05-12",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-05-19",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-05-26",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-06-02",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-06-09",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-06-16",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-06-23",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-06-30",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-07-07",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-07-14",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-07-21",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-07-28",
+      "election fraud": 2
+    },
+    {
+      "date": "2024-08-04",
+      "election fraud": 2
+    },
+    {
+      "date": "2024-08-11",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-08-18",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-08-25",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-09-01",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-09-08",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-09-15",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-09-22",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-09-29",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-10-06",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-10-13",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-10-20",
+      "election fraud": 2
+    },
+    {
+      "date": "2024-10-27",
+      "election fraud": 4
+    },
+    {
+      "date": "2024-11-03",
+      "election fraud": 12
+    },
+    {
+      "date": "2024-11-10",
+      "election fraud": 7
+    },
+    {
+      "date": "2024-11-17",
+      "election fraud": 2
+    },
+    {
+      "date": "2024-11-24",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-12-01",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-12-08",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-12-15",
+      "election fraud": 1
+    },
+    {
+      "date": "2024-12-22",
+      "election fraud": 0
+    },
+    {
+      "date": "2024-12-29",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-01-05",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-01-12",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-01-19",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-01-26",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-02-02",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-02-09",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-02-16",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-02-23",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-03-02",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-03-09",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-03-16",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-03-23",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-03-30",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-04-06",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-04-13",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-04-20",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-04-27",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-05-04",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-05-11",
+      "election fraud": 0
+    },
+    {
+      "date": "2025-05-18",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-05-25",
+      "election fraud": 0
+    },
+    {
+      "date": "2025-06-01",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-06-08",
+      "election fraud": 2
+    },
+    {
+      "date": "2025-06-15",
+      "election fraud": 2
+    },
+    {
+      "date": "2025-06-22",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-06-29",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-07-06",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-07-13",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-07-20",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-07-27",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-08-03",
+      "election fraud": 2
+    },
+    {
+      "date": "2025-08-10",
+      "election fraud": 3
+    },
+    {
+      "date": "2025-08-17",
+      "election fraud": 3
+    },
+    {
+      "date": "2025-08-24",
+      "election fraud": 2
+    },
+    {
+      "date": "2025-08-31",
+      "election fraud": 2
+    },
+    {
+      "date": "2025-09-07",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-09-14",
+      "election fraud": 1
+    },
+    {
+      "date": "2025-09-21",
+      "election fraud": 0
+    }
+  ],
+  "keywords": [
+    "election fraud"
+  ]
+}

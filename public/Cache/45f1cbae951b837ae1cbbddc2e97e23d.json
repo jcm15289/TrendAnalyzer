@@ -1,0 +1,1056 @@
+{
+  "success": true,
+  "data": [
+    {
+      "date": "2020-09-20",
+      "conservative": 59
+    },
+    {
+      "date": "2020-09-27",
+      "conservative": 59
+    },
+    {
+      "date": "2020-10-04",
+      "conservative": 56
+    },
+    {
+      "date": "2020-10-11",
+      "conservative": 56
+    },
+    {
+      "date": "2020-10-18",
+      "conservative": 58
+    },
+    {
+      "date": "2020-10-25",
+      "conservative": 58
+    },
+    {
+      "date": "2020-11-01",
+      "conservative": 86
+    },
+    {
+      "date": "2020-11-08",
+      "conservative": 68
+    },
+    {
+      "date": "2020-11-15",
+      "conservative": 51
+    },
+    {
+      "date": "2020-11-22",
+      "conservative": 44
+    },
+    {
+      "date": "2020-11-29",
+      "conservative": 45
+    },
+    {
+      "date": "2020-12-06",
+      "conservative": 43
+    },
+    {
+      "date": "2020-12-13",
+      "conservative": 37
+    },
+    {
+      "date": "2020-12-20",
+      "conservative": 33
+    },
+    {
+      "date": "2020-12-27",
+      "conservative": 33
+    },
+    {
+      "date": "2021-01-03",
+      "conservative": 57
+    },
+    {
+      "date": "2021-01-10",
+      "conservative": 62
+    },
+    {
+      "date": "2021-01-17",
+      "conservative": 51
+    },
+    {
+      "date": "2021-01-24",
+      "conservative": 38
+    },
+    {
+      "date": "2021-01-31",
+      "conservative": 37
+    },
+    {
+      "date": "2021-02-07",
+      "conservative": 37
+    },
+    {
+      "date": "2021-02-14",
+      "conservative": 38
+    },
+    {
+      "date": "2021-02-21",
+      "conservative": 37
+    },
+    {
+      "date": "2021-02-28",
+      "conservative": 39
+    },
+    {
+      "date": "2021-03-07",
+      "conservative": 34
+    },
+    {
+      "date": "2021-03-14",
+      "conservative": 34
+    },
+    {
+      "date": "2021-03-21",
+      "conservative": 34
+    },
+    {
+      "date": "2021-03-28",
+      "conservative": 34
+    },
+    {
+      "date": "2021-04-04",
+      "conservative": 33
+    },
+    {
+      "date": "2021-04-11",
+      "conservative": 34
+    },
+    {
+      "date": "2021-04-18",
+      "conservative": 37
+    },
+    {
+      "date": "2021-04-25",
+      "conservative": 37
+    },
+    {
+      "date": "2021-05-02",
+      "conservative": 45
+    },
+    {
+      "date": "2021-05-09",
+      "conservative": 38
+    },
+    {
+      "date": "2021-05-16",
+      "conservative": 33
+    },
+    {
+      "date": "2021-05-23",
+      "conservative": 30
+    },
+    {
+      "date": "2021-05-30",
+      "conservative": 29
+    },
+    {
+      "date": "2021-06-06",
+      "conservative": 29
+    },
+    {
+      "date": "2021-06-13",
+      "conservative": 32
+    },
+    {
+      "date": "2021-06-20",
+      "conservative": 36
+    },
+    {
+      "date": "2021-06-27",
+      "conservative": 34
+    },
+    {
+      "date": "2021-07-04",
+      "conservative": 31
+    },
+    {
+      "date": "2021-07-11",
+      "conservative": 34
+    },
+    {
+      "date": "2021-07-18",
+      "conservative": 32
+    },
+    {
+      "date": "2021-07-25",
+      "conservative": 33
+    },
+    {
+      "date": "2021-08-01",
+      "conservative": 31
+    },
+    {
+      "date": "2021-08-08",
+      "conservative": 34
+    },
+    {
+      "date": "2021-08-15",
+      "conservative": 48
+    },
+    {
+      "date": "2021-08-22",
+      "conservative": 44
+    },
+    {
+      "date": "2021-08-29",
+      "conservative": 45
+    },
+    {
+      "date": "2021-09-05",
+      "conservative": 50
+    },
+    {
+      "date": "2021-09-12",
+      "conservative": 56
+    },
+    {
+      "date": "2021-09-19",
+      "conservative": 59
+    },
+    {
+      "date": "2021-09-26",
+      "conservative": 39
+    },
+    {
+      "date": "2021-10-03",
+      "conservative": 40
+    },
+    {
+      "date": "2021-10-10",
+      "conservative": 35
+    },
+    {
+      "date": "2021-10-17",
+      "conservative": 36
+    },
+    {
+      "date": "2021-10-24",
+      "conservative": 35
+    },
+    {
+      "date": "2021-10-31",
+      "conservative": 36
+    },
+    {
+      "date": "2021-11-07",
+      "conservative": 36
+    },
+    {
+      "date": "2021-11-14",
+      "conservative": 36
+    },
+    {
+      "date": "2021-11-21",
+      "conservative": 32
+    },
+    {
+      "date": "2021-11-28",
+      "conservative": 35
+    },
+    {
+      "date": "2021-12-05",
+      "conservative": 38
+    },
+    {
+      "date": "2021-12-12",
+      "conservative": 37
+    },
+    {
+      "date": "2021-12-19",
+      "conservative": 29
+    },
+    {
+      "date": "2021-12-26",
+      "conservative": 29
+    },
+    {
+      "date": "2022-01-02",
+      "conservative": 32
+    },
+    {
+      "date": "2022-01-09",
+      "conservative": 38
+    },
+    {
+      "date": "2022-01-16",
+      "conservative": 35
+    },
+    {
+      "date": "2022-01-23",
+      "conservative": 46
+    },
+    {
+      "date": "2022-01-30",
+      "conservative": 55
+    },
+    {
+      "date": "2022-02-06",
+      "conservative": 45
+    },
+    {
+      "date": "2022-02-13",
+      "conservative": 42
+    },
+    {
+      "date": "2022-02-20",
+      "conservative": 44
+    },
+    {
+      "date": "2022-02-27",
+      "conservative": 41
+    },
+    {
+      "date": "2022-03-06",
+      "conservative": 40
+    },
+    {
+      "date": "2022-03-13",
+      "conservative": 37
+    },
+    {
+      "date": "2022-03-20",
+      "conservative": 41
+    },
+    {
+      "date": "2022-03-27",
+      "conservative": 42
+    },
+    {
+      "date": "2022-04-03",
+      "conservative": 43
+    },
+    {
+      "date": "2022-04-10",
+      "conservative": 43
+    },
+    {
+      "date": "2022-04-17",
+      "conservative": 42
+    },
+    {
+      "date": "2022-04-24",
+      "conservative": 48
+    },
+    {
+      "date": "2022-05-01",
+      "conservative": 54
+    },
+    {
+      "date": "2022-05-08",
+      "conservative": 45
+    },
+    {
+      "date": "2022-05-15",
+      "conservative": 46
+    },
+    {
+      "date": "2022-05-22",
+      "conservative": 42
+    },
+    {
+      "date": "2022-05-29",
+      "conservative": 40
+    },
+    {
+      "date": "2022-06-05",
+      "conservative": 43
+    },
+    {
+      "date": "2022-06-12",
+      "conservative": 36
+    },
+    {
+      "date": "2022-06-19",
+      "conservative": 42
+    },
+    {
+      "date": "2022-06-26",
+      "conservative": 43
+    },
+    {
+      "date": "2022-07-03",
+      "conservative": 59
+    },
+    {
+      "date": "2022-07-10",
+      "conservative": 71
+    },
+    {
+      "date": "2022-07-17",
+      "conservative": 64
+    },
+    {
+      "date": "2022-07-24",
+      "conservative": 42
+    },
+    {
+      "date": "2022-07-31",
+      "conservative": 38
+    },
+    {
+      "date": "2022-08-07",
+      "conservative": 37
+    },
+    {
+      "date": "2022-08-14",
+      "conservative": 35
+    },
+    {
+      "date": "2022-08-21",
+      "conservative": 34
+    },
+    {
+      "date": "2022-08-28",
+      "conservative": 38
+    },
+    {
+      "date": "2022-09-04",
+      "conservative": 54
+    },
+    {
+      "date": "2022-09-11",
+      "conservative": 45
+    },
+    {
+      "date": "2022-09-18",
+      "conservative": 38
+    },
+    {
+      "date": "2022-09-25",
+      "conservative": 41
+    },
+    {
+      "date": "2022-10-02",
+      "conservative": 49
+    },
+    {
+      "date": "2022-10-09",
+      "conservative": 40
+    },
+    {
+      "date": "2022-10-16",
+      "conservative": 61
+    },
+    {
+      "date": "2022-10-23",
+      "conservative": 58
+    },
+    {
+      "date": "2022-10-30",
+      "conservative": 44
+    },
+    {
+      "date": "2022-11-06",
+      "conservative": 51
+    },
+    {
+      "date": "2022-11-13",
+      "conservative": 40
+    },
+    {
+      "date": "2022-11-20",
+      "conservative": 31
+    },
+    {
+      "date": "2022-11-27",
+      "conservative": 34
+    },
+    {
+      "date": "2022-12-04",
+      "conservative": 37
+    },
+    {
+      "date": "2022-12-11",
+      "conservative": 32
+    },
+    {
+      "date": "2022-12-18",
+      "conservative": 28
+    },
+    {
+      "date": "2022-12-25",
+      "conservative": 25
+    },
+    {
+      "date": "2023-01-01",
+      "conservative": 32
+    },
+    {
+      "date": "2023-01-08",
+      "conservative": 31
+    },
+    {
+      "date": "2023-01-15",
+      "conservative": 32
+    },
+    {
+      "date": "2023-01-22",
+      "conservative": 34
+    },
+    {
+      "date": "2023-01-29",
+      "conservative": 35
+    },
+    {
+      "date": "2023-02-05",
+      "conservative": 36
+    },
+    {
+      "date": "2023-02-12",
+      "conservative": 33
+    },
+    {
+      "date": "2023-02-19",
+      "conservative": 34
+    },
+    {
+      "date": "2023-02-26",
+      "conservative": 36
+    },
+    {
+      "date": "2023-03-05",
+      "conservative": 37
+    },
+    {
+      "date": "2023-03-12",
+      "conservative": 32
+    },
+    {
+      "date": "2023-03-19",
+      "conservative": 37
+    },
+    {
+      "date": "2023-03-26",
+      "conservative": 35
+    },
+    {
+      "date": "2023-04-02",
+      "conservative": 36
+    },
+    {
+      "date": "2023-04-09",
+      "conservative": 36
+    },
+    {
+      "date": "2023-04-16",
+      "conservative": 36
+    },
+    {
+      "date": "2023-04-23",
+      "conservative": 39
+    },
+    {
+      "date": "2023-04-30",
+      "conservative": 41
+    },
+    {
+      "date": "2023-05-07",
+      "conservative": 33
+    },
+    {
+      "date": "2023-05-14",
+      "conservative": 34
+    },
+    {
+      "date": "2023-05-21",
+      "conservative": 33
+    },
+    {
+      "date": "2023-05-28",
+      "conservative": 32
+    },
+    {
+      "date": "2023-06-04",
+      "conservative": 32
+    },
+    {
+      "date": "2023-06-11",
+      "conservative": 32
+    },
+    {
+      "date": "2023-06-18",
+      "conservative": 32
+    },
+    {
+      "date": "2023-06-25",
+      "conservative": 30
+    },
+    {
+      "date": "2023-07-02",
+      "conservative": 29
+    },
+    {
+      "date": "2023-07-09",
+      "conservative": 29
+    },
+    {
+      "date": "2023-07-16",
+      "conservative": 31
+    },
+    {
+      "date": "2023-07-23",
+      "conservative": 31
+    },
+    {
+      "date": "2023-07-30",
+      "conservative": 32
+    },
+    {
+      "date": "2023-08-06",
+      "conservative": 29
+    },
+    {
+      "date": "2023-08-13",
+      "conservative": 31
+    },
+    {
+      "date": "2023-08-20",
+      "conservative": 31
+    },
+    {
+      "date": "2023-08-27",
+      "conservative": 30
+    },
+    {
+      "date": "2023-09-03",
+      "conservative": 33
+    },
+    {
+      "date": "2023-09-10",
+      "conservative": 34
+    },
+    {
+      "date": "2023-09-17",
+      "conservative": 35
+    },
+    {
+      "date": "2023-09-24",
+      "conservative": 38
+    },
+    {
+      "date": "2023-10-01",
+      "conservative": 45
+    },
+    {
+      "date": "2023-10-08",
+      "conservative": 37
+    },
+    {
+      "date": "2023-10-15",
+      "conservative": 36
+    },
+    {
+      "date": "2023-10-22",
+      "conservative": 36
+    },
+    {
+      "date": "2023-10-29",
+      "conservative": 34
+    },
+    {
+      "date": "2023-11-05",
+      "conservative": 38
+    },
+    {
+      "date": "2023-11-12",
+      "conservative": 36
+    },
+    {
+      "date": "2023-11-19",
+      "conservative": 30
+    },
+    {
+      "date": "2023-11-26",
+      "conservative": 34
+    },
+    {
+      "date": "2023-12-03",
+      "conservative": 38
+    },
+    {
+      "date": "2023-12-10",
+      "conservative": 35
+    },
+    {
+      "date": "2023-12-17",
+      "conservative": 30
+    },
+    {
+      "date": "2023-12-24",
+      "conservative": 25
+    },
+    {
+      "date": "2023-12-31",
+      "conservative": 30
+    },
+    {
+      "date": "2024-01-07",
+      "conservative": 32
+    },
+    {
+      "date": "2024-01-14",
+      "conservative": 31
+    },
+    {
+      "date": "2024-01-21",
+      "conservative": 35
+    },
+    {
+      "date": "2024-01-28",
+      "conservative": 36
+    },
+    {
+      "date": "2024-02-04",
+      "conservative": 38
+    },
+    {
+      "date": "2024-02-11",
+      "conservative": 34
+    },
+    {
+      "date": "2024-02-18",
+      "conservative": 37
+    },
+    {
+      "date": "2024-02-25",
+      "conservative": 40
+    },
+    {
+      "date": "2024-03-03",
+      "conservative": 41
+    },
+    {
+      "date": "2024-03-10",
+      "conservative": 36
+    },
+    {
+      "date": "2024-03-17",
+      "conservative": 37
+    },
+    {
+      "date": "2024-03-24",
+      "conservative": 36
+    },
+    {
+      "date": "2024-03-31",
+      "conservative": 33
+    },
+    {
+      "date": "2024-04-07",
+      "conservative": 35
+    },
+    {
+      "date": "2024-04-14",
+      "conservative": 38
+    },
+    {
+      "date": "2024-04-21",
+      "conservative": 34
+    },
+    {
+      "date": "2024-04-28",
+      "conservative": 44
+    },
+    {
+      "date": "2024-05-05",
+      "conservative": 34
+    },
+    {
+      "date": "2024-05-12",
+      "conservative": 33
+    },
+    {
+      "date": "2024-05-19",
+      "conservative": 40
+    },
+    {
+      "date": "2024-05-26",
+      "conservative": 41
+    },
+    {
+      "date": "2024-06-02",
+      "conservative": 43
+    },
+    {
+      "date": "2024-06-09",
+      "conservative": 49
+    },
+    {
+      "date": "2024-06-16",
+      "conservative": 42
+    },
+    {
+      "date": "2024-06-23",
+      "conservative": 43
+    },
+    {
+      "date": "2024-06-30",
+      "conservative": 91
+    },
+    {
+      "date": "2024-07-07",
+      "conservative": 44
+    },
+    {
+      "date": "2024-07-14",
+      "conservative": 50
+    },
+    {
+      "date": "2024-07-21",
+      "conservative": 41
+    },
+    {
+      "date": "2024-07-28",
+      "conservative": 38
+    },
+    {
+      "date": "2024-08-04",
+      "conservative": 36
+    },
+    {
+      "date": "2024-08-11",
+      "conservative": 36
+    },
+    {
+      "date": "2024-08-18",
+      "conservative": 39
+    },
+    {
+      "date": "2024-08-25",
+      "conservative": 35
+    },
+    {
+      "date": "2024-09-01",
+      "conservative": 38
+    },
+    {
+      "date": "2024-09-08",
+      "conservative": 47
+    },
+    {
+      "date": "2024-09-15",
+      "conservative": 44
+    },
+    {
+      "date": "2024-09-22",
+      "conservative": 42
+    },
+    {
+      "date": "2024-09-29",
+      "conservative": 48
+    },
+    {
+      "date": "2024-10-06",
+      "conservative": 48
+    },
+    {
+      "date": "2024-10-13",
+      "conservative": 52
+    },
+    {
+      "date": "2024-10-20",
+      "conservative": 54
+    },
+    {
+      "date": "2024-10-27",
+      "conservative": 64
+    },
+    {
+      "date": "2024-11-03",
+      "conservative": 85
+    },
+    {
+      "date": "2024-11-10",
+      "conservative": 51
+    },
+    {
+      "date": "2024-11-17",
+      "conservative": 41
+    },
+    {
+      "date": "2024-11-24",
+      "conservative": 35
+    },
+    {
+      "date": "2024-12-01",
+      "conservative": 37
+    },
+    {
+      "date": "2024-12-08",
+      "conservative": 36
+    },
+    {
+      "date": "2024-12-15",
+      "conservative": 35
+    },
+    {
+      "date": "2024-12-22",
+      "conservative": 28
+    },
+    {
+      "date": "2024-12-29",
+      "conservative": 30
+    },
+    {
+      "date": "2025-01-05",
+      "conservative": 41
+    },
+    {
+      "date": "2025-01-12",
+      "conservative": 38
+    },
+    {
+      "date": "2025-01-19",
+      "conservative": 45
+    },
+    {
+      "date": "2025-01-26",
+      "conservative": 47
+    },
+    {
+      "date": "2025-02-02",
+      "conservative": 49
+    },
+    {
+      "date": "2025-02-09",
+      "conservative": 46
+    },
+    {
+      "date": "2025-02-16",
+      "conservative": 48
+    },
+    {
+      "date": "2025-02-23",
+      "conservative": 60
+    },
+    {
+      "date": "2025-03-02",
+      "conservative": 49
+    },
+    {
+      "date": "2025-03-09",
+      "conservative": 48
+    },
+    {
+      "date": "2025-03-16",
+      "conservative": 47
+    },
+    {
+      "date": "2025-03-23",
+      "conservative": 57
+    },
+    {
+      "date": "2025-03-30",
+      "conservative": 64
+    },
+    {
+      "date": "2025-04-06",
+      "conservative": 60
+    },
+    {
+      "date": "2025-04-13",
+      "conservative": 61
+    },
+    {
+      "date": "2025-04-20",
+      "conservative": 74
+    },
+    {
+      "date": "2025-04-27",
+      "conservative": 100
+    },
+    {
+      "date": "2025-05-04",
+      "conservative": 87
+    },
+    {
+      "date": "2025-05-11",
+      "conservative": 39
+    },
+    {
+      "date": "2025-05-18",
+      "conservative": 35
+    },
+    {
+      "date": "2025-05-25",
+      "conservative": 35
+    },
+    {
+      "date": "2025-06-01",
+      "conservative": 36
+    },
+    {
+      "date": "2025-06-08",
+      "conservative": 40
+    },
+    {
+      "date": "2025-06-15",
+      "conservative": 40
+    },
+    {
+      "date": "2025-06-22",
+      "conservative": 37
+    },
+    {
+      "date": "2025-06-29",
+      "conservative": 36
+    },
+    {
+      "date": "2025-07-06",
+      "conservative": 35
+    },
+    {
+      "date": "2025-07-13",
+      "conservative": 39
+    },
+    {
+      "date": "2025-07-20",
+      "conservative": 40
+    },
+    {
+      "date": "2025-07-27",
+      "conservative": 39
+    },
+    {
+      "date": "2025-08-03",
+      "conservative": 48
+    },
+    {
+      "date": "2025-08-10",
+      "conservative": 54
+    },
+    {
+      "date": "2025-08-17",
+      "conservative": 49
+    },
+    {
+      "date": "2025-08-24",
+      "conservative": 48
+    },
+    {
+      "date": "2025-08-31",
+      "conservative": 51
+    },
+    {
+      "date": "2025-09-07",
+      "conservative": 92
+    },
+    {
+      "date": "2025-09-14",
+      "conservative": 74
+    },
+    {
+      "date": "2025-09-21",
+      "conservative": 52
+    }
+  ],
+  "keywords": [
+    "conservative"
+  ]
+}

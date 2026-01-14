@@ -1,0 +1,1056 @@
+{
+  "success": true,
+  "data": [
+    {
+      "date": "2020-09-20",
+      "Democrat": 31
+    },
+    {
+      "date": "2020-09-27",
+      "Democrat": 39
+    },
+    {
+      "date": "2020-10-04",
+      "Democrat": 36
+    },
+    {
+      "date": "2020-10-11",
+      "Democrat": 35
+    },
+    {
+      "date": "2020-10-18",
+      "Democrat": 37
+    },
+    {
+      "date": "2020-10-25",
+      "Democrat": 37
+    },
+    {
+      "date": "2020-11-01",
+      "Democrat": 100
+    },
+    {
+      "date": "2020-11-08",
+      "Democrat": 35
+    },
+    {
+      "date": "2020-11-15",
+      "Democrat": 20
+    },
+    {
+      "date": "2020-11-22",
+      "Democrat": 15
+    },
+    {
+      "date": "2020-11-29",
+      "Democrat": 15
+    },
+    {
+      "date": "2020-12-06",
+      "Democrat": 16
+    },
+    {
+      "date": "2020-12-13",
+      "Democrat": 14
+    },
+    {
+      "date": "2020-12-20",
+      "Democrat": 13
+    },
+    {
+      "date": "2020-12-27",
+      "Democrat": 14
+    },
+    {
+      "date": "2021-01-03",
+      "Democrat": 33
+    },
+    {
+      "date": "2021-01-10",
+      "Democrat": 23
+    },
+    {
+      "date": "2021-01-17",
+      "Democrat": 25
+    },
+    {
+      "date": "2021-01-24",
+      "Democrat": 16
+    },
+    {
+      "date": "2021-01-31",
+      "Democrat": 15
+    },
+    {
+      "date": "2021-02-07",
+      "Democrat": 15
+    },
+    {
+      "date": "2021-02-14",
+      "Democrat": 15
+    },
+    {
+      "date": "2021-02-21",
+      "Democrat": 13
+    },
+    {
+      "date": "2021-02-28",
+      "Democrat": 13
+    },
+    {
+      "date": "2021-03-07",
+      "Democrat": 14
+    },
+    {
+      "date": "2021-03-14",
+      "Democrat": 11
+    },
+    {
+      "date": "2021-03-21",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-03-28",
+      "Democrat": 11
+    },
+    {
+      "date": "2021-04-04",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-04-11",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-04-18",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-04-25",
+      "Democrat": 13
+    },
+    {
+      "date": "2021-05-02",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-05-09",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-05-16",
+      "Democrat": 11
+    },
+    {
+      "date": "2021-05-23",
+      "Democrat": 10
+    },
+    {
+      "date": "2021-05-30",
+      "Democrat": 11
+    },
+    {
+      "date": "2021-06-06",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-06-13",
+      "Democrat": 11
+    },
+    {
+      "date": "2021-06-20",
+      "Democrat": 11
+    },
+    {
+      "date": "2021-06-27",
+      "Democrat": 11
+    },
+    {
+      "date": "2021-07-04",
+      "Democrat": 11
+    },
+    {
+      "date": "2021-07-11",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-07-18",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-07-25",
+      "Democrat": 11
+    },
+    {
+      "date": "2021-08-01",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-08-08",
+      "Democrat": 13
+    },
+    {
+      "date": "2021-08-15",
+      "Democrat": 13
+    },
+    {
+      "date": "2021-08-22",
+      "Democrat": 13
+    },
+    {
+      "date": "2021-08-29",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-09-05",
+      "Democrat": 13
+    },
+    {
+      "date": "2021-09-12",
+      "Democrat": 14
+    },
+    {
+      "date": "2021-09-19",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-09-26",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-10-03",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-10-10",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-10-17",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-10-24",
+      "Democrat": 14
+    },
+    {
+      "date": "2021-10-31",
+      "Democrat": 18
+    },
+    {
+      "date": "2021-11-07",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-11-14",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-11-21",
+      "Democrat": 10
+    },
+    {
+      "date": "2021-11-28",
+      "Democrat": 11
+    },
+    {
+      "date": "2021-12-05",
+      "Democrat": 11
+    },
+    {
+      "date": "2021-12-12",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-12-19",
+      "Democrat": 12
+    },
+    {
+      "date": "2021-12-26",
+      "Democrat": 11
+    },
+    {
+      "date": "2022-01-02",
+      "Democrat": 11
+    },
+    {
+      "date": "2022-01-09",
+      "Democrat": 11
+    },
+    {
+      "date": "2022-01-16",
+      "Democrat": 12
+    },
+    {
+      "date": "2022-01-23",
+      "Democrat": 12
+    },
+    {
+      "date": "2022-01-30",
+      "Democrat": 11
+    },
+    {
+      "date": "2022-02-06",
+      "Democrat": 11
+    },
+    {
+      "date": "2022-02-13",
+      "Democrat": 11
+    },
+    {
+      "date": "2022-02-20",
+      "Democrat": 11
+    },
+    {
+      "date": "2022-02-27",
+      "Democrat": 12
+    },
+    {
+      "date": "2022-03-06",
+      "Democrat": 10
+    },
+    {
+      "date": "2022-03-13",
+      "Democrat": 9
+    },
+    {
+      "date": "2022-03-20",
+      "Democrat": 11
+    },
+    {
+      "date": "2022-03-27",
+      "Democrat": 10
+    },
+    {
+      "date": "2022-04-03",
+      "Democrat": 12
+    },
+    {
+      "date": "2022-04-10",
+      "Democrat": 11
+    },
+    {
+      "date": "2022-04-17",
+      "Democrat": 11
+    },
+    {
+      "date": "2022-04-24",
+      "Democrat": 13
+    },
+    {
+      "date": "2022-05-01",
+      "Democrat": 14
+    },
+    {
+      "date": "2022-05-08",
+      "Democrat": 13
+    },
+    {
+      "date": "2022-05-15",
+      "Democrat": 14
+    },
+    {
+      "date": "2022-05-22",
+      "Democrat": 14
+    },
+    {
+      "date": "2022-05-29",
+      "Democrat": 11
+    },
+    {
+      "date": "2022-06-05",
+      "Democrat": 14
+    },
+    {
+      "date": "2022-06-12",
+      "Democrat": 11
+    },
+    {
+      "date": "2022-06-19",
+      "Democrat": 14
+    },
+    {
+      "date": "2022-06-26",
+      "Democrat": 15
+    },
+    {
+      "date": "2022-07-03",
+      "Democrat": 12
+    },
+    {
+      "date": "2022-07-10",
+      "Democrat": 12
+    },
+    {
+      "date": "2022-07-17",
+      "Democrat": 12
+    },
+    {
+      "date": "2022-07-24",
+      "Democrat": 12
+    },
+    {
+      "date": "2022-07-31",
+      "Democrat": 13
+    },
+    {
+      "date": "2022-08-07",
+      "Democrat": 13
+    },
+    {
+      "date": "2022-08-14",
+      "Democrat": 12
+    },
+    {
+      "date": "2022-08-21",
+      "Democrat": 13
+    },
+    {
+      "date": "2022-08-28",
+      "Democrat": 11
+    },
+    {
+      "date": "2022-09-04",
+      "Democrat": 12
+    },
+    {
+      "date": "2022-09-11",
+      "Democrat": 12
+    },
+    {
+      "date": "2022-09-18",
+      "Democrat": 12
+    },
+    {
+      "date": "2022-09-25",
+      "Democrat": 12
+    },
+    {
+      "date": "2022-10-02",
+      "Democrat": 13
+    },
+    {
+      "date": "2022-10-09",
+      "Democrat": 16
+    },
+    {
+      "date": "2022-10-16",
+      "Democrat": 16
+    },
+    {
+      "date": "2022-10-23",
+      "Democrat": 19
+    },
+    {
+      "date": "2022-10-30",
+      "Democrat": 22
+    },
+    {
+      "date": "2022-11-06",
+      "Democrat": 45
+    },
+    {
+      "date": "2022-11-13",
+      "Democrat": 19
+    },
+    {
+      "date": "2022-11-20",
+      "Democrat": 9
+    },
+    {
+      "date": "2022-11-27",
+      "Democrat": 9
+    },
+    {
+      "date": "2022-12-04",
+      "Democrat": 11
+    },
+    {
+      "date": "2022-12-11",
+      "Democrat": 9
+    },
+    {
+      "date": "2022-12-18",
+      "Democrat": 9
+    },
+    {
+      "date": "2022-12-25",
+      "Democrat": 8
+    },
+    {
+      "date": "2023-01-01",
+      "Democrat": 15
+    },
+    {
+      "date": "2023-01-08",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-01-15",
+      "Democrat": 9
+    },
+    {
+      "date": "2023-01-22",
+      "Democrat": 9
+    },
+    {
+      "date": "2023-01-29",
+      "Democrat": 9
+    },
+    {
+      "date": "2023-02-05",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-02-12",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-02-19",
+      "Democrat": 9
+    },
+    {
+      "date": "2023-02-26",
+      "Democrat": 11
+    },
+    {
+      "date": "2023-03-05",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-03-12",
+      "Democrat": 9
+    },
+    {
+      "date": "2023-03-19",
+      "Democrat": 9
+    },
+    {
+      "date": "2023-03-26",
+      "Democrat": 11
+    },
+    {
+      "date": "2023-04-02",
+      "Democrat": 13
+    },
+    {
+      "date": "2023-04-09",
+      "Democrat": 11
+    },
+    {
+      "date": "2023-04-16",
+      "Democrat": 11
+    },
+    {
+      "date": "2023-04-23",
+      "Democrat": 12
+    },
+    {
+      "date": "2023-04-30",
+      "Democrat": 11
+    },
+    {
+      "date": "2023-05-07",
+      "Democrat": 11
+    },
+    {
+      "date": "2023-05-14",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-05-21",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-05-28",
+      "Democrat": 9
+    },
+    {
+      "date": "2023-06-04",
+      "Democrat": 9
+    },
+    {
+      "date": "2023-06-11",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-06-18",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-06-25",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-07-02",
+      "Democrat": 9
+    },
+    {
+      "date": "2023-07-09",
+      "Democrat": 9
+    },
+    {
+      "date": "2023-07-16",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-07-23",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-07-30",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-08-06",
+      "Democrat": 9
+    },
+    {
+      "date": "2023-08-13",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-08-20",
+      "Democrat": 11
+    },
+    {
+      "date": "2023-08-27",
+      "Democrat": 11
+    },
+    {
+      "date": "2023-09-03",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-09-10",
+      "Democrat": 11
+    },
+    {
+      "date": "2023-09-17",
+      "Democrat": 11
+    },
+    {
+      "date": "2023-09-24",
+      "Democrat": 13
+    },
+    {
+      "date": "2023-10-01",
+      "Democrat": 13
+    },
+    {
+      "date": "2023-10-08",
+      "Democrat": 11
+    },
+    {
+      "date": "2023-10-15",
+      "Democrat": 11
+    },
+    {
+      "date": "2023-10-22",
+      "Democrat": 12
+    },
+    {
+      "date": "2023-10-29",
+      "Democrat": 11
+    },
+    {
+      "date": "2023-11-05",
+      "Democrat": 15
+    },
+    {
+      "date": "2023-11-12",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-11-19",
+      "Democrat": 8
+    },
+    {
+      "date": "2023-11-26",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-12-03",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-12-10",
+      "Democrat": 10
+    },
+    {
+      "date": "2023-12-17",
+      "Democrat": 11
+    },
+    {
+      "date": "2023-12-24",
+      "Democrat": 8
+    },
+    {
+      "date": "2023-12-31",
+      "Democrat": 10
+    },
+    {
+      "date": "2024-01-07",
+      "Democrat": 10
+    },
+    {
+      "date": "2024-01-14",
+      "Democrat": 12
+    },
+    {
+      "date": "2024-01-21",
+      "Democrat": 14
+    },
+    {
+      "date": "2024-01-28",
+      "Democrat": 12
+    },
+    {
+      "date": "2024-02-04",
+      "Democrat": 13
+    },
+    {
+      "date": "2024-02-11",
+      "Democrat": 14
+    },
+    {
+      "date": "2024-02-18",
+      "Democrat": 11
+    },
+    {
+      "date": "2024-02-25",
+      "Democrat": 14
+    },
+    {
+      "date": "2024-03-03",
+      "Democrat": 18
+    },
+    {
+      "date": "2024-03-10",
+      "Democrat": 11
+    },
+    {
+      "date": "2024-03-17",
+      "Democrat": 11
+    },
+    {
+      "date": "2024-03-24",
+      "Democrat": 11
+    },
+    {
+      "date": "2024-03-31",
+      "Democrat": 10
+    },
+    {
+      "date": "2024-04-07",
+      "Democrat": 10
+    },
+    {
+      "date": "2024-04-14",
+      "Democrat": 10
+    },
+    {
+      "date": "2024-04-21",
+      "Democrat": 10
+    },
+    {
+      "date": "2024-04-28",
+      "Democrat": 10
+    },
+    {
+      "date": "2024-05-05",
+      "Democrat": 9
+    },
+    {
+      "date": "2024-05-12",
+      "Democrat": 9
+    },
+    {
+      "date": "2024-05-19",
+      "Democrat": 10
+    },
+    {
+      "date": "2024-05-26",
+      "Democrat": 11
+    },
+    {
+      "date": "2024-06-02",
+      "Democrat": 10
+    },
+    {
+      "date": "2024-06-09",
+      "Democrat": 10
+    },
+    {
+      "date": "2024-06-16",
+      "Democrat": 11
+    },
+    {
+      "date": "2024-06-23",
+      "Democrat": 17
+    },
+    {
+      "date": "2024-06-30",
+      "Democrat": 17
+    },
+    {
+      "date": "2024-07-07",
+      "Democrat": 16
+    },
+    {
+      "date": "2024-07-14",
+      "Democrat": 38
+    },
+    {
+      "date": "2024-07-21",
+      "Democrat": 45
+    },
+    {
+      "date": "2024-07-28",
+      "Democrat": 17
+    },
+    {
+      "date": "2024-08-04",
+      "Democrat": 19
+    },
+    {
+      "date": "2024-08-11",
+      "Democrat": 16
+    },
+    {
+      "date": "2024-08-18",
+      "Democrat": 28
+    },
+    {
+      "date": "2024-08-25",
+      "Democrat": 19
+    },
+    {
+      "date": "2024-09-01",
+      "Democrat": 15
+    },
+    {
+      "date": "2024-09-08",
+      "Democrat": 21
+    },
+    {
+      "date": "2024-09-15",
+      "Democrat": 19
+    },
+    {
+      "date": "2024-09-22",
+      "Democrat": 20
+    },
+    {
+      "date": "2024-09-29",
+      "Democrat": 19
+    },
+    {
+      "date": "2024-10-06",
+      "Democrat": 20
+    },
+    {
+      "date": "2024-10-13",
+      "Democrat": 26
+    },
+    {
+      "date": "2024-10-20",
+      "Democrat": 34
+    },
+    {
+      "date": "2024-10-27",
+      "Democrat": 41
+    },
+    {
+      "date": "2024-11-03",
+      "Democrat": 100
+    },
+    {
+      "date": "2024-11-10",
+      "Democrat": 27
+    },
+    {
+      "date": "2024-11-17",
+      "Democrat": 17
+    },
+    {
+      "date": "2024-11-24",
+      "Democrat": 12
+    },
+    {
+      "date": "2024-12-01",
+      "Democrat": 12
+    },
+    {
+      "date": "2024-12-08",
+      "Democrat": 11
+    },
+    {
+      "date": "2024-12-15",
+      "Democrat": 10
+    },
+    {
+      "date": "2024-12-22",
+      "Democrat": 9
+    },
+    {
+      "date": "2024-12-29",
+      "Democrat": 14
+    },
+    {
+      "date": "2025-01-05",
+      "Democrat": 13
+    },
+    {
+      "date": "2025-01-12",
+      "Democrat": 14
+    },
+    {
+      "date": "2025-01-19",
+      "Democrat": 22
+    },
+    {
+      "date": "2025-01-26",
+      "Democrat": 18
+    },
+    {
+      "date": "2025-02-02",
+      "Democrat": 17
+    },
+    {
+      "date": "2025-02-09",
+      "Democrat": 18
+    },
+    {
+      "date": "2025-02-16",
+      "Democrat": 16
+    },
+    {
+      "date": "2025-02-23",
+      "Democrat": 17
+    },
+    {
+      "date": "2025-03-02",
+      "Democrat": 28
+    },
+    {
+      "date": "2025-03-09",
+      "Democrat": 17
+    },
+    {
+      "date": "2025-03-16",
+      "Democrat": 18
+    },
+    {
+      "date": "2025-03-23",
+      "Democrat": 16
+    },
+    {
+      "date": "2025-03-30",
+      "Democrat": 18
+    },
+    {
+      "date": "2025-04-06",
+      "Democrat": 15
+    },
+    {
+      "date": "2025-04-13",
+      "Democrat": 16
+    },
+    {
+      "date": "2025-04-20",
+      "Democrat": 15
+    },
+    {
+      "date": "2025-04-27",
+      "Democrat": 14
+    },
+    {
+      "date": "2025-05-04",
+      "Democrat": 14
+    },
+    {
+      "date": "2025-05-11",
+      "Democrat": 11
+    },
+    {
+      "date": "2025-05-18",
+      "Democrat": 12
+    },
+    {
+      "date": "2025-05-25",
+      "Democrat": 11
+    },
+    {
+      "date": "2025-06-01",
+      "Democrat": 13
+    },
+    {
+      "date": "2025-06-08",
+      "Democrat": 22
+    },
+    {
+      "date": "2025-06-15",
+      "Democrat": 21
+    },
+    {
+      "date": "2025-06-22",
+      "Democrat": 17
+    },
+    {
+      "date": "2025-06-29",
+      "Democrat": 15
+    },
+    {
+      "date": "2025-07-06",
+      "Democrat": 12
+    },
+    {
+      "date": "2025-07-13",
+      "Democrat": 12
+    },
+    {
+      "date": "2025-07-20",
+      "Democrat": 13
+    },
+    {
+      "date": "2025-07-27",
+      "Democrat": 13
+    },
+    {
+      "date": "2025-08-03",
+      "Democrat": 17
+    },
+    {
+      "date": "2025-08-10",
+      "Democrat": 16
+    },
+    {
+      "date": "2025-08-17",
+      "Democrat": 17
+    },
+    {
+      "date": "2025-08-24",
+      "Democrat": 17
+    },
+    {
+      "date": "2025-08-31",
+      "Democrat": 15
+    },
+    {
+      "date": "2025-09-07",
+      "Democrat": 42
+    },
+    {
+      "date": "2025-09-14",
+      "Democrat": 29
+    },
+    {
+      "date": "2025-09-21",
+      "Democrat": 36
+    }
+  ],
+  "keywords": [
+    "Democrat"
+  ]
+}

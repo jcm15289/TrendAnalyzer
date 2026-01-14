@@ -1,0 +1,199 @@
+#!/bin/bash
+
+# UploadTrendsCache - Upload cache files from Cache_TrendKeywords to Redis
+# 
+# Usage: ./UploadTrendsCache [cache_directory] [server_url]
+# 
+# Examples:
+#   ./UploadTrendsCache
+#   ./UploadTrendsCache Cache_TrendKeywords
+#   ./UploadTrendsCache Cache_TrendKeywords http://localhost:9002
+
+set -e
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
+BRIGHT='\033[1m'
+NC='\033[0m' # No Color
+
+# Configuration
+DEFAULT_CACHE_DIR="../Cache_TrendKeywords"
+DEFAULT_SERVER="https://geopol-gtrends.vercel.app"
+DEFAULT_FOLDER="cache-trends"
+DEFAULT_TTL="604800"  # 7 days
+
+# Function to print colored output
+print_color() {
+    echo -e "${2}${1}${NC}"
+}
+
+# Function to show help
+show_help() {
+    print_color "Upload Trends Cache to Redis" "$BRIGHT"
+    echo ""
+    echo "Usage:"
+    echo "  ./UploadTrendsCache [cache_directory] [server_url]"
+    echo ""
+    echo "Arguments:"
+    echo "  cache_directory  Directory containing cache files (default: ../Cache_TrendKeywords)"
+    echo "  server_url       Server URL (default: https://geopol-gtrends.vercel.app)"
+    echo ""
+    echo "Examples:"
+    echo "  ./UploadTrendsCache"
+    echo "  ./UploadTrendsCache ../Cache_TrendKeywords"
+    echo "  ./UploadTrendsCache ../Cache_TrendKeywords https://geopol-gtrends.vercel.app"
+    echo ""
+    echo "This script will:"
+    echo "  1. Find all files in the cache directory"
+    echo "  2. Upload each file to Redis with timestamps"
+    echo "  3. Include file creation, modification, and upload times"
+    echo ""
+}
+
+# Function to format file size
+format_size() {
+    local bytes=$1
+    if [ $bytes -eq 0 ]; then
+        echo "0 Bytes"
+    elif [ $bytes -lt 1024 ]; then
+        echo "${bytes} Bytes"
+    elif [ $bytes -lt 1048576 ]; then
+        echo "$(echo "scale=2; $bytes/1024" | bc) KB"
+    elif [ $bytes -lt 1073741824 ]; then
+        echo "$(echo "scale=2; $bytes/1048576" | bc) MB"
+    else
+        echo "$(echo "scale=2; $bytes/1073741824" | bc) GB"
+    fi
+}
+
+# Function to upload a single file
+upload_file() {
+    local file_path="$1"
+    local server="$2"
+    local folder="$3"
+    local ttl="$4"
+    
+    local filename=$(basename "$file_path")
+    local keyword=$(echo "$filename" | sed 's/Trends\.//' | tr '[:upper:]' '[:lower:]')
+    local file_size=$(stat -f%z "$file_path" 2>/dev/null || stat -c%s "$file_path" 2>/dev/null)
+    local file_created=$(stat -f%B "$file_path" 2>/dev/null || stat -c%W "$file_path" 2>/dev/null)
+    local file_modified=$(stat -f%m "$file_path" 2>/dev/null || stat -c%Y "$file_path" 2>/dev/null)
+    local upload_time=$(date +%s)
+    
+    print_color "📤 Uploading: $filename (keyword: $keyword)" "$BLUE"
+    echo "   Size: $(format_size $file_size)"
+    echo "   Created: $(date -r $file_created 2>/dev/null || date -d @$file_created 2>/dev/null || echo 'Unknown')"
+    echo "   Modified: $(date -r $file_modified 2>/dev/null || date -d @$file_modified 2>/dev/null || echo 'Unknown')"
+    echo "   Upload: $(date -r $upload_time 2>/dev/null || date -d @$upload_time 2>/dev/null || echo 'Unknown')"
+    
+    # Upload as file with metadata
+    local response=$(curl -s -X POST "$server/api/redis/upload" \
+        -F "file=@$file_path" \
+        -F "key=$filename" \
+        -F "folder=$folder" \
+        -F "ttl=$ttl" \
+        -F "metadata={\"fileCreated\":\"$(date -r $file_created -u +%Y-%m-%dT%H:%M:%S.000Z 2>/dev/null || date -d @$file_created -u +%Y-%m-%dT%H:%M:%S.000Z 2>/dev/null || echo 'Unknown')\",\"fileModified\":\"$(date -r $file_modified -u +%Y-%m-%dT%H:%M:%S.000Z 2>/dev/null || date -d @$file_modified -u +%Y-%m-%dT%H:%M:%S.000Z 2>/dev/null || echo 'Unknown')\",\"uploadTime\":\"$(date -r $upload_time -u +%Y-%m-%dT%H:%M:%S.000Z 2>/dev/null || date -d @$upload_time -u +%Y-%m-%dT%H:%M:%S.000Z 2>/dev/null || echo 'Unknown')\",\"originalPath\":\"$file_path\",\"fileSize\":$file_size}")
+    
+    if echo "$response" | grep -q '"success":true'; then
+        print_color "✅ Upload successful!" "$GREEN"
+        return 0
+    else
+        print_color "❌ Upload failed" "$RED"
+        echo "Response: $response"
+        return 1
+    fi
+}
+
+# Check if help is requested
+if [ "$1" = "--help" ] || [ "$1" = "-h" ]; then
+    show_help
+    exit 0
+fi
+
+# Parse arguments
+CACHE_DIR="${1:-$DEFAULT_CACHE_DIR}"
+SERVER="${2:-$DEFAULT_SERVER}"
+
+print_color "🚀 Upload Trends Cache to Redis" "$BRIGHT"
+echo ""
+echo "Cache Directory: $CACHE_DIR"
+echo "Server: $SERVER"
+echo "Folder: $DEFAULT_FOLDER"
+echo "TTL: $DEFAULT_TTL seconds (7 days)"
+echo ""
+
+# Check if cache directory exists
+if [ ! -d "$CACHE_DIR" ]; then
+    print_color "❌ Error: Cache directory not found: $CACHE_DIR" "$RED"
+    echo ""
+    echo "Available directories:"
+    ls -la .. | grep "^d" | grep -E "(Cache|cache)" || echo "No cache directories found"
+    exit 1
+fi
+
+# Test server connection
+print_color "🔍 Testing server connection..." "$YELLOW"
+if curl -s "$SERVER/api/redis/list?folder=test&pattern=*" > /dev/null; then
+    print_color "✅ Server is running" "$GREEN"
+else
+    print_color "❌ Cannot connect to server" "$RED"
+    echo "   Make sure the development server is running: npm run dev"
+    exit 1
+fi
+
+echo ""
+
+# Find and upload all cache files
+cache_files=$(find "$CACHE_DIR" -type f -name "Trends.*" | sort)
+file_count=$(echo "$cache_files" | wc -l | tr -d ' ')
+
+if [ "$file_count" -eq 0 ]; then
+    print_color "⚠️  No cache files found in $CACHE_DIR" "$YELLOW"
+    echo "   Looking for files matching pattern: Trends.*"
+    exit 0
+fi
+
+print_color "📋 Found $file_count cache files to upload" "$CYAN"
+echo ""
+
+success_count=0
+failed_count=0
+
+# Upload each file
+while IFS= read -r file_path; do
+    if [ -n "$file_path" ]; then
+        if upload_file "$file_path" "$SERVER" "$DEFAULT_FOLDER" "$DEFAULT_TTL"; then
+            ((success_count++))
+        else
+            ((failed_count++))
+        fi
+        echo ""
+    fi
+done <<< "$cache_files"
+
+# Summary
+echo ""
+print_color "📊 Upload Summary" "$BRIGHT"
+echo "   Total files: $file_count"
+print_color "   Successful: $success_count" "$GREEN"
+if [ $failed_count -gt 0 ]; then
+    print_color "   Failed: $failed_count" "$RED"
+fi
+
+if [ $success_count -eq $file_count ]; then
+    print_color "🎉 All files uploaded successfully!" "$GREEN"
+    echo ""
+    print_color "📋 Listing uploaded files in Redis..." "$YELLOW"
+    list_response=$(curl -s "$SERVER/api/redis/list?folder=$DEFAULT_FOLDER&pattern=*")
+    if echo "$list_response" | grep -q '"success":true'; then
+        count=$(echo "$list_response" | grep -o '"count":[0-9]*' | cut -d':' -f2)
+        print_color "✅ Found $count files in Redis folder '$DEFAULT_FOLDER'" "$GREEN"
+    fi
+else
+    print_color "⚠️  Some uploads failed. Check the errors above." "$YELLOW"
+    exit 1
+fi

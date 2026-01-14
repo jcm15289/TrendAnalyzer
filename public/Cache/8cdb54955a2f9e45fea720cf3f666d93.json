@@ -1,0 +1,1056 @@
+{
+  "success": true,
+  "data": [
+    {
+      "date": "2020-09-20",
+      "progressive": 79
+    },
+    {
+      "date": "2020-09-27",
+      "progressive": 77
+    },
+    {
+      "date": "2020-10-04",
+      "progressive": 75
+    },
+    {
+      "date": "2020-10-11",
+      "progressive": 71
+    },
+    {
+      "date": "2020-10-18",
+      "progressive": 74
+    },
+    {
+      "date": "2020-10-25",
+      "progressive": 72
+    },
+    {
+      "date": "2020-11-01",
+      "progressive": 68
+    },
+    {
+      "date": "2020-11-08",
+      "progressive": 70
+    },
+    {
+      "date": "2020-11-15",
+      "progressive": 68
+    },
+    {
+      "date": "2020-11-22",
+      "progressive": 57
+    },
+    {
+      "date": "2020-11-29",
+      "progressive": 69
+    },
+    {
+      "date": "2020-12-06",
+      "progressive": 66
+    },
+    {
+      "date": "2020-12-13",
+      "progressive": 61
+    },
+    {
+      "date": "2020-12-20",
+      "progressive": 52
+    },
+    {
+      "date": "2020-12-27",
+      "progressive": 59
+    },
+    {
+      "date": "2021-01-03",
+      "progressive": 70
+    },
+    {
+      "date": "2021-01-10",
+      "progressive": 74
+    },
+    {
+      "date": "2021-01-17",
+      "progressive": 70
+    },
+    {
+      "date": "2021-01-24",
+      "progressive": 70
+    },
+    {
+      "date": "2021-01-31",
+      "progressive": 70
+    },
+    {
+      "date": "2021-02-07",
+      "progressive": 68
+    },
+    {
+      "date": "2021-02-14",
+      "progressive": 65
+    },
+    {
+      "date": "2021-02-21",
+      "progressive": 73
+    },
+    {
+      "date": "2021-02-28",
+      "progressive": 76
+    },
+    {
+      "date": "2021-03-07",
+      "progressive": 67
+    },
+    {
+      "date": "2021-03-14",
+      "progressive": 73
+    },
+    {
+      "date": "2021-03-21",
+      "progressive": 72
+    },
+    {
+      "date": "2021-03-28",
+      "progressive": 67
+    },
+    {
+      "date": "2021-04-04",
+      "progressive": 70
+    },
+    {
+      "date": "2021-04-11",
+      "progressive": 69
+    },
+    {
+      "date": "2021-04-18",
+      "progressive": 68
+    },
+    {
+      "date": "2021-04-25",
+      "progressive": 71
+    },
+    {
+      "date": "2021-05-02",
+      "progressive": 66
+    },
+    {
+      "date": "2021-05-09",
+      "progressive": 64
+    },
+    {
+      "date": "2021-05-16",
+      "progressive": 66
+    },
+    {
+      "date": "2021-05-23",
+      "progressive": 72
+    },
+    {
+      "date": "2021-05-30",
+      "progressive": 65
+    },
+    {
+      "date": "2021-06-06",
+      "progressive": 73
+    },
+    {
+      "date": "2021-06-13",
+      "progressive": 69
+    },
+    {
+      "date": "2021-06-20",
+      "progressive": 70
+    },
+    {
+      "date": "2021-06-27",
+      "progressive": 70
+    },
+    {
+      "date": "2021-07-04",
+      "progressive": 65
+    },
+    {
+      "date": "2021-07-11",
+      "progressive": 67
+    },
+    {
+      "date": "2021-07-18",
+      "progressive": 67
+    },
+    {
+      "date": "2021-07-25",
+      "progressive": 63
+    },
+    {
+      "date": "2021-08-01",
+      "progressive": 64
+    },
+    {
+      "date": "2021-08-08",
+      "progressive": 63
+    },
+    {
+      "date": "2021-08-15",
+      "progressive": 62
+    },
+    {
+      "date": "2021-08-22",
+      "progressive": 66
+    },
+    {
+      "date": "2021-08-29",
+      "progressive": 67
+    },
+    {
+      "date": "2021-09-05",
+      "progressive": 65
+    },
+    {
+      "date": "2021-09-12",
+      "progressive": 71
+    },
+    {
+      "date": "2021-09-19",
+      "progressive": 70
+    },
+    {
+      "date": "2021-09-26",
+      "progressive": 70
+    },
+    {
+      "date": "2021-10-03",
+      "progressive": 71
+    },
+    {
+      "date": "2021-10-10",
+      "progressive": 67
+    },
+    {
+      "date": "2021-10-17",
+      "progressive": 70
+    },
+    {
+      "date": "2021-10-24",
+      "progressive": 73
+    },
+    {
+      "date": "2021-10-31",
+      "progressive": 73
+    },
+    {
+      "date": "2021-11-07",
+      "progressive": 71
+    },
+    {
+      "date": "2021-11-14",
+      "progressive": 70
+    },
+    {
+      "date": "2021-11-21",
+      "progressive": 57
+    },
+    {
+      "date": "2021-11-28",
+      "progressive": 73
+    },
+    {
+      "date": "2021-12-05",
+      "progressive": 71
+    },
+    {
+      "date": "2021-12-12",
+      "progressive": 74
+    },
+    {
+      "date": "2021-12-19",
+      "progressive": 58
+    },
+    {
+      "date": "2021-12-26",
+      "progressive": 63
+    },
+    {
+      "date": "2022-01-02",
+      "progressive": 74
+    },
+    {
+      "date": "2022-01-09",
+      "progressive": 73
+    },
+    {
+      "date": "2022-01-16",
+      "progressive": 68
+    },
+    {
+      "date": "2022-01-23",
+      "progressive": 71
+    },
+    {
+      "date": "2022-01-30",
+      "progressive": 75
+    },
+    {
+      "date": "2022-02-06",
+      "progressive": 74
+    },
+    {
+      "date": "2022-02-13",
+      "progressive": 79
+    },
+    {
+      "date": "2022-02-20",
+      "progressive": 76
+    },
+    {
+      "date": "2022-02-27",
+      "progressive": 84
+    },
+    {
+      "date": "2022-03-06",
+      "progressive": 78
+    },
+    {
+      "date": "2022-03-13",
+      "progressive": 80
+    },
+    {
+      "date": "2022-03-20",
+      "progressive": 79
+    },
+    {
+      "date": "2022-03-27",
+      "progressive": 82
+    },
+    {
+      "date": "2022-04-03",
+      "progressive": 77
+    },
+    {
+      "date": "2022-04-10",
+      "progressive": 79
+    },
+    {
+      "date": "2022-04-17",
+      "progressive": 74
+    },
+    {
+      "date": "2022-04-24",
+      "progressive": 76
+    },
+    {
+      "date": "2022-05-01",
+      "progressive": 76
+    },
+    {
+      "date": "2022-05-08",
+      "progressive": 71
+    },
+    {
+      "date": "2022-05-15",
+      "progressive": 71
+    },
+    {
+      "date": "2022-05-22",
+      "progressive": 70
+    },
+    {
+      "date": "2022-05-29",
+      "progressive": 69
+    },
+    {
+      "date": "2022-06-05",
+      "progressive": 69
+    },
+    {
+      "date": "2022-06-12",
+      "progressive": 69
+    },
+    {
+      "date": "2022-06-19",
+      "progressive": 71
+    },
+    {
+      "date": "2022-06-26",
+      "progressive": 73
+    },
+    {
+      "date": "2022-07-03",
+      "progressive": 70
+    },
+    {
+      "date": "2022-07-10",
+      "progressive": 79
+    },
+    {
+      "date": "2022-07-17",
+      "progressive": 72
+    },
+    {
+      "date": "2022-07-24",
+      "progressive": 71
+    },
+    {
+      "date": "2022-07-31",
+      "progressive": 71
+    },
+    {
+      "date": "2022-08-07",
+      "progressive": 68
+    },
+    {
+      "date": "2022-08-14",
+      "progressive": 71
+    },
+    {
+      "date": "2022-08-21",
+      "progressive": 68
+    },
+    {
+      "date": "2022-08-28",
+      "progressive": 72
+    },
+    {
+      "date": "2022-09-04",
+      "progressive": 66
+    },
+    {
+      "date": "2022-09-11",
+      "progressive": 75
+    },
+    {
+      "date": "2022-09-18",
+      "progressive": 75
+    },
+    {
+      "date": "2022-09-25",
+      "progressive": 76
+    },
+    {
+      "date": "2022-10-02",
+      "progressive": 77
+    },
+    {
+      "date": "2022-10-09",
+      "progressive": 73
+    },
+    {
+      "date": "2022-10-16",
+      "progressive": 77
+    },
+    {
+      "date": "2022-10-23",
+      "progressive": 74
+    },
+    {
+      "date": "2022-10-30",
+      "progressive": 79
+    },
+    {
+      "date": "2022-11-06",
+      "progressive": 80
+    },
+    {
+      "date": "2022-11-13",
+      "progressive": 76
+    },
+    {
+      "date": "2022-11-20",
+      "progressive": 59
+    },
+    {
+      "date": "2022-11-27",
+      "progressive": 73
+    },
+    {
+      "date": "2022-12-04",
+      "progressive": 72
+    },
+    {
+      "date": "2022-12-11",
+      "progressive": 74
+    },
+    {
+      "date": "2022-12-18",
+      "progressive": 61
+    },
+    {
+      "date": "2022-12-25",
+      "progressive": 61
+    },
+    {
+      "date": "2023-01-01",
+      "progressive": 69
+    },
+    {
+      "date": "2023-01-08",
+      "progressive": 76
+    },
+    {
+      "date": "2023-01-15",
+      "progressive": 76
+    },
+    {
+      "date": "2023-01-22",
+      "progressive": 75
+    },
+    {
+      "date": "2023-01-29",
+      "progressive": 85
+    },
+    {
+      "date": "2023-02-05",
+      "progressive": 77
+    },
+    {
+      "date": "2023-02-12",
+      "progressive": 77
+    },
+    {
+      "date": "2023-02-19",
+      "progressive": 81
+    },
+    {
+      "date": "2023-02-26",
+      "progressive": 82
+    },
+    {
+      "date": "2023-03-05",
+      "progressive": 77
+    },
+    {
+      "date": "2023-03-12",
+      "progressive": 70
+    },
+    {
+      "date": "2023-03-19",
+      "progressive": 77
+    },
+    {
+      "date": "2023-03-26",
+      "progressive": 78
+    },
+    {
+      "date": "2023-04-02",
+      "progressive": 75
+    },
+    {
+      "date": "2023-04-09",
+      "progressive": 75
+    },
+    {
+      "date": "2023-04-16",
+      "progressive": 74
+    },
+    {
+      "date": "2023-04-23",
+      "progressive": 75
+    },
+    {
+      "date": "2023-04-30",
+      "progressive": 79
+    },
+    {
+      "date": "2023-05-07",
+      "progressive": 72
+    },
+    {
+      "date": "2023-05-14",
+      "progressive": 73
+    },
+    {
+      "date": "2023-05-21",
+      "progressive": 75
+    },
+    {
+      "date": "2023-05-28",
+      "progressive": 72
+    },
+    {
+      "date": "2023-06-04",
+      "progressive": 66
+    },
+    {
+      "date": "2023-06-11",
+      "progressive": 75
+    },
+    {
+      "date": "2023-06-18",
+      "progressive": 69
+    },
+    {
+      "date": "2023-06-25",
+      "progressive": 71
+    },
+    {
+      "date": "2023-07-02",
+      "progressive": 66
+    },
+    {
+      "date": "2023-07-09",
+      "progressive": 71
+    },
+    {
+      "date": "2023-07-16",
+      "progressive": 70
+    },
+    {
+      "date": "2023-07-23",
+      "progressive": 68
+    },
+    {
+      "date": "2023-07-30",
+      "progressive": 70
+    },
+    {
+      "date": "2023-08-06",
+      "progressive": 67
+    },
+    {
+      "date": "2023-08-13",
+      "progressive": 70
+    },
+    {
+      "date": "2023-08-20",
+      "progressive": 67
+    },
+    {
+      "date": "2023-08-27",
+      "progressive": 71
+    },
+    {
+      "date": "2023-09-03",
+      "progressive": 68
+    },
+    {
+      "date": "2023-09-10",
+      "progressive": 74
+    },
+    {
+      "date": "2023-09-17",
+      "progressive": 76
+    },
+    {
+      "date": "2023-09-24",
+      "progressive": 77
+    },
+    {
+      "date": "2023-10-01",
+      "progressive": 76
+    },
+    {
+      "date": "2023-10-08",
+      "progressive": 73
+    },
+    {
+      "date": "2023-10-15",
+      "progressive": 73
+    },
+    {
+      "date": "2023-10-22",
+      "progressive": 72
+    },
+    {
+      "date": "2023-10-29",
+      "progressive": 70
+    },
+    {
+      "date": "2023-11-05",
+      "progressive": 76
+    },
+    {
+      "date": "2023-11-12",
+      "progressive": 77
+    },
+    {
+      "date": "2023-11-19",
+      "progressive": 58
+    },
+    {
+      "date": "2023-11-26",
+      "progressive": 71
+    },
+    {
+      "date": "2023-12-03",
+      "progressive": 76
+    },
+    {
+      "date": "2023-12-10",
+      "progressive": 69
+    },
+    {
+      "date": "2023-12-17",
+      "progressive": 64
+    },
+    {
+      "date": "2023-12-24",
+      "progressive": 55
+    },
+    {
+      "date": "2023-12-31",
+      "progressive": 68
+    },
+    {
+      "date": "2024-01-07",
+      "progressive": 74
+    },
+    {
+      "date": "2024-01-14",
+      "progressive": 71
+    },
+    {
+      "date": "2024-01-21",
+      "progressive": 76
+    },
+    {
+      "date": "2024-01-28",
+      "progressive": 81
+    },
+    {
+      "date": "2024-02-04",
+      "progressive": 80
+    },
+    {
+      "date": "2024-02-11",
+      "progressive": 78
+    },
+    {
+      "date": "2024-02-18",
+      "progressive": 82
+    },
+    {
+      "date": "2024-02-25",
+      "progressive": 90
+    },
+    {
+      "date": "2024-03-03",
+      "progressive": 81
+    },
+    {
+      "date": "2024-03-10",
+      "progressive": 79
+    },
+    {
+      "date": "2024-03-17",
+      "progressive": 83
+    },
+    {
+      "date": "2024-03-24",
+      "progressive": 82
+    },
+    {
+      "date": "2024-03-31",
+      "progressive": 78
+    },
+    {
+      "date": "2024-04-07",
+      "progressive": 82
+    },
+    {
+      "date": "2024-04-14",
+      "progressive": 78
+    },
+    {
+      "date": "2024-04-21",
+      "progressive": 75
+    },
+    {
+      "date": "2024-04-28",
+      "progressive": 78
+    },
+    {
+      "date": "2024-05-05",
+      "progressive": 78
+    },
+    {
+      "date": "2024-05-12",
+      "progressive": 79
+    },
+    {
+      "date": "2024-05-19",
+      "progressive": 76
+    },
+    {
+      "date": "2024-05-26",
+      "progressive": 73
+    },
+    {
+      "date": "2024-06-02",
+      "progressive": 78
+    },
+    {
+      "date": "2024-06-09",
+      "progressive": 77
+    },
+    {
+      "date": "2024-06-16",
+      "progressive": 76
+    },
+    {
+      "date": "2024-06-23",
+      "progressive": 73
+    },
+    {
+      "date": "2024-06-30",
+      "progressive": 70
+    },
+    {
+      "date": "2024-07-07",
+      "progressive": 77
+    },
+    {
+      "date": "2024-07-14",
+      "progressive": 80
+    },
+    {
+      "date": "2024-07-21",
+      "progressive": 77
+    },
+    {
+      "date": "2024-07-28",
+      "progressive": 75
+    },
+    {
+      "date": "2024-08-04",
+      "progressive": 76
+    },
+    {
+      "date": "2024-08-11",
+      "progressive": 78
+    },
+    {
+      "date": "2024-08-18",
+      "progressive": 79
+    },
+    {
+      "date": "2024-08-25",
+      "progressive": 76
+    },
+    {
+      "date": "2024-09-01",
+      "progressive": 72
+    },
+    {
+      "date": "2024-09-08",
+      "progressive": 76
+    },
+    {
+      "date": "2024-09-15",
+      "progressive": 83
+    },
+    {
+      "date": "2024-09-22",
+      "progressive": 81
+    },
+    {
+      "date": "2024-09-29",
+      "progressive": 80
+    },
+    {
+      "date": "2024-10-06",
+      "progressive": 82
+    },
+    {
+      "date": "2024-10-13",
+      "progressive": 80
+    },
+    {
+      "date": "2024-10-20",
+      "progressive": 76
+    },
+    {
+      "date": "2024-10-27",
+      "progressive": 83
+    },
+    {
+      "date": "2024-11-03",
+      "progressive": 85
+    },
+    {
+      "date": "2024-11-10",
+      "progressive": 78
+    },
+    {
+      "date": "2024-11-17",
+      "progressive": 81
+    },
+    {
+      "date": "2024-11-24",
+      "progressive": 65
+    },
+    {
+      "date": "2024-12-01",
+      "progressive": 79
+    },
+    {
+      "date": "2024-12-08",
+      "progressive": 77
+    },
+    {
+      "date": "2024-12-15",
+      "progressive": 76
+    },
+    {
+      "date": "2024-12-22",
+      "progressive": 61
+    },
+    {
+      "date": "2024-12-29",
+      "progressive": 73
+    },
+    {
+      "date": "2025-01-05",
+      "progressive": 78
+    },
+    {
+      "date": "2025-01-12",
+      "progressive": 88
+    },
+    {
+      "date": "2025-01-19",
+      "progressive": 79
+    },
+    {
+      "date": "2025-01-26",
+      "progressive": 82
+    },
+    {
+      "date": "2025-02-02",
+      "progressive": 81
+    },
+    {
+      "date": "2025-02-09",
+      "progressive": 83
+    },
+    {
+      "date": "2025-02-16",
+      "progressive": 83
+    },
+    {
+      "date": "2025-02-23",
+      "progressive": 91
+    },
+    {
+      "date": "2025-03-02",
+      "progressive": 85
+    },
+    {
+      "date": "2025-03-09",
+      "progressive": 86
+    },
+    {
+      "date": "2025-03-16",
+      "progressive": 85
+    },
+    {
+      "date": "2025-03-23",
+      "progressive": 82
+    },
+    {
+      "date": "2025-03-30",
+      "progressive": 87
+    },
+    {
+      "date": "2025-04-06",
+      "progressive": 82
+    },
+    {
+      "date": "2025-04-13",
+      "progressive": 86
+    },
+    {
+      "date": "2025-04-20",
+      "progressive": 83
+    },
+    {
+      "date": "2025-04-27",
+      "progressive": 82
+    },
+    {
+      "date": "2025-05-04",
+      "progressive": 90
+    },
+    {
+      "date": "2025-05-11",
+      "progressive": 81
+    },
+    {
+      "date": "2025-05-18",
+      "progressive": 81
+    },
+    {
+      "date": "2025-05-25",
+      "progressive": 76
+    },
+    {
+      "date": "2025-06-01",
+      "progressive": 83
+    },
+    {
+      "date": "2025-06-08",
+      "progressive": 78
+    },
+    {
+      "date": "2025-06-15",
+      "progressive": 80
+    },
+    {
+      "date": "2025-06-22",
+      "progressive": 87
+    },
+    {
+      "date": "2025-06-29",
+      "progressive": 76
+    },
+    {
+      "date": "2025-07-06",
+      "progressive": 83
+    },
+    {
+      "date": "2025-07-13",
+      "progressive": 88
+    },
+    {
+      "date": "2025-07-20",
+      "progressive": 89
+    },
+    {
+      "date": "2025-07-27",
+      "progressive": 91
+    },
+    {
+      "date": "2025-08-03",
+      "progressive": 100
+    },
+    {
+      "date": "2025-08-10",
+      "progressive": 98
+    },
+    {
+      "date": "2025-08-17",
+      "progressive": 97
+    },
+    {
+      "date": "2025-08-24",
+      "progressive": 99
+    },
+    {
+      "date": "2025-08-31",
+      "progressive": 96
+    },
+    {
+      "date": "2025-09-07",
+      "progressive": 82
+    },
+    {
+      "date": "2025-09-14",
+      "progressive": 84
+    },
+    {
+      "date": "2025-09-21",
+      "progressive": 51
+    }
+  ],
+  "keywords": [
+    "progressive"
+  ]
+}
