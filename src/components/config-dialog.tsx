@@ -13,7 +13,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { 
-  Database, 
   FileText, 
   Clock, 
   Upload, 
@@ -24,7 +23,8 @@ import {
   CheckCircle,
   XCircle,
   AlertCircle,
-  Sparkles
+  Sparkles,
+  Database
 } from 'lucide-react';
 import { type KeywordSet } from '@/lib/keywords';
 
@@ -205,7 +205,7 @@ export function ConfigDialog({
               <RefreshCw className={`h-4 w-4 mr-2 ${loading || loadingAllSyms ? 'animate-spin' : ''}`} />
               Refresh
             </Button>
-            <Button onClick={() => fetchStockData('GOOGL')} disabled={loadingStock} size="sm" variant="outline">
+            <Button onClick={() => fetchStockData('GOOGL')} disabled={loadingStock} size="sm" variant="outline" className="bg-blue-50 hover:bg-blue-100">
               <Database className={`h-4 w-4 mr-2 ${loadingStock ? 'animate-spin' : ''}`} />
               Test Stock API (GOOGL)
             </Button>

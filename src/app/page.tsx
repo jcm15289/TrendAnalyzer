@@ -69,6 +69,9 @@ export default function Home() {
       process.env.NEXT_PUBLIC_BUILD_TIMESTAMP || process.env.BUILD_TIMESTAMP || null
     )
   );
+  const [buildVersion] = useState<string>(
+    () => process.env.NEXT_PUBLIC_BUILD_VERSION || '0.1.0'
+  );
 
   useEffect(() => {
     const globalTimestamp =
@@ -563,7 +566,7 @@ export default function Home() {
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="text-center">
-                    <div className="font-semibold">TrendsAnalyzer v2.1.0 - Admin</div>
+                    <div className="font-semibold">TrendsAnalyzer v{buildVersion}</div>
                     <div className="text-xs text-muted-foreground">
                       {buildTime
                         ? `Build time: ${buildTime.toLocaleString('en-US', {
