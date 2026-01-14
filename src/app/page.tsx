@@ -86,51 +86,53 @@ export default function Home() {
     ? buildTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
     : null;
 
-  // Load all trends from Redis cache-trends:Trends.* instead of keywords
+  // Load all trends from Redis cache-trends:Trends.* (250MB DB) - NO FALLBACKS
   useEffect(() => {
     const loadAllTrends = async () => {
+      console.log('🚦 Page: Loading trends from 250MB Redis DB...');
+      
+      // Clear old localStorage keywords FIRST to prevent loading old geopolitics data
+      localStorage.removeItem('geopol-keywords');
+      console.log('🚦 Page: Cleared old localStorage keywords');
+      
       try {
-        // Fetch all trends from Redis cache
+        // Fetch all trends from Redis cache (250MB DB)
         const response = await fetch('/api/trends/all');
-        if (response.ok) {
-          const result = await response.json();
-          if (result.success && result.trends && result.trends.length > 0) {
-            // Convert trends to keyword sets (each trend becomes a single-keyword set)
-            const keywordSets = result.trends.map((trend: any) => [trend.keyword]);
-            setKeywords(keywordSets);
-            console.log('Loaded trends from Redis cache:', {
-              count: keywordSets.length,
-              keywords: keywordSets.slice(0, 10).map((ks: string[]) => ks[0]),
-            });
-            return;
-          }
-      }
-    } catch (error) {
-        console.error('Could not load trends from Redis:', error);
-      }
-
-      // Fallback: try to load from keywords API if no trends found
-      try {
-        const response = await fetch('/api/keywords/read');
-        if (response.ok) {
-          const result = await response.json();
-          if (result.success) {
-            if (result.keywordSets && result.keywordSets.length > 0) {
-              setKeywords(result.keywordSets);
-              return;
-            } else if (result.keywords && result.keywords.length > 0) {
-              const keywordSets = result.keywords.map((keyword: string) => [keyword]);
-              setKeywords(keywordSets);
-              return;
-            }
-          }
+        
+        if (!response.ok) {
+          console.error('🚦 Page: API response not OK:', response.status, response.statusText);
+          setKeywords([]);
+          return;
+        }
+        
+        const result = await response.json();
+        console.log('🚦 Page: API response:', {
+          success: result.success,
+          trendsCount: result.trends?.length || 0,
+          count: result.count,
+          sample: result.trends?.slice(0, 5).map((t: any) => t.keyword),
+        });
+        
+        if (result.success && result.trends && result.trends.length > 0) {
+          // Convert trends to keyword sets (each trend becomes a single-keyword set)
+          const keywordSets = result.trends.map((trend: any) => [trend.keyword]);
+          setKeywords(keywordSets);
+          
+          console.log('✅ Page: Loaded trends from 250MB Redis cache:', {
+            count: keywordSets.length,
+            keywords: keywordSets.slice(0, 10).map((ks: string[]) => ks[0]),
+          });
+          return;
+        } else {
+          console.warn('🚦 Page: No trends found in API response');
+          setKeywords([]);
+          return;
         }
       } catch (error) {
-        console.log('Could not load from keywords API:', error);
+        console.error('❌ Page: Could not load trends from Redis:', error);
+        setKeywords([]);
+        return;
       }
-
-      // Final fallback: use empty array (no keywords)
-      setKeywords([]);
     };
 
     loadAllTrends();
@@ -216,27 +218,8 @@ export default function Home() {
     }
   }, []);
 
-  // Save keywords to localStorage and sync with Keywords file whenever they change
-  useEffect(() => {
-    if (keywords.length > 0) {
-      localStorage.setItem('geopol-keywords', JSON.stringify(keywords));
-      
-      // Sync with Keywords file
-      const syncWithFile = async () => {
-        try {
-          await fetch('/api/keywords/sync', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ keywords })
-          });
-        } catch (error) {
-          console.error('Failed to sync keywords with file:', error);
-        }
-      };
-      
-      syncWithFile();
-    }
-  }, [keywords]);
+  // Don't save keywords to localStorage or sync - trends are loaded directly from Redis cache
+  // This prevents old geopolitics keywords from being cached
   
   // Update the 'All' list with all keywords whenever keywords change
   useEffect(() => {
