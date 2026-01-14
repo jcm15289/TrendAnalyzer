@@ -67,6 +67,15 @@ export async function getRedisClient(): Promise<RedisClient | null> {
     return null;
   }
 
+  // Log which Redis DB we're connecting to
+  if (redisUrl.includes('redis-14969') || redisUrl.includes(':14969')) {
+    console.log('🚦 Redis: ✅ Connecting to 250MB Redis DB (redis-14969)');
+  } else if (redisUrl.includes('redis-18997') || redisUrl.includes(':18997')) {
+    console.error('🚦 Redis: ❌ ERROR - Connecting to 25MB Redis DB (redis-18997) - This should not happen!');
+  } else {
+    console.warn('🚦 Redis: ⚠️ Connecting to unknown Redis instance');
+  }
+
   console.log('🚦 Redis: Creating new client instance');
   isResolvingClient = true;
 

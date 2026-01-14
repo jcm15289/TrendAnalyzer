@@ -5,9 +5,11 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   try {
+    console.log('🚦 All Trends API: Fetching trends from Redis...');
     const redis = await getRedisClient();
 
     if (!redis) {
+      console.error('🚦 All Trends API: Redis connection unavailable');
       return NextResponse.json(
         {
           success: false,
@@ -18,6 +20,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get all keys matching cache-trends:Trends.*
+    console.log('🚦 All Trends API: Querying Redis for keys matching "cache-trends:Trends.*"...');
     const keys = await redis.keys('cache-trends:Trends.*');
     
     // Filter out metadata keys (those ending with :metadata) and ensure we only get trend data keys
