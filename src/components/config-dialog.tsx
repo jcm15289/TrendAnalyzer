@@ -55,6 +55,15 @@ interface ConfigDialogProps {
   onRemoveKeyword: (keywordSet: KeywordSet) => void;
 }
 
+interface AllSymsData {
+  key: string;
+  content: string;
+  lines: string[];
+  lineCount: number;
+  size: number;
+  metadata: any;
+}
+
 export function ConfigDialog({ 
   open, 
   onOpenChange, 
@@ -64,7 +73,9 @@ export function ConfigDialog({
 }: ConfigDialogProps) {
   const [localFiles, setLocalFiles] = useState<Record<string, LocalFileInfo>>({});
   const [redisData, setRedisData] = useState<Record<string, RedisInfo>>({});
+  const [allSymsData, setAllSymsData] = useState<AllSymsData | null>(null);
   const [loading, setLoading] = useState(false);
+  const [loadingAllSyms, setLoadingAllSyms] = useState(false);
 
   const fetchData = async () => {
     setLoading(true);
@@ -89,9 +100,32 @@ export function ConfigDialog({
     }
   };
 
+  const fetchAllSyms = async () => {
+    setLoadingAllSyms(true);
+    try {
+      const response = await fetch('/api/redis/allsyms');
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setAllSymsData(data);
+        } else {
+          setAllSymsData(null);
+        }
+      } else {
+        setAllSymsData(null);
+      }
+    } catch (error) {
+      console.error('Error fetching ALLSYMS:', error);
+      setAllSymsData(null);
+    } finally {
+      setLoadingAllSyms(false);
+    }
+  };
+
   useEffect(() => {
     if (open) {
       fetchData();
+      fetchAllSyms();
     }
   }, [open]);
 
@@ -117,35 +151,6 @@ export function ConfigDialog({
     return 'Just now';
   };
 
-  const handleRegenerateAll = async () => {
-    setIsRegenerating(true);
-    try {
-      const response = await fetch('/api/regenerate-all-explanations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      
-      if (response.ok) {
-        const result = await response.json();
-        console.log('[ConfigDialog] Regeneration started:', result);
-        alert(`Started regenerating ${result.count} explanations in the background. Check the console for progress.`);
-      } else {
-        const error = await response.json();
-        console.error('[ConfigDialog] Regeneration failed:', error);
-        alert(`Failed to start regeneration: ${error.error || 'Unknown error'}`);
-      }
-    } catch (error) {
-      console.error('[ConfigDialog] Error triggering regeneration:', error);
-      alert('Failed to start regeneration. Check the console for details.');
-    } finally {
-      setIsRegenerating(false);
-    }
-  };
-
-  const allKeywords = new Set([...Object.keys(localFiles), ...Object.keys(redisData)]);
-  const sortedKeywords = Array.from(allKeywords).sort();
 
   const localCount = Object.keys(localFiles).length;
   const redisCount = Object.keys(redisData).length;
@@ -168,8 +173,8 @@ export function ConfigDialog({
           </DialogHeader>
 
           <div className="flex gap-4 mb-4 flex-shrink-0">
-            <Button onClick={fetchData} disabled={loading} size="sm">
-              <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+            <Button onClick={() => { fetchData(); fetchAllSyms(); }} disabled={loading || loadingAllSyms} size="sm">
+              <RefreshCw className={`h-4 w-4 mr-2 ${loading || loadingAllSyms ? 'animate-spin' : ''}`} />
               Refresh
             </Button>
           </div>
@@ -270,122 +275,53 @@ export function ConfigDialog({
                 </CardContent>
               </Card>
 
-              {/* Detailed Comparison */}
+              {/* ALLSYMS File */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Database className="h-4 w-4" />
-                    Cache Status Details
+                    <FileText className="h-4 w-4" />
+                    ALLSYMS File
                   </CardTitle>
                   <CardDescription>
-                    Detailed comparison between local files and Redis data
+                    Financial scan symbols file from Redis
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
-                    {sortedKeywords.map((keyword) => {
-                      const local = localFiles[keyword];
-                      const redis = redisData[keyword];
-                      
-                      return (
-                        <div key={keyword} className="border rounded-lg p-4">
-                          <div className="flex items-center justify-between mb-3">
-                            <h4 className="font-medium text-lg">{keyword.toUpperCase()}</h4>
-                            <div className="flex gap-2">
-                              {local && redis ? (
-                                <Badge variant="default" className="bg-green-100 text-green-800">
-                                  <CheckCircle className="h-3 w-3 mr-1" />
-                                  Synced
-                                </Badge>
-                              ) : local ? (
-                                <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-                                  <FileText className="h-3 w-3 mr-1" />
-                                  Local Only
-                                </Badge>
-                              ) : redis ? (
-                                <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                                  <Database className="h-3 w-3 mr-1" />
-                                  Redis Only
-                                </Badge>
-                              ) : null}
-                            </div>
-                          </div>
-
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {/* Local File Info */}
-                            <div className="space-y-2">
-                              <h5 className="font-medium text-sm flex items-center gap-2">
-                                <FileText className="h-4 w-4" />
-                                Local File
-                              </h5>
-                              {local ? (
-                                <div className="space-y-1 text-sm">
-                                  <p><span className="font-medium">File:</span> {local.filename}</p>
-                                  <p><span className="font-medium">Size:</span> {formatFileSize(local.size)}</p>
-                                  <p><span className="font-medium">Created:</span> {new Date(local.created).toLocaleString()}</p>
-                                  <p><span className="font-medium">Modified:</span> {new Date(local.modified).toLocaleString()}</p>
-                                  <p className="text-muted-foreground">({formatTimeAgo(local.modified)})</p>
-                                </div>
-                              ) : (
-                                <p className="text-muted-foreground text-sm">No local file found</p>
-                              )}
-                            </div>
-
-                            {/* Redis Info */}
-                            <div className="space-y-2">
-                              <h5 className="font-medium text-sm flex items-center gap-2">
-                                <Database className="h-4 w-4" />
-                                Redis Data
-                              </h5>
-                              {redis ? (
-                                <div className="space-y-1 text-sm">
-                                  <p><span className="font-medium">Key:</span> {redis.key}</p>
-                                  <p><span className="font-medium">Size:</span> {formatFileSize(redis.size)}</p>
-                                  <p><span className="font-medium">Uploaded:</span> {new Date(redis.uploaded).toLocaleString()}</p>
-                                  <p className="text-muted-foreground">({formatTimeAgo(redis.uploaded)})</p>
-                                </div>
-                              ) : (
-                                <p className="text-muted-foreground text-sm">Not uploaded to Redis</p>
-                              )}
-                            </div>
-                          </div>
-
-                          {/* Time Gap Analysis */}
-                          {local && redis && (
-                            <div className="mt-3 pt-3 border-t">
-                              <div className="flex items-center gap-2 text-sm">
-                                <Clock className="h-4 w-4" />
-                                <span className="font-medium">Time Gap:</span>
-                                <span>
-                                  {(() => {
-                                    const fileModified = new Date(local.modified);
-                                    const redisUpload = new Date(redis.uploaded);
-                                    const timeDiff = redisUpload.getTime() - fileModified.getTime();
-                                    const hours = Math.floor(timeDiff / (1000 * 60 * 60));
-                                    const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-                                    const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-                                    return `${hours}h ${minutes}m ${seconds}s`;
-                                  })()}
-                                </span>
-                                <span className="text-muted-foreground">from file modification to upload</span>
-                              </div>
-                              {local.size === redis.size ? (
-                                <div className="flex items-center gap-2 text-sm text-green-600 mt-1">
-                                  <CheckCircle className="h-4 w-4" />
-                                  File sizes match
-                                </div>
-                              ) : (
-                                <div className="flex items-center gap-2 text-sm text-red-600 mt-1">
-                                  <XCircle className="h-4 w-4" />
-                                  File sizes don't match
-                                </div>
-                              )}
-                            </div>
-                          )}
+                  {loadingAllSyms ? (
+                    <div className="flex items-center justify-center py-8">
+                      <RefreshCw className="h-6 w-6 animate-spin text-muted-foreground" />
+                      <span className="ml-2 text-muted-foreground">Loading ALLSYMS...</span>
+                    </div>
+                  ) : allSymsData ? (
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="space-y-1">
+                          <p className="text-sm font-medium">Redis Key: {allSymsData.key}</p>
+                          <p className="text-xs text-muted-foreground">
+                            Size: {formatFileSize(allSymsData.size)} • {allSymsData.lineCount} lines
+                          </p>
                         </div>
-                      );
-                    })}
-                  </div>
+                        <Button onClick={fetchAllSyms} size="sm" variant="outline">
+                          <RefreshCw className="h-4 w-4 mr-2" />
+                          Refresh
+                        </Button>
+                      </div>
+                      <div className="border rounded-lg p-4 bg-muted/50 max-h-[500px] overflow-y-auto">
+                        <div className="font-mono text-xs space-y-1">
+                          {allSymsData.lines.map((line, index) => (
+                            <div key={index} className="hover:bg-background/50 px-2 py-1 rounded">
+                              {line}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <AlertCircle className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                      <p className="text-muted-foreground">ALLSYMS file not found in Redis</p>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
