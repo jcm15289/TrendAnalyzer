@@ -320,7 +320,7 @@ export default function AlexonPage() {
               />
             </div>
             <h1 className={cn("text-2xl font-bold tracking-tight text-blue-600")}>
-              AlexonGeoPolitics
+              TrendsAnalyzer
             </h1>
           </div>
         </header>
@@ -353,14 +353,14 @@ export default function AlexonPage() {
                 target.style.display = 'none';
                 const parent = target.parentElement;
                 if (parent && !parent.textContent) {
-                  parent.textContent = 'AG';
+                  parent.textContent = 'TA';
                   parent.className = 'h-10 w-10 rounded-full border border-gray-300 flex-shrink-0 bg-blue-600 flex items-center justify-center text-white font-bold text-sm';
                 }
               }}
             />
           </div>
           <h1 className={cn("text-2xl font-bold tracking-tight text-blue-600")}>
-            AlexonGeoPolitics
+            TrendsAnalyzer
           </h1>
         </div>
         <div className="flex items-center gap-2">

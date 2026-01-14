@@ -52,7 +52,7 @@ export default function HomeSimple() {
   return (
     <div className="flex min-h-screen w-full flex-col">
       <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b bg-background/80 px-4 backdrop-blur-sm md:px-6">
-        <h1 className="text-2xl font-bold tracking-tight text-primary">GeoPolGTrends</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-primary">TrendsAnalyzer</h1>
         <Button variant="outline" size="sm" onClick={() => setCommandMenuOpen(true)} className="flex items-center gap-2">
           <Command className="h-4 w-4" />
           <span>Actions...</span>

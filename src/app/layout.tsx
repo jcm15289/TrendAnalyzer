@@ -10,7 +10,7 @@ const BUILD_TIMESTAMP =
   new Date().toISOString();
 
 export const metadata: Metadata = {
-  title: 'Geopolitics Observatory',
+  title: 'TrendsAnalyzer',
   description: 'Track and analyze Google Trends for important keywords.',
 };
 

@@ -1,5 +1,5 @@
 {
-  "name": "TrendAnalyzer",
+  "name": "trend-analyzer",
   "framework": "nextjs",
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
