@@ -1,30 +1,28 @@
 # Disable Password Protection on Vercel
 
-To make your site publicly accessible without password protection:
-
-## Steps to Disable Password Protection:
+## Quick Steps:
 
 1. **Go to Vercel Dashboard:**
    - Visit: https://vercel.com/julio-casals-projects/trend-analyzer/settings/deployment-protection
 
-2. **Disable Deployment Protection:**
-   - In the "Deployment Protection" section
-   - Find "Password Protection" or "Vercel Authentication"
-   - Click "Disable" or toggle it off
-   - Save changes
+2. **Disable Password Protection:**
+   - Find the **"Password Protection"** section
+   - Toggle it **OFF**
+   - Click **Save**
 
-3. **Alternative Path:**
-   - Go to: https://vercel.com/julio-casals-projects/trend-analyzer/settings
-   - Look for "Deployment Protection" or "Security" section
-   - Disable any password/Vercel Authentication settings
-
-4. **Verify:**
-   - After disabling, wait a few seconds
+3. **Verify:**
    - Visit: https://trends-analyzer.vercel.app
-   - The site should now be accessible without login
+   - The site should now be accessible without password
 
-## Quick Link:
-**Direct Settings URL:** https://vercel.com/julio-casals-projects/trend-analyzer/settings/deployment-protection
+## Alternative: Direct Link
+
+If the above link doesn't work, try:
+1. Go to: https://vercel.com/dashboard
+2. Click on project: **trend-analyzer**
+3. Go to **Settings** → **Deployment Protection**
+4. Disable **Password Protection**
 
 ## Note:
-Password protection is a Vercel project-level setting and cannot be changed via CLI. It must be disabled through the dashboard.
+
+Password protection is a project-level setting and cannot be disabled via CLI.
+You must use the Vercel dashboard to change this setting.

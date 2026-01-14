@@ -51,52 +51,79 @@ export async function GET(request: NextRequest) {
         const keyword = key.replace('cache-trends:Trends.', '');
         
         let parsedData: any = null;
+        let rawContent: string | null = null;
         const trimmed = redisData.trim();
 
+        // Try to parse as JSON first
         if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
           try {
             parsedData = JSON.parse(redisData);
+            // If JSON, extract content field if present
+            rawContent = typeof parsedData?.content === 'string' ? parsedData.content : null;
           } catch (error) {
             console.warn('🚦 All Trends API: Failed to parse JSON for key', key, error);
-            continue;
+            // Fall through to try as raw base64
           }
-        } else {
-          console.warn('🚦 All Trends API: Redis value is not JSON for key', key);
-          continue;
+        }
+
+        // If not JSON or no content in JSON, treat as raw base64 CSV
+        if (!rawContent && !parsedData) {
+          // Data is likely raw base64-encoded CSV
+          rawContent = trimmed;
         }
 
         // Extract data array
         let dataArray: any[] = [];
         
-        if (Array.isArray(parsedData)) {
-          dataArray = parsedData;
-        } else if (Array.isArray(parsedData.data)) {
-          dataArray = parsedData.data;
-        } else if (parsedData && typeof parsedData === 'object') {
-          const possibleArrayKeys = ['data', 'values', 'timeline', 'timelineData', 'results'];
-          for (const arrayKey of possibleArrayKeys) {
-            if (Array.isArray(parsedData[arrayKey])) {
-              dataArray = parsedData[arrayKey];
-              break;
+        // First try to get data from parsed JSON
+        if (parsedData) {
+          if (Array.isArray(parsedData)) {
+            dataArray = parsedData;
+          } else if (Array.isArray(parsedData.data)) {
+            dataArray = parsedData.data;
+          } else if (parsedData && typeof parsedData === 'object') {
+            const possibleArrayKeys = ['data', 'values', 'timeline', 'timelineData', 'results'];
+            for (const arrayKey of possibleArrayKeys) {
+              if (Array.isArray(parsedData[arrayKey])) {
+                dataArray = parsedData[arrayKey];
+                break;
+              }
             }
           }
         }
 
-        // Handle CSV content if present
-        let rawContent = typeof parsedData?.content === 'string' ? parsedData.content : null;
-        
-        if (rawContent) {
-          const looksBase64 = /^[A-Za-z0-9+/=\s]+$/.test(rawContent);
-          if (looksBase64) {
-            try {
-              rawContent = Buffer.from(rawContent.replace(/\s/g, ''), 'base64').toString('utf-8');
-            } catch (error) {
-              console.warn('🚦 All Trends API: Failed to decode base64 content', error);
-            }
-          }
+        // If no data array yet, try to parse from rawContent (base64 CSV)
+        if (dataArray.length === 0 && rawContent) {
+          // Check if it looks like base64
+          const looksBase64 = /^[A-Za-z0-9+/=\s]+$/.test(rawContent.trim());
           
-          // Parse CSV if we have content
-          if (rawContent && rawContent.includes('\n')) {
+          if (looksBase64 && rawContent.length > 50) {
+            try {
+              // Decode base64 to get CSV content
+              const decodedContent = Buffer.from(rawContent.replace(/\s/g, ''), 'base64').toString('utf-8');
+              
+              // Parse CSV if we have content
+              if (decodedContent && decodedContent.includes('\n')) {
+                const lines = decodedContent.trim().split('\n');
+                if (lines.length > 2) {
+                  dataArray = lines.slice(2).map((line) => {
+                    const values = line.split(/\s+/).filter(v => v.trim());
+                    const row: any = {};
+                    if (values[0]) row.date = values[0];
+                    if (values[1]) {
+                      // Use decoded keyword or original
+                      const decodedKeyword = decodeURIComponent(keyword);
+                      row[decodedKeyword] = parseInt(values[1]) || 0;
+                    }
+                    return row;
+                  }).filter(row => row.date && row[Object.keys(row).find(k => k !== 'date')]);
+                }
+              }
+            } catch (error) {
+              console.warn('🚦 All Trends API: Failed to decode base64 content for key', key, error);
+            }
+          } else if (rawContent.includes('\n')) {
+            // Already decoded CSV, parse directly
             const lines = rawContent.trim().split('\n');
             if (lines.length > 2) {
               dataArray = lines.slice(2).map((line) => {
@@ -104,7 +131,6 @@ export async function GET(request: NextRequest) {
                 const row: any = {};
                 if (values[0]) row.date = values[0];
                 if (values[1]) {
-                  // Use decoded keyword or original
                   const decodedKeyword = decodeURIComponent(keyword);
                   row[decodedKeyword] = parseInt(values[1]) || 0;
                 }
@@ -121,6 +147,12 @@ export async function GET(request: NextRequest) {
             data: dataArray,
             timestamp: parsedData?.metadata?.uploadedAt || parsedData?.timestamp || new Date().toISOString(),
             metadata: parsedData?.metadata,
+          });
+        } else {
+          console.warn('🚦 All Trends API: No data extracted for key', key, {
+            hasParsedData: !!parsedData,
+            hasRawContent: !!rawContent,
+            rawContentLength: rawContent?.length || 0,
           });
         }
       } catch (error) {
