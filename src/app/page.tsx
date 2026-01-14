@@ -14,11 +14,10 @@ import {
   getAllKeywordsFromLists
 } from '@/lib/lists';
 import TrendsCard from '@/components/trends-card';
-import { AddKeywordDialog } from '@/components/add-keyword-dialog';
 import { ConfigDialog } from '@/components/config-dialog';
 import StateOfWorld from '@/components/state-of-world';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, Command, Settings, LayoutGrid, Rows3, List, ChevronDown } from 'lucide-react';
+import { Command, Settings, LayoutGrid, Rows3, List, ChevronDown } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -47,7 +46,6 @@ export default function Home() {
   const [keywords, setKeywords] = useState<KeywordSet[]>([]);
   const [lists, setLists] = useState<KeywordList[]>(DEFAULT_LISTS);
   const [selectedListId, setSelectedListId] = useState<string>('all');
-  const [isAddDialogOpen, setAddDialogOpen] = useState(false);
   const [isConfigDialogOpen, setConfigDialogOpen] = useState(false);
   const [isCommandMenuOpen, setCommandMenuOpen] = useState(false);
   const [layoutMode, setLayoutMode] = useState<'single' | 'multi'>('single');
@@ -88,50 +86,54 @@ export default function Home() {
     ? buildTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
     : null;
 
-  // Load keywords from Keywords file and localStorage on component mount
+  // Load all trends from Redis cache-trends:Trends.* instead of keywords
   useEffect(() => {
-    const loadKeywords = async () => {
+    const loadAllTrends = async () => {
       try {
-        // First try to load from Redis via API
+        // Fetch all trends from Redis cache
+        const response = await fetch('/api/trends/all');
+        if (response.ok) {
+          const result = await response.json();
+          if (result.success && result.trends && result.trends.length > 0) {
+            // Convert trends to keyword sets (each trend becomes a single-keyword set)
+            const keywordSets = result.trends.map((trend: any) => [trend.keyword]);
+            setKeywords(keywordSets);
+            console.log('Loaded trends from Redis cache:', {
+              count: keywordSets.length,
+              keywords: keywordSets.slice(0, 10).map((ks: string[]) => ks[0]),
+            });
+            return;
+          }
+      }
+    } catch (error) {
+        console.error('Could not load trends from Redis:', error);
+      }
+
+      // Fallback: try to load from keywords API if no trends found
+      try {
         const response = await fetch('/api/keywords/read');
         if (response.ok) {
           const result = await response.json();
           if (result.success) {
-            // Prefer keyword sets if available (preserves comparisons)
             if (result.keywordSets && result.keywordSets.length > 0) {
               setKeywords(result.keywordSets);
-                localStorage.setItem('geopol-keywords', JSON.stringify(result.keywordSets));
               return;
-            }
-            // Fall back to individual keywords if no sets
-            else if (result.keywords && result.keywords.length > 0) {
+            } else if (result.keywords && result.keywords.length > 0) {
               const keywordSets = result.keywords.map((keyword: string) => [keyword]);
               setKeywords(keywordSets);
-                localStorage.setItem('geopol-keywords', JSON.stringify(keywordSets));
               return;
             }
           }
         }
       } catch (error) {
-        console.log('Could not load from API, falling back to localStorage:', error);
+        console.log('Could not load from keywords API:', error);
       }
 
-      // Fallback to localStorage
-        const savedKeywords = localStorage.getItem('geopol-keywords');
-        if (savedKeywords) {
-          try {
-            const parsed = JSON.parse(savedKeywords);
-            setKeywords(parsed);
-          } catch (error) {
-            console.error('Error parsing saved keywords:', error);
-        setKeywords(initialKeywords);
-          }
-    } else {
-      setKeywords(initialKeywords);
-      }
+      // Final fallback: use empty array (no keywords)
+      setKeywords([]);
     };
 
-    loadKeywords();
+    loadAllTrends();
 
   // Load layout preference from localStorage
     const savedLayout = localStorage.getItem('geopol-layout-mode');
@@ -299,18 +301,8 @@ export default function Home() {
     );
 
   const handleAddKeyword = (newKeywordSet: KeywordSet, listId?: string) => {
-    const isDuplicate = keywords.some(
-      (set) => JSON.stringify(set.slice().sort()) === JSON.stringify(newKeywordSet.slice().sort())
-    );
-    if (!isDuplicate) {
-      setKeywords((prev) => [newKeywordSet, ...prev]);
-      
-      // If a specific list is provided, add to that list
-      if (listId && listId !== 'all') {
-        setLists(prevLists => addKeywordToList(prevLists, listId, newKeywordSet));
-      }
-    }
-    setAddDialogOpen(false);
+    // Disabled - trends are now loaded automatically from Redis cache
+    console.log('Add keyword disabled - trends are loaded from Redis cache');
   };
 
   const handleRemoveKeyword = (keywordSetToRemove: KeywordSet) => {
@@ -654,11 +646,6 @@ export default function Home() {
                 {layoutMode === 'single' ? 'Switch to grid layout' : 'Switch to single column layout'}
               </TooltipContent>
             </Tooltip>
-                <Button variant="outline" size="sm" onClick={() => setAddDialogOpen(true)} className="flex items-center gap-2">
-                  <PlusCircle className="h-4 w-4" />
-                  <span className="hidden sm:inline">Keywords</span>
-                  <span className="sm:hidden">Keywords</span>
-                </Button>
                 <Button variant="outline" size="sm" onClick={() => setConfigDialogOpen(true)} className="flex items-center gap-2">
                   <Settings className="h-4 w-4" />
                   <span className="hidden sm:inline">Config</span>
@@ -738,17 +725,6 @@ export default function Home() {
         </div>
       </main>
 
-        {/* Floating Action Button - Bottom Right */}
-        <div className="fixed bottom-6 right-6 z-[9999]">
-          <Button
-            size="lg"
-            onClick={() => setAddDialogOpen(true)}
-            className="h-14 w-14 rounded-full shadow-2xl bg-blue-600 hover:bg-blue-700 text-white border-4 border-white"
-            title="Add Keywords"
-          >
-            <PlusCircle className="h-6 w-6" />
-          </Button>
-        </div>
 
       <p className="fixed bottom-4 left-4 text-sm text-muted-foreground">
         Press{' '}
@@ -779,15 +755,6 @@ export default function Home() {
               <CommandItem
                 onSelect={() => {
                   setCommandMenuOpen(false);
-                  setAddDialogOpen(true);
-                }}
-              >
-                <PlusCircle className="mr-2 h-4 w-4" />
-                <span>Add Keywords</span>
-              </CommandItem>
-              <CommandItem
-                onSelect={() => {
-                  setCommandMenuOpen(false);
                   setConfigDialogOpen(true);
                 }}
               >
@@ -798,17 +765,11 @@ export default function Home() {
         </CommandList>
       </CommandDialog>
 
-        <AddKeywordDialog
-          open={isAddDialogOpen}
-          onOpenChange={setAddDialogOpen}
-          onAddKeyword={handleAddKeyword}
-        />
 
         <ConfigDialog
           open={isConfigDialogOpen}
           onOpenChange={setConfigDialogOpen}
           keywords={keywords}
-          onAddKeyword={handleAddKeyword}
           onRemoveKeyword={handleRemoveKeyword}
         />
     </div>
