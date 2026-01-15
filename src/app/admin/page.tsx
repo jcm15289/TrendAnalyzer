@@ -573,7 +573,7 @@ export default function AdminPage() {
                     <h1 className={cn(
                       "text-2xl font-bold tracking-tight leading-none",
                       isLocalhost ? "text-red-600" : "text-primary"
-                    )}>TrendsAnalyzer</h1>
+                    )}>GeoPolGTrends</h1>
                       {buildTimeDisplay && (
                         <span
                           className="text-[11px] font-medium text-muted-foreground leading-none whitespace-nowrap"
@@ -586,7 +586,7 @@ export default function AdminPage() {
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="text-center">
-                    <div className="font-semibold">TrendsAnalyzer v2.1.0 - Admin</div>
+                    <div className="font-semibold">GeoPolGTrends v2.1.0 - Admin</div>
                     <div className="text-xs text-muted-foreground">
                       {buildTime
                         ? `Build time: ${buildTime.toLocaleString('en-US', {
