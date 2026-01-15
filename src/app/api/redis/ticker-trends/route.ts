@@ -107,38 +107,47 @@ export async function GET(request: NextRequest) {
     // This ensures we get at least some data even if keys() fails
     // Updated: 2026-01-15 - Prioritize direct fetching for better reliability
     
-    // Step 1: Try direct key fetching for the requested keys
+    // Step 1: Try direct key fetching for ALL requested keys (not just the first one)
     console.log(`[TickerTrends] Step 1: Trying direct key fetching for ${keys.length} requested keys...`);
     for (const trendKey of keys) {
+      const keyword = trendKey.replace(/^Trends\./, '');
+      const keywordNoSpaces = keyword.replace(/\s+/g, ''); // Remove spaces to match Redis key format
+      
       const possibleKeys = [
-        `cache-trends:${trendKey}`,
+        `cache-trends:${trendKey}`, // e.g., cache-trends:Trends.Googlelogin
+        `cache-trends:Trends.${keywordNoSpaces}`, // e.g., cache-trends:Trends.Googlelogin (no spaces)
+        `cache-trends:Trends.${keywordNoSpaces.toLowerCase()}`, // lowercase
         trendKey,
-        `cache-trends:${trendKey.toLowerCase()}`,
-        trendKey.toLowerCase(),
+        `Trends.${keywordNoSpaces}`,
+        `Trends.${keywordNoSpaces.toLowerCase()}`,
       ];
       
+      let found = false;
       for (const redisKey of possibleKeys) {
         try {
           const rawData = await redis.get(redisKey);
           if (rawData) {
-            console.log(`[TickerTrends] ✅ Found direct key: ${redisKey}`);
-            const keyword = trendKey.replace(/^Trends\./, '');
-            const parsed = parseRedisData(rawData, keyword);
+            console.log(`[TickerTrends] ✅ Found direct key: ${redisKey} for "${keyword}"`);
+            const parsed = parseRedisData(rawData, keyword); // Use original keyword (with spaces) for display
             if (parsed.length > 0) {
               results.push({
-                keyword,
+                keyword, // Use original keyword format (with spaces if it had them)
                 trendKey,
                 found: true,
                 dataPointCount: parsed.length,
                 data: parsed,
                 redisKey,
               });
+              found = true;
               break; // Found it, move to next trend key
             }
           }
         } catch (err) {
           // Try next key format
         }
+      }
+      if (!found) {
+        console.log(`[TickerTrends] ❌ Direct fetch failed for "${keyword}" (tried ${possibleKeys.length} variations)`);
       }
     }
     
@@ -161,25 +170,40 @@ export async function GET(request: NextRequest) {
       console.log(`[TickerTrends] Step 3: Filtering ${trendKeysWithoutMetadata.length} keys (excluding metadata)...`);
       
       // Build a set of requested keywords (without "Trends." prefix) for exact matching
-      const requestedKeywords = new Set(keys.map(k => k.replace(/^Trends\./, '').toLowerCase()));
+      // Remove spaces from requested keywords to match Redis key format (e.g., "Google login" -> "Googlelogin")
+      const requestedKeywords = new Set(
+        keys.map(k => {
+          const keyword = k.replace(/^Trends\./, '');
+          // Remove spaces to match Redis key format
+          return keyword.replace(/\s+/g, '').toLowerCase();
+        })
+      );
+      
+      console.log(`[TickerTrends] Requested keywords (no spaces):`, Array.from(requestedKeywords));
       
       // Also filter keys that start with the base keyword (case-insensitive)
       // This finds related trends like "Googleads", "Googlecloud" when searching for "Google"
-      const baseKeywordLower = baseKeyword.toLowerCase();
+      const baseKeywordLower = baseKeyword.replace(/\s+/g, '').toLowerCase();
       
       matchingKeys = trendKeysWithoutMetadata.filter(k => {
         // Remove prefix to get just the keyword part
         const keyPart = k.replace(/^cache-trends:Trends\./, '').replace(/^Trends\./, '');
         const keyPartLower = keyPart.toLowerCase();
         
-        // Check if this key matches any requested keyword exactly (case-insensitive)
+        // Check if this key matches any requested keyword exactly (case-insensitive, no spaces)
         if (requestedKeywords.has(keyPartLower)) {
+          console.log(`[TickerTrends] ✅ Exact match: "${keyPart}" matches requested keyword`);
           return true;
         }
         
         // Also check if keyword starts with base keyword (e.g., "Googleads" starts with "Google")
         // This finds related trends that weren't explicitly requested
-        return keyPartLower.startsWith(baseKeywordLower);
+        if (keyPartLower.startsWith(baseKeywordLower)) {
+          console.log(`[TickerTrends] ✅ Prefix match: "${keyPart}" starts with "${baseKeyword}"`);
+          return true;
+        }
+        
+        return false;
       });
       
       console.log(`[TickerTrends] Filtered ${matchingKeys.length} keys (requested: ${requestedKeywords.size}, base: "${baseKeyword}"):`, matchingKeys.slice(0, 15));
