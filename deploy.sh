@@ -12,8 +12,8 @@ echo "---"
 
 # Check for changes
 if [ -z "$(git status --porcelain)" ]; then
-    echo "⚠️  No changes to commit"
-    exit 0
+    echo "⚠️  No changes to commit, deploying existing code..."
+    # Continue to deploy even if no changes
 fi
 
 # Stage all changes
@@ -22,7 +22,7 @@ git add -A
 
 # Commit with version and timestamp
 echo "💾 Committing changes..."
-git commit -m "Deploy v$VERSION - $TIMESTAMP: Add stock API button with version tracking"
+git commit -m "Deploy v$VERSION - $TIMESTAMP: ALLSYMS-based ticker trends with multi-line charts" || echo "No changes to commit"
 
 # Push to GitHub
 echo "📤 Pushing to GitHub..."
