@@ -160,20 +160,29 @@ export async function GET(request: NextRequest) {
       const trendKeysWithoutMetadata = allTrendKeys.filter(k => !k.endsWith(':metadata'));
       console.log(`[TickerTrends] Step 3: Filtering ${trendKeysWithoutMetadata.length} keys (excluding metadata)...`);
       
-      // Filter keys that start with the base keyword (case-insensitive)
-      // Extract keyword from Redis key: cache-trends:Trends.Google -> Google
+      // Build a set of requested keywords (without "Trends." prefix) for exact matching
+      const requestedKeywords = new Set(keys.map(k => k.replace(/^Trends\./, '').toLowerCase()));
+      
+      // Also filter keys that start with the base keyword (case-insensitive)
+      // This finds related trends like "Googleads", "Googlecloud" when searching for "Google"
       const baseKeywordLower = baseKeyword.toLowerCase();
+      
       matchingKeys = trendKeysWithoutMetadata.filter(k => {
         // Remove prefix to get just the keyword part
         const keyPart = k.replace(/^cache-trends:Trends\./, '').replace(/^Trends\./, '');
         const keyPartLower = keyPart.toLowerCase();
-        // Check if keyword starts with base keyword (e.g., "Googleads" starts with "Google")
+        
+        // Check if this key matches any requested keyword exactly (case-insensitive)
+        if (requestedKeywords.has(keyPartLower)) {
+          return true;
+        }
+        
+        // Also check if keyword starts with base keyword (e.g., "Googleads" starts with "Google")
+        // This finds related trends that weren't explicitly requested
         return keyPartLower.startsWith(baseKeywordLower);
       });
       
-      console.log(`[TickerTrends] Filtered ${matchingKeys.length} keys starting with "${baseKeyword}":`, matchingKeys.slice(0, 10));
-      
-      console.log(`[TickerTrends] Found ${matchingKeys.length} keys starting with "${baseKeyword}":`, matchingKeys.slice(0, 10));
+      console.log(`[TickerTrends] Filtered ${matchingKeys.length} keys (requested: ${requestedKeywords.size}, base: "${baseKeyword}"):`, matchingKeys.slice(0, 15));
     }
     
     // Process each matching key (avoid duplicates from direct fetch)
@@ -187,18 +196,33 @@ export async function GET(request: NextRequest) {
         try {
           const rawData = await redis.get(redisKey);
           if (rawData) {
-            // Extract the actual keyword from the Redis key
+            // Extract the actual keyword from the Redis key (e.g., "Googleads" from "cache-trends:Trends.Googleads")
             const keyKeyword = redisKey.replace(/^cache-trends:Trends\./, '').replace(/:metadata$/, '');
             const trendKey = `Trends.${keyKeyword}`;
             
-            console.log(`[TickerTrends] Parsing data for key "${redisKey}", keyword: "${keyKeyword}"`);
-            const parsed = parseRedisData(rawData, keyKeyword);
-            console.log(`[TickerTrends] Parsed ${parsed.length} data points for "${keyKeyword}"`);
+            // Try to find the original requested keyword format (with spaces) if it exists
+            // This matches "Googleads" -> "Google ads" or "Googlelogin" -> "Google login"
+            let displayKeyword = keyKeyword;
+            for (const requestedKey of keys) {
+              const requestedKeyword = requestedKey.replace(/^Trends\./, '');
+              // Check if the requested keyword (without spaces) matches the Redis key keyword
+              const requestedKeywordNoSpaces = requestedKeyword.replace(/\s+/g, '').toLowerCase();
+              const keyKeywordLower = keyKeyword.toLowerCase();
+              if (requestedKeywordNoSpaces === keyKeywordLower) {
+                // Use the original requested keyword format (with spaces if it had them)
+                displayKeyword = requestedKeyword;
+                break;
+              }
+            }
+            
+            console.log(`[TickerTrends] Parsing data for key "${redisKey}", keyword: "${keyKeyword}" -> display: "${displayKeyword}"`);
+            const parsed = parseRedisData(rawData, displayKeyword);
+            console.log(`[TickerTrends] Parsed ${parsed.length} data points for "${displayKeyword}"`);
             
             if (parsed.length > 0) {
               // Add as a result
               results.push({
-                keyword: keyKeyword,
+                keyword: displayKeyword, // Use display keyword (with spaces if original had them)
                 trendKey: trendKey,
                 found: true,
                 dataPointCount: parsed.length,

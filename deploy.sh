@@ -24,13 +24,15 @@ git add -A
 echo "💾 Committing changes..."
 git commit -m "Deploy v$VERSION - $TIMESTAMP: ALLSYMS-based ticker trends with multi-line charts" || echo "No changes to commit"
 
-# Push to GitHub
+# Push to GitHub (this will trigger Vercel deployment automatically if GitHub integration is enabled)
 echo "📤 Pushing to GitHub..."
 git push origin main
 
-# Deploy to Vercel
-echo "🚀 Deploying to Vercel..."
-vercel --prod --yes
+# Note: If Vercel is connected to GitHub, the push above will automatically trigger a deployment.
+# Only run vercel --prod --yes if you want to force a manual deployment instead.
+# Uncomment the line below if GitHub integration is NOT enabled:
+# echo "🚀 Deploying to Vercel..."
+# vercel --prod --yes
 
 echo "✅ Deployment complete!"
 echo "Version: $VERSION"
