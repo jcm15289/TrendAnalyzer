@@ -176,7 +176,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false }: TickerTr
     });
   }, [combinedData, enabledKeywords, foundKeywords, tickerGroup.keywords]);
 
-  const strokeWidth = isWideLayout ? 3 : 2;
+  const strokeWidth = isWideLayout ? 2 : 1.5;
 
   if (loading) {
     return (
@@ -301,7 +301,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false }: TickerTr
                 style={{
                   backgroundColor: isEnabled ? `${color}15` : 'transparent',
                   borderColor: color,
-                  color: isEnabled ? color : '#888',
+                  color: isEnabled ? color : '#555',
                 }}
               >
                 <span
