@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { TickerTrendsCard } from '@/components/ticker-trends-card';
 import { ConfigDialog } from '@/components/config-dialog';
 import { Button } from '@/components/ui/button';
-import { Command, Settings, LayoutGrid, Rows3, List, ChevronDown, TrendingUp, Loader2 } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Command, Settings, LayoutGrid, Rows3, List, ChevronDown, TrendingUp, Loader2, Search, X } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -49,6 +50,8 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [isLocalhost, setIsLocalhost] = useState(false);
   const [filterTicker, setFilterTicker] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [chartsWithData, setChartsWithData] = useState<Set<string>>(new Set());
   
   useEffect(() => {
     setIsLocalhost(typeof window !== 'undefined' && window.location.hostname === 'localhost');
@@ -159,13 +162,30 @@ export default function Home() {
     localStorage.setItem('trends-layout-mode', newMode);
   };
 
-  // Filter ticker groups based on selection
+  // Filter ticker groups based on selection and search term, exclude empty charts
   const filteredGroups = useMemo(() => {
-    if (filterTicker === 'all') {
-      return tickerGroups;
+    let filtered = tickerGroups;
+    
+    // Filter by ticker selection
+    if (filterTicker !== 'all') {
+      filtered = filtered.filter(g => g.baseTicker === filterTicker);
     }
-    return tickerGroups.filter(g => g.baseTicker === filterTicker);
-  }, [tickerGroups, filterTicker]);
+    
+    // Filter by search term (case-insensitive match in keywords)
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase().trim();
+      filtered = filtered.filter(g => {
+        return g.keywords.some(kw => 
+          kw.keyword.toLowerCase().includes(searchLower)
+        );
+      });
+    }
+    
+    // Exclude empty charts (charts with no data)
+    filtered = filtered.filter(g => chartsWithData.has(g.baseTicker));
+    
+    return filtered;
+  }, [tickerGroups, filterTicker, searchTerm, chartsWithData]);
 
   // Unique tickers for the dropdown
   const allTickers = useMemo(() => {
@@ -218,6 +238,27 @@ export default function Home() {
               </Tooltip>
 
               <div className="flex flex-wrap items-center gap-2 flex-nowrap sm:flex-wrap">
+                <div className="relative w-[200px]">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    type="text"
+                    placeholder="Search trends..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-9 pr-8 h-9"
+                  />
+                  {searchTerm && (
+                    <button
+                      onClick={() => setSearchTerm('')}
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  )}
+                </div>
+                
+                <div className="h-6 w-px bg-border" />
+                
                 <Select value={filterTicker} onValueChange={setFilterTicker}>
                   <SelectTrigger className="w-[200px] h-9">
                     <div className="flex items-center gap-2">
@@ -325,6 +366,18 @@ export default function Home() {
                   key={group.baseTicker}
                   tickerGroup={group}
                   isWideLayout={layoutMode === 'single'}
+                  searchTerm={searchTerm}
+                  onDataFound={(ticker, hasData) => {
+                    setChartsWithData(prev => {
+                      const next = new Set(prev);
+                      if (hasData) {
+                        next.add(ticker);
+                      } else {
+                        next.delete(ticker);
+                      }
+                      return next;
+                    });
+                  }}
                 />
               ))}
             </div>

@@ -36,6 +36,8 @@ interface TrendDataPoint {
 interface TickerTrendsCardProps {
   tickerGroup: TickerGroup;
   isWideLayout?: boolean;
+  searchTerm?: string;
+  onDataFound?: (ticker: string, hasData: boolean) => void;
 }
 
 // Colors for different trend lines
@@ -52,7 +54,7 @@ const LINE_COLORS = [
   '#6366F1', // Indigo
 ];
 
-export function TickerTrendsCard({ tickerGroup, isWideLayout = false }: TickerTrendsCardProps) {
+export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm = '', onDataFound }: TickerTrendsCardProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [combinedData, setCombinedData] = useState<TrendDataPoint[]>([]);
@@ -98,12 +100,31 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false }: TickerTr
         }
       });
       
-      // Enable all found keywords by default (using tickerGroup format for display)
-      const enabledDisplayKeywords = Array.from(apiToDisplayMap.values());
+      // Notify parent about data availability
+      if (onDataFound) {
+        onDataFound(tickerGroup.baseTicker, found.length > 0);
+      }
+      
+      // Enable keywords based on search term
+      let enabledDisplayKeywords: string[] = [];
+      if (searchTerm.trim()) {
+        // When searching, only enable keywords that match the search term
+        const searchLower = searchTerm.toLowerCase().trim();
+        enabledDisplayKeywords = Array.from(apiToDisplayMap.values()).filter(displayKw =>
+          displayKw.toLowerCase().includes(searchLower)
+        );
+      } else {
+        // No search term: enable all found keywords by default
+        enabledDisplayKeywords = Array.from(apiToDisplayMap.values());
+      }
       setEnabledKeywords(new Set(enabledDisplayKeywords));
     } catch (err) {
       console.error('Error fetching ticker trends:', err);
       setError(err instanceof Error ? err.message : 'Unknown error');
+      // Notify parent that no data was found
+      if (onDataFound) {
+        onDataFound(tickerGroup.baseTicker, false);
+      }
     } finally {
       setLoading(false);
     }
@@ -112,6 +133,32 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false }: TickerTr
   useEffect(() => {
     fetchTrends();
   }, [tickerGroup.baseTicker]);
+
+  // Update enabled keywords when searchTerm changes
+  useEffect(() => {
+    if (!foundKeywords.length) return;
+    
+    const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
+    const apiToDisplayMap = new Map<string, string>();
+    tickerGroup.keywords.forEach(tk => {
+      const normalized = normalizeKeyword(tk.keyword);
+      const matchingApiKeyword = foundKeywords.find(fk => normalizeKeyword(fk) === normalized);
+      if (matchingApiKeyword) {
+        apiToDisplayMap.set(matchingApiKeyword, tk.keyword);
+      }
+    });
+    
+    let enabledDisplayKeywords: string[] = [];
+    if (searchTerm.trim()) {
+      const searchLower = searchTerm.toLowerCase().trim();
+      enabledDisplayKeywords = Array.from(apiToDisplayMap.values()).filter(displayKw =>
+        displayKw.toLowerCase().includes(searchLower)
+      );
+    } else {
+      enabledDisplayKeywords = Array.from(apiToDisplayMap.values());
+    }
+    setEnabledKeywords(new Set(enabledDisplayKeywords));
+  }, [searchTerm, foundKeywords, tickerGroup.keywords]);
 
   const toggleKeyword = (keyword: string) => {
     setEnabledKeywords(prev => {
