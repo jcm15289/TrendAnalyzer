@@ -43,7 +43,7 @@ interface TickerTrendsCardProps {
 // Colors for different trend lines
 const LINE_COLORS = [
   '#3B82F6', // Blue
-  '#EF4444', // Red
+  '#F87171', // Soft Red (was #EF4444)
   '#10B981', // Green
   '#F59E0B', // Amber
   '#8B5CF6', // Purple
@@ -282,7 +282,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
             <TrendingUp className="h-5 w-5 text-[#FF6B35]" />
             {tickerGroup.baseTicker}
             <Badge variant="secondary" className="text-xs">
-              {foundKeywords.length} / {tickerGroup.keywords.length} trends
+              {foundKeywords.length} trends
             </Badge>
           </CardTitle>
           <Button
@@ -299,46 +299,57 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
           </Button>
         </div>
         
-        {/* Keyword toggles */}
+        {/* Keyword toggles - only show found keywords, deduplicated */}
         <div className="flex flex-wrap gap-1.5 mt-2">
-          {tickerGroup.keywords.map((kw, idx) => {
+          {(() => {
             const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
-            const normalizedTickerKeyword = normalizeKeyword(kw.keyword);
-            const isFound = foundKeywords.some(fk => {
-              const normalizedFound = normalizeKeyword(fk);
-              return normalizedFound === normalizedTickerKeyword;
-            });
-            const isEnabled = enabledKeywords.has(kw.keyword);
-            const color = LINE_COLORS[idx % LINE_COLORS.length];
+            const seenKeywords = new Set<string>();
+            let colorIdx = 0;
+            
+            return tickerGroup.keywords
+              .filter(kw => {
+                // Only show keywords that were found in Redis
+                const isFound = foundKeywords.some(fk => 
+                  normalizeKeyword(fk) === normalizeKeyword(kw.keyword)
+                );
+                if (!isFound) return false;
+                
+                // Deduplicate by normalized keyword
+                const normalized = normalizeKeyword(kw.keyword);
+                if (seenKeywords.has(normalized)) return false;
+                seenKeywords.add(normalized);
+                return true;
+              })
+              .map((kw) => {
+                const isEnabled = enabledKeywords.has(kw.keyword);
+                const color = LINE_COLORS[colorIdx % LINE_COLORS.length];
+                colorIdx++;
 
-            return (
-              <button
-                key={kw.trendKey}
-                onClick={() => isFound && toggleKeyword(kw.keyword)}
-                disabled={!isFound}
-                className={cn(
-                  'px-2 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1.5',
-                  isFound && isEnabled
-                    ? 'shadow-sm border-2'
-                    : isFound
-                    ? 'opacity-50 border border-dashed'
-                    : 'opacity-30 cursor-not-allowed border border-dashed',
-                )}
-                style={{
-                  backgroundColor: isEnabled ? `${color}15` : 'transparent',
-                  borderColor: color,
-                  color: isEnabled ? color : '#555',
-                }}
-              >
-                <span
-                  className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: isEnabled ? color : '#ccc' }}
-                />
-                {kw.keyword}
-                {!isFound && <span className="text-[10px]">(N/A)</span>}
-              </button>
-            );
-          })}
+                return (
+                  <button
+                    key={kw.trendKey}
+                    onClick={() => toggleKeyword(kw.keyword)}
+                    className={cn(
+                      'px-2 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1.5',
+                      isEnabled
+                        ? 'shadow-sm border-2'
+                        : 'opacity-50 border border-dashed',
+                    )}
+                    style={{
+                      backgroundColor: isEnabled ? `${color}15` : 'transparent',
+                      borderColor: color,
+                      color: isEnabled ? color : '#555',
+                    }}
+                  >
+                    <span
+                      className="w-2 h-2 rounded-full"
+                      style={{ backgroundColor: isEnabled ? color : '#ccc' }}
+                    />
+                    {kw.keyword}
+                  </button>
+                );
+              });
+          })()}
         </div>
       </CardHeader>
       
