@@ -174,20 +174,16 @@ export async function GET(request: NextRequest) {
     console.log(`[TickerTrends] Direct fetch found ${results.length} results`);
     
     // Step 2: Fetch ALL trend keys using the same pattern that works in /api/trends/all
-    // Only do this if we didn't find all requested keys via direct fetch
+    // Always try this to find related trends (even if we found some via direct fetch)
     let allTrendKeys: string[] = [];
     const foundRequestedKeys = results.filter(r => r.found).length;
-    if (foundRequestedKeys < keys.length) {
-      try {
-        console.log(`[TickerTrends] Step 2: Fetching all keys with pattern 'cache-trends:Trends.*' (found ${foundRequestedKeys}/${keys.length} via direct fetch)...`);
-        allTrendKeys = await redis.keys('cache-trends:Trends.*');
-        console.log(`[TickerTrends] ✅ Found ${allTrendKeys.length} total keys`);
-      } catch (error) {
-        console.error(`[TickerTrends] ❌ Error fetching keys:`, error);
-        // Continue even if keys() fails - we already have some results from direct fetch
-      }
-    } else {
-      console.log(`[TickerTrends] Step 2: Skipping keys() - found all ${foundRequestedKeys} requested keys via direct fetch`);
+    try {
+      console.log(`[TickerTrends] Step 2: Fetching all keys with pattern 'cache-trends:Trends.*' (found ${foundRequestedKeys}/${keys.length} via direct fetch, will search for related trends)...`);
+      allTrendKeys = await redis.keys('cache-trends:Trends.*');
+      console.log(`[TickerTrends] ✅ Found ${allTrendKeys.length} total keys`);
+    } catch (error) {
+      console.error(`[TickerTrends] ❌ Error fetching keys:`, error);
+      // Continue even if keys() fails - we already have some results from direct fetch
     }
     
     // Step 3: If we found keys via pattern matching, filter for related trends
@@ -225,8 +221,16 @@ export async function GET(request: NextRequest) {
         
         // Also check if keyword starts with base keyword (e.g., "Googleads" starts with "Google")
         // This finds related trends that weren't explicitly requested
-        if (keyPartLower.startsWith(baseKeywordLower)) {
+        // IMPORTANT: Check if keyPart starts with baseKeywordLower (e.g., "googlelogin" starts with "google")
+        if (baseKeywordLower && keyPartLower.startsWith(baseKeywordLower)) {
           console.log(`[TickerTrends] ✅ Prefix match: "${keyPart}" starts with "${baseKeyword}"`);
+          return true;
+        }
+        
+        // Also check reverse: if base keyword starts with keyPart (for partial matches)
+        // This handles cases where baseKeyword might be longer
+        if (baseKeywordLower && baseKeywordLower.startsWith(keyPartLower) && keyPartLower.length >= 3) {
+          console.log(`[TickerTrends] ✅ Reverse prefix match: "${baseKeyword}" starts with "${keyPart}"`);
           return true;
         }
         
