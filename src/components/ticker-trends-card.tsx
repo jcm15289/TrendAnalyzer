@@ -133,7 +133,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
   useEffect(() => {
     fetchTrends();
   }, [tickerGroup.baseTicker]);
-
+  
   // Update enabled keywords when searchTerm changes
   useEffect(() => {
     if (!foundKeywords.length) return;
@@ -246,30 +246,9 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     );
   }
 
-  if (error) {
-    return (
-      <Card className="overflow-hidden">
-        <CardHeader className="pb-2">
-          <CardTitle className="flex items-center gap-2 text-lg">
-            <TrendingUp className="h-5 w-5 text-[#FF6B35]" />
-            {tickerGroup.baseTicker}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="h-[300px] flex items-center justify-center">
-            <div className="text-center text-red-600">
-              <AlertCircle className="h-8 w-8 mx-auto mb-2" />
-              <p className="font-medium">Error loading trends</p>
-              <p className="text-sm text-muted-foreground mb-4">{error}</p>
-              <Button onClick={fetchTrends} size="sm" variant="outline">
-                <RefreshCw className="h-4 w-4 mr-2" />
-                Retry
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
+  // Hide cards with errors or no data found
+  if (error || foundKeywords.length === 0) {
+    return null;
   }
 
   if (foundKeywords.length === 0) {

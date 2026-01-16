@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { TickerTrendsCard } from '@/components/ticker-trends-card';
 import { ConfigDialog } from '@/components/config-dialog';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Command, Settings, LayoutGrid, Rows3, List, ChevronDown, TrendingUp, Loader2, Search, X } from 'lucide-react';
 import {
   Select,
@@ -29,6 +28,7 @@ import {
   CommandSeparator,
 } from '@/components/ui/command';
 import { cn } from '@/lib/utils';
+import { Input } from '@/components/ui/input';
 
 interface TickerKeyword {
   ticker: string;
@@ -51,7 +51,7 @@ export default function Home() {
   const [isLocalhost, setIsLocalhost] = useState(false);
   const [filterTicker, setFilterTicker] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [chartsWithData, setChartsWithData] = useState<Set<string>>(new Set());
+  const [tickersWithData, setTickersWithData] = useState<Set<string>>(new Set());
   
   useEffect(() => {
     setIsLocalhost(typeof window !== 'undefined' && window.location.hostname === 'localhost');
@@ -103,7 +103,7 @@ export default function Home() {
           console.error('🚦 Page: API response not OK:', response.status, errorText);
           setError(`Failed to load tickers: ${response.status}`);
           setTickerGroups([]);
-          return;
+              return;
         }
         
         const result = await response.json();
@@ -162,30 +162,38 @@ export default function Home() {
     localStorage.setItem('trends-layout-mode', newMode);
   };
 
-  // Filter ticker groups based on selection and search term, exclude empty charts
+  // Callback when a ticker card reports its data availability
+  const handleDataFound = useCallback((ticker: string, hasData: boolean) => {
+    setTickersWithData(prev => {
+      const next = new Set(prev);
+      if (hasData) {
+        next.add(ticker);
+      } else {
+        next.delete(ticker);
+      }
+      return next;
+    });
+  }, []);
+
+  // Filter ticker groups based on selection and search term
   const filteredGroups = useMemo(() => {
-    let filtered = tickerGroups;
+    let groups = tickerGroups;
     
-    // Filter by ticker selection
+    // Filter by ticker dropdown
     if (filterTicker !== 'all') {
-      filtered = filtered.filter(g => g.baseTicker === filterTicker);
+      groups = groups.filter(g => g.baseTicker === filterTicker);
     }
     
-    // Filter by search term (case-insensitive match in keywords)
+    // Filter by search term - only show tickers that have keywords matching the search
     if (searchTerm.trim()) {
       const searchLower = searchTerm.toLowerCase().trim();
-      filtered = filtered.filter(g => {
-        return g.keywords.some(kw => 
-          kw.keyword.toLowerCase().includes(searchLower)
-        );
-      });
+      groups = groups.filter(g => 
+        g.keywords.some(kw => kw.keyword.toLowerCase().includes(searchLower))
+      );
     }
     
-    // Exclude empty charts (charts with no data)
-    filtered = filtered.filter(g => chartsWithData.has(g.baseTicker));
-    
-    return filtered;
-  }, [tickerGroups, filterTicker, searchTerm, chartsWithData]);
+    return groups;
+  }, [tickerGroups, filterTicker, searchTerm]);
 
   // Unique tickers for the dropdown
   const allTickers = useMemo(() => {
@@ -233,42 +241,41 @@ export default function Home() {
                         : 'Build time unavailable'}
                     </div>
                     <div className="text-xs text-muted-foreground">ALLSYMS-Based Architecture</div>
-                  </div>
+          </div>
                 </TooltipContent>
               </Tooltip>
 
               <div className="flex flex-wrap items-center gap-2 flex-nowrap sm:flex-wrap">
-                <div className="relative w-[200px]">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                {/* Search box for filtering by keyword */}
+                <div className="relative">
+                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     type="text"
                     placeholder="Search trends..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-9 pr-8 h-9"
+                    className="w-[180px] h-9 pl-8 pr-8"
                   />
                   {searchTerm && (
                     <button
                       onClick={() => setSearchTerm('')}
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                     >
                       <X className="h-4 w-4" />
                     </button>
                   )}
                 </div>
                 
-                <div className="h-6 w-px bg-border" />
-                
                 <Select value={filterTicker} onValueChange={setFilterTicker}>
                   <SelectTrigger className="w-[200px] h-9">
                     <div className="flex items-center gap-2">
                       <List className="h-4 w-4" />
                       <SelectValue placeholder="Filter by ticker" />
-                    </div>
+        </div>
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="all">
-                      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
                         <span>All Tickers</span>
                         <span className="text-xs text-muted-foreground">
                           ({tickerGroups.length})
@@ -285,28 +292,28 @@ export default function Home() {
                 
                 <div className="h-6 w-px bg-border" />
                 
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={toggleLayoutMode} 
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={toggleLayoutMode} 
                       className="flex items-center gap-2"
-                    >
-                      {layoutMode === 'single' ? (
-                        <LayoutGrid className="h-4 w-4" />
-                      ) : (
-                        <Rows3 className="h-4 w-4" />
-                      )}
+                >
+                  {layoutMode === 'single' ? (
+                    <LayoutGrid className="h-4 w-4" />
+                  ) : (
+                    <Rows3 className="h-4 w-4" />
+                  )}
                       <span className="hidden sm:inline">
                         {layoutMode === 'single' ? 'Grid' : 'Single'}
-                      </span>
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    {layoutMode === 'single' ? 'Switch to grid layout' : 'Switch to single column layout'}
-                  </TooltipContent>
-                </Tooltip>
+                  </span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                {layoutMode === 'single' ? 'Switch to grid layout' : 'Switch to single column layout'}
+              </TooltipContent>
+            </Tooltip>
 
                 <Button 
                   variant="outline" 
@@ -319,10 +326,10 @@ export default function Home() {
                 </Button>
               </div>
             </div>
-          </div>
-        </header>
-
-        <main className="flex-1 p-4 md:p-6">
+        </div>
+      </header>
+      
+      <main className="flex-1 p-4 md:p-6">
           {isLoading && (
             <div className="flex h-[50vh] flex-col items-center justify-center">
               <Loader2 className="h-10 w-10 animate-spin text-[#FF6B35] mb-4" />
@@ -355,34 +362,24 @@ export default function Home() {
           )}
 
           {!isLoading && !error && filteredGroups.length > 0 && (
-            <div className={cn(
-              "grid gap-6",
-              layoutMode === 'single' 
-                ? "grid-cols-1" 
-                : "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3"
-            )}>
+        <div className={cn(
+          "grid gap-6",
+          layoutMode === 'single' 
+            ? "grid-cols-1" 
+            : "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3"
+        )}>
               {filteredGroups.map((group) => (
                 <TickerTrendsCard
                   key={group.baseTicker}
                   tickerGroup={group}
-                  isWideLayout={layoutMode === 'single'}
+              isWideLayout={layoutMode === 'single'}
                   searchTerm={searchTerm}
-                  onDataFound={(ticker, hasData) => {
-                    setChartsWithData(prev => {
-                      const next = new Set(prev);
-                      if (hasData) {
-                        next.add(ticker);
-                      } else {
-                        next.delete(ticker);
-                      }
-                      return next;
-                    });
-                  }}
-                />
-              ))}
+                  onDataFound={handleDataFound}
+            />
+          ))}
             </div>
           )}
-        </main>
+      </main>
 
         <p className="fixed bottom-4 left-4 text-sm text-muted-foreground">
           Press{' '}
@@ -449,7 +446,7 @@ export default function Home() {
           keywords={[]}
           onRemoveKeyword={() => {}}
         />
-      </div>
+    </div>
     </TooltipProvider>
   );
 }

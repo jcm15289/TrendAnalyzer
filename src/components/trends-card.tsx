@@ -917,7 +917,7 @@ export default function TrendsCard({
               isWideLayout={isWideLayout}
             />
           </div>
-          
+              
         </CardContent>
       </Card>
 
