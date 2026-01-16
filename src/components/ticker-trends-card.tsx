@@ -254,7 +254,14 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false }: TickerTr
           {tickerGroup.keywords.map((kw, idx) => {
             const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
             const normalizedTickerKeyword = normalizeKeyword(kw.keyword);
-            const isFound = foundKeywords.some(fk => normalizeKeyword(fk) === normalizedTickerKeyword);
+            const isFound = foundKeywords.some(fk => {
+              const normalizedFound = normalizeKeyword(fk);
+              const matches = normalizedFound === normalizedTickerKeyword;
+              if (kw.keyword === 'Google login' || kw.keyword === 'Google cloud' || kw.keyword === 'Google ads') {
+                console.log(`[${tickerGroup.baseTicker}] Checking "${kw.keyword}" (normalized: "${normalizedTickerKeyword}") against found keywords:`, foundKeywords.map(f => `${f} (${normalizeKeyword(f)})`), 'Match:', matches);
+              }
+              return matches;
+            });
             const isEnabled = enabledKeywords.has(kw.keyword);
             const color = LINE_COLORS[idx % LINE_COLORS.length];
 
