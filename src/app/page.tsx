@@ -350,14 +350,21 @@ export default function Home() {
             </div>
           )}
 
-          {!isLoading && !error && filteredGroups.length === 0 && (
+          {!isLoading && !error && filteredGroups.length === 0 && tickerGroups.length === 0 && (
             <div className="flex h-[50vh] flex-col items-center justify-center rounded-lg border-2 border-dashed bg-card/50">
               <h2 className="text-2xl font-bold tracking-tight">No ticker groups found</h2>
-              <p className="text-muted-foreground">
-                {filterTicker !== 'all' 
-                  ? `No data for ticker "${filterTicker}"`
-                  : 'Check if ALLSYMS file exists in Redis'}
-              </p>
+              <p className="text-muted-foreground">Check if ALLSYMS file exists in Redis</p>
+            </div>
+          )}
+
+          {!isLoading && !error && filteredGroups.length === 0 && tickerGroups.length > 0 && searchTerm && (
+            <div className="flex h-[50vh] flex-col items-center justify-center rounded-lg border-2 border-dashed bg-card/50">
+              <Search className="h-10 w-10 text-muted-foreground mb-4" />
+              <h2 className="text-2xl font-bold tracking-tight">No matching trends</h2>
+              <p className="text-muted-foreground">No tickers have trends matching "{searchTerm}"</p>
+              <Button onClick={() => setSearchTerm('')} variant="outline" className="mt-4">
+                Clear Search
+              </Button>
             </div>
           )}
 
