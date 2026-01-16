@@ -80,28 +80,27 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false }: TickerTr
 
       setCombinedData(result.combinedData || []);
       
-      // Track which keywords were found - normalize for comparison (remove spaces, lowercase)
+      // Track which keywords were found from API (these are the actual data keys, e.g., "Googlelogin")
       const normalizeKeyword = (kw: string) => kw.replace(/\s+/g, '').toLowerCase();
       const found = result.results
         .filter((r: any) => r.found)
-        .map((r: any) => r.keyword);
+        .map((r: any) => r.keyword); // These are API keywords like "Googlelogin"
       setFoundKeywords(found);
       
-      // Create a mapping from normalized keywords to original keywords from tickerGroup
-      const keywordMap = new Map<string, string>();
+      // Create a mapping from API keywords (no spaces) to tickerGroup keywords (with spaces)
+      const apiToDisplayMap = new Map<string, string>();
       tickerGroup.keywords.forEach(tk => {
         const normalized = normalizeKeyword(tk.keyword);
-        keywordMap.set(normalized, tk.keyword);
+        // Find matching API keyword
+        const matchingApiKeyword = found.find(fk => normalizeKeyword(fk) === normalized);
+        if (matchingApiKeyword) {
+          apiToDisplayMap.set(matchingApiKeyword, tk.keyword);
+        }
       });
       
-      // Map found keywords back to their original format from tickerGroup
-      const mappedFoundKeywords = found.map(foundKw => {
-        const normalized = normalizeKeyword(foundKw);
-        return keywordMap.get(normalized) || foundKw;
-      }).filter(Boolean) as string[];
-      
-      // Enable all found keywords by default (using original format)
-      setEnabledKeywords(new Set(mappedFoundKeywords));
+      // Enable all found keywords by default (using tickerGroup format for display)
+      const enabledDisplayKeywords = Array.from(apiToDisplayMap.values());
+      setEnabledKeywords(new Set(enabledDisplayKeywords));
     } catch (err) {
       console.error('Error fetching ticker trends:', err);
       setError(err instanceof Error ? err.message : 'Unknown error');
@@ -253,7 +252,9 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false }: TickerTr
         {/* Keyword toggles */}
         <div className="flex flex-wrap gap-1.5 mt-2">
           {tickerGroup.keywords.map((kw, idx) => {
-            const isFound = foundKeywords.includes(kw.keyword);
+            const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
+            const normalizedTickerKeyword = normalizeKeyword(kw.keyword);
+            const isFound = foundKeywords.some(fk => normalizeKeyword(fk) === normalizedTickerKeyword);
             const isEnabled = enabledKeywords.has(kw.keyword);
             const color = LINE_COLORS[idx % LINE_COLORS.length];
 
@@ -319,17 +320,23 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false }: TickerTr
               <Legend />
               {tickerGroup.keywords.map((kw, idx) => {
                 if (!enabledKeywords.has(kw.keyword)) return null;
+                const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
+                const normalizedTickerKeyword = normalizeKeyword(kw.keyword);
+                // Find the API keyword (data key) that matches this tickerGroup keyword
+                const apiKeyword = foundKeywords.find(fk => normalizeKeyword(fk) === normalizedTickerKeyword);
+                if (!apiKeyword) return null;
                 const color = LINE_COLORS[idx % LINE_COLORS.length];
                 
                 return (
                   <Line
                     key={kw.keyword}
                     type="monotone"
-                    dataKey={kw.keyword}
+                    dataKey={apiKeyword} // Use API keyword (no spaces) as dataKey
                     stroke={color}
                     strokeWidth={strokeWidth}
                     dot={false}
                     activeDot={{ r: 4, fill: color }}
+                    name={kw.keyword} // Display name with spaces
                   />
                 );
               })}
