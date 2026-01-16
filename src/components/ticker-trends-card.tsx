@@ -80,14 +80,28 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false }: TickerTr
 
       setCombinedData(result.combinedData || []);
       
-      // Track which keywords were found
+      // Track which keywords were found - normalize for comparison (remove spaces, lowercase)
+      const normalizeKeyword = (kw: string) => kw.replace(/\s+/g, '').toLowerCase();
       const found = result.results
         .filter((r: any) => r.found)
         .map((r: any) => r.keyword);
       setFoundKeywords(found);
       
-      // Enable all found keywords by default
-      setEnabledKeywords(new Set(found));
+      // Create a mapping from normalized keywords to original keywords from tickerGroup
+      const keywordMap = new Map<string, string>();
+      tickerGroup.keywords.forEach(tk => {
+        const normalized = normalizeKeyword(tk.keyword);
+        keywordMap.set(normalized, tk.keyword);
+      });
+      
+      // Map found keywords back to their original format from tickerGroup
+      const mappedFoundKeywords = found.map(foundKw => {
+        const normalized = normalizeKeyword(foundKw);
+        return keywordMap.get(normalized) || foundKw;
+      }).filter(Boolean) as string[];
+      
+      // Enable all found keywords by default (using original format)
+      setEnabledKeywords(new Set(mappedFoundKeywords));
     } catch (err) {
       console.error('Error fetching ticker trends:', err);
       setError(err instanceof Error ? err.message : 'Unknown error');
