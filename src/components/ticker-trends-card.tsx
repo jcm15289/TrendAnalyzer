@@ -126,12 +126,24 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false }: TickerTr
   };
 
   const toggleAll = () => {
-    if (enabledKeywords.size === foundKeywords.length) {
+    // Create a mapping from API keywords to display keywords
+    const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
+    const apiToDisplayMap = new Map<string, string>();
+    tickerGroup.keywords.forEach(tk => {
+      const normalized = normalizeKeyword(tk.keyword);
+      const matchingApiKeyword = foundKeywords.find(fk => normalizeKeyword(fk) === normalized);
+      if (matchingApiKeyword) {
+        apiToDisplayMap.set(matchingApiKeyword, tk.keyword);
+      }
+    });
+    const allDisplayKeywords = Array.from(apiToDisplayMap.values());
+    
+    if (enabledKeywords.size === allDisplayKeywords.length) {
       // All enabled, disable all
       setEnabledKeywords(new Set());
     } else {
       // Some or none enabled, enable all
-      setEnabledKeywords(new Set(foundKeywords));
+      setEnabledKeywords(new Set(allDisplayKeywords));
     }
   };
 
@@ -141,16 +153,28 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false }: TickerTr
       return combinedData;
     }
     
+    // Create a mapping from display keywords (with spaces) to API keywords (no spaces)
+    const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
+    const displayToApiMap = new Map<string, string>();
+    tickerGroup.keywords.forEach(tk => {
+      const normalized = normalizeKeyword(tk.keyword);
+      const matchingApiKeyword = foundKeywords.find(fk => normalizeKeyword(fk) === normalized);
+      if (matchingApiKeyword) {
+        displayToApiMap.set(tk.keyword, matchingApiKeyword);
+      }
+    });
+    
     return combinedData.map(point => {
       const filtered: TrendDataPoint = { date: point.date };
-      enabledKeywords.forEach(kw => {
-        if (point[kw] !== undefined) {
-          filtered[kw] = point[kw];
+      enabledKeywords.forEach(displayKw => {
+        const apiKw = displayToApiMap.get(displayKw);
+        if (apiKw && point[apiKw] !== undefined) {
+          filtered[apiKw] = point[apiKw];
         }
       });
       return filtered;
     });
-  }, [combinedData, enabledKeywords, foundKeywords.length]);
+  }, [combinedData, enabledKeywords, foundKeywords, tickerGroup.keywords]);
 
   const strokeWidth = isWideLayout ? 3 : 2;
 
@@ -256,11 +280,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false }: TickerTr
             const normalizedTickerKeyword = normalizeKeyword(kw.keyword);
             const isFound = foundKeywords.some(fk => {
               const normalizedFound = normalizeKeyword(fk);
-              const matches = normalizedFound === normalizedTickerKeyword;
-              if (kw.keyword === 'Google login' || kw.keyword === 'Google cloud' || kw.keyword === 'Google ads') {
-                console.log(`[${tickerGroup.baseTicker}] Checking "${kw.keyword}" (normalized: "${normalizedTickerKeyword}") against found keywords:`, foundKeywords.map(f => `${f} (${normalizeKeyword(f)})`), 'Match:', matches);
-              }
-              return matches;
+              return normalizedFound === normalizedTickerKeyword;
             });
             const isEnabled = enabledKeywords.has(kw.keyword);
             const color = LINE_COLORS[idx % LINE_COLORS.length];
