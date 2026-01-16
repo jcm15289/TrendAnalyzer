@@ -85,12 +85,26 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const keys = trendKeys.split(',').map(k => k.trim());
+    const keys = trendKeys.split(',').map(k => k.trim()).filter(k => k.length > 0);
+    
+    if (keys.length === 0) {
+      return NextResponse.json(
+        { success: false, error: 'No valid trend keys provided' },
+        { status: 400 },
+      );
+    }
     
     // Extract base keyword from the first trend key (e.g., "Trends.Google" -> "Google")
     // This is the base keyword we'll use to find ALL related trends
     const baseTrendKey = keys[0];
     const baseKeyword = baseTrendKey.replace(/^Trends\./, '');
+    
+    if (!baseKeyword) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid base trend key format' },
+        { status: 400 },
+      );
+    }
     
     console.log(`[TickerTrends] Processing ${keys.length} trend keys, base keyword: "${baseKeyword}"`);
     
@@ -108,27 +122,31 @@ export async function GET(request: NextRequest) {
     // Updated: 2026-01-15 - Prioritize direct fetching for better reliability
     
     // Step 1: Try direct key fetching for ALL requested keys (not just the first one)
-    console.log(`[TickerTrends] Step 1: Trying direct key fetching for ${keys.length} requested keys...`);
+    console.log(`[TickerTrends] Step 1: Trying direct key fetching for ${keys.length} requested keys:`, keys);
     for (const trendKey of keys) {
       const keyword = trendKey.replace(/^Trends\./, '');
       const keywordNoSpaces = keyword.replace(/\s+/g, ''); // Remove spaces to match Redis key format
       
+      // Try multiple key formats - the most common format is cache-trends:Trends.{keyword}
       const possibleKeys = [
-        `cache-trends:${trendKey}`, // e.g., cache-trends:Trends.Googlelogin
+        `cache-trends:${trendKey}`, // e.g., cache-trends:Trends.Googlelogin (exact match)
         `cache-trends:Trends.${keywordNoSpaces}`, // e.g., cache-trends:Trends.Googlelogin (no spaces)
-        `cache-trends:Trends.${keywordNoSpaces.toLowerCase()}`, // lowercase
-        trendKey,
-        `Trends.${keywordNoSpaces}`,
-        `Trends.${keywordNoSpaces.toLowerCase()}`,
+        `cache-trends:Trends.${keywordNoSpaces.toLowerCase()}`, // lowercase version
+        `cache-trends:Trends.${keywordNoSpaces.charAt(0).toUpperCase() + keywordNoSpaces.slice(1).toLowerCase()}`, // Title case
+        trendKey, // Just the trend key without prefix
+        `Trends.${keywordNoSpaces}`, // Without cache-trends prefix
       ];
+      
+      console.log(`[TickerTrends] Trying to find "${keyword}" (no spaces: "${keywordNoSpaces}") with keys:`, possibleKeys.slice(0, 3));
       
       let found = false;
       for (const redisKey of possibleKeys) {
         try {
           const rawData = await redis.get(redisKey);
           if (rawData) {
-            console.log(`[TickerTrends] ✅ Found direct key: ${redisKey} for "${keyword}"`);
+            console.log(`[TickerTrends] ✅ Found direct key: ${redisKey} for "${keyword}" (data length: ${rawData.length})`);
             const parsed = parseRedisData(rawData, keyword); // Use original keyword (with spaces) for display
+            console.log(`[TickerTrends] Parsed ${parsed.length} data points for "${keyword}"`);
             if (parsed.length > 0) {
               results.push({
                 keyword, // Use original keyword format (with spaces if it had them)
@@ -140,10 +158,12 @@ export async function GET(request: NextRequest) {
               });
               found = true;
               break; // Found it, move to next trend key
+            } else {
+              console.log(`[TickerTrends] ⚠️ Found key ${redisKey} but parsed 0 data points`);
             }
           }
         } catch (err) {
-          // Try next key format
+          console.log(`[TickerTrends] Error trying key ${redisKey}:`, err instanceof Error ? err.message : err);
         }
       }
       if (!found) {
@@ -154,13 +174,20 @@ export async function GET(request: NextRequest) {
     console.log(`[TickerTrends] Direct fetch found ${results.length} results`);
     
     // Step 2: Fetch ALL trend keys using the same pattern that works in /api/trends/all
+    // Only do this if we didn't find all requested keys via direct fetch
     let allTrendKeys: string[] = [];
-    try {
-      console.log(`[TickerTrends] Step 2: Fetching all keys with pattern 'cache-trends:Trends.*'...`);
-      allTrendKeys = await redis.keys('cache-trends:Trends.*');
-      console.log(`[TickerTrends] ✅ Found ${allTrendKeys.length} total keys`);
-    } catch (error) {
-      console.error(`[TickerTrends] ❌ Error fetching keys:`, error);
+    const foundRequestedKeys = results.filter(r => r.found).length;
+    if (foundRequestedKeys < keys.length) {
+      try {
+        console.log(`[TickerTrends] Step 2: Fetching all keys with pattern 'cache-trends:Trends.*' (found ${foundRequestedKeys}/${keys.length} via direct fetch)...`);
+        allTrendKeys = await redis.keys('cache-trends:Trends.*');
+        console.log(`[TickerTrends] ✅ Found ${allTrendKeys.length} total keys`);
+      } catch (error) {
+        console.error(`[TickerTrends] ❌ Error fetching keys:`, error);
+        // Continue even if keys() fails - we already have some results from direct fetch
+      }
+    } else {
+      console.log(`[TickerTrends] Step 2: Skipping keys() - found all ${foundRequestedKeys} requested keys via direct fetch`);
     }
     
     // Step 3: If we found keys via pattern matching, filter for related trends
