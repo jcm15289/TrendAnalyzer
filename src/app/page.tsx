@@ -52,6 +52,7 @@ export default function Home() {
   const [filterTicker, setFilterTicker] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [tickersWithData, setTickersWithData] = useState<Set<string>>(new Set());
+  const searchInputRef = useRef<HTMLInputElement>(null);
   
   useEffect(() => {
     setIsLocalhost(typeof window !== 'undefined' && window.location.hostname === 'localhost');
@@ -147,6 +148,17 @@ export default function Home() {
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
+      // "/" key to focus search (unless already typing in an input)
+      if (e.key === '/' && !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)) {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+      // "Esc" key to clear search
+      if (e.key === 'Escape' && searchTerm && searchInputRef.current === document.activeElement) {
+        setSearchTerm('');
+        searchInputRef.current?.blur();
+      }
+      // Cmd/Ctrl + "/" for command menu
       if (e.key === '/' && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setCommandMenuOpen((open) => !open);
@@ -154,7 +166,7 @@ export default function Home() {
     };
     document.addEventListener('keydown', down);
     return () => document.removeEventListener('keydown', down);
-  }, []);
+  }, [searchTerm]);
 
   const toggleLayoutMode = () => {
     const newMode = layoutMode === 'single' ? 'multi' : 'single';
@@ -245,20 +257,24 @@ export default function Home() {
                 </TooltipContent>
               </Tooltip>
 
-              <div className="flex flex-wrap items-center gap-2 flex-nowrap sm:flex-wrap">
-                {/* Search box for filtering by keyword */}
-                <div className="relative">
+              <div className="flex flex-wrap items-center gap-2 flex-nowrap sm:flex-wrap w-full justify-center">
+                {/* Search box for filtering by keyword - wider and centered */}
+                <div className="relative w-full max-w-md">
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
+                    ref={searchInputRef}
                     type="text"
-                    placeholder="Search trends..."
+                    placeholder="Search trends... (Press / to focus)"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-[180px] h-9 pl-8 pr-8"
+                    className="w-full h-9 pl-8 pr-8"
                   />
                   {searchTerm && (
                     <button
-                      onClick={() => setSearchTerm('')}
+                      onClick={() => {
+                        setSearchTerm('');
+                        searchInputRef.current?.focus();
+                      }}
                       className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                     >
                       <X className="h-4 w-4" />

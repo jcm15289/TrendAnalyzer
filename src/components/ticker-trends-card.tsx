@@ -16,6 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { AlertCircle, RefreshCw, Eye, EyeOff, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getCompanyName } from '@/lib/ticker-names';
 
 interface TickerKeyword {
   ticker: string;
@@ -224,6 +225,12 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
   }, [combinedData, enabledKeywords, foundKeywords, tickerGroup.keywords]);
 
   const strokeWidth = isWideLayout ? 2 : 1.5;
+  
+  // Get company name from keywords
+  const companyName = useMemo(() => {
+    const keywords = tickerGroup.keywords.map(k => k.keyword);
+    return getCompanyName(tickerGroup.baseTicker, keywords);
+  }, [tickerGroup]);
 
   if (loading) {
     return (
@@ -231,7 +238,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center gap-2 text-lg">
             <TrendingUp className="h-5 w-5 text-[#FF6B35]" />
-            {tickerGroup.baseTicker}
+            {companyName}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -280,7 +287,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
         <div className="flex items-center justify-between">
           <CardTitle className="flex items-center gap-2 text-lg">
             <TrendingUp className="h-5 w-5 text-[#FF6B35]" />
-            {tickerGroup.baseTicker}
+            {companyName}
             <Badge variant="secondary" className="text-xs">
               {foundKeywords.length} trends
             </Badge>
