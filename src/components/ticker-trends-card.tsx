@@ -306,28 +306,62 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
           </Button>
         </div>
         
-        {/* Keyword toggles - only show found keywords, deduplicated */}
+        {/* Keyword toggles - only show found keywords, deduplicated and sorted */}
         <div className="flex flex-wrap gap-1.5 mt-2">
           {(() => {
             const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
             const seenKeywords = new Set<string>();
-            let colorIdx = 0;
             
-            return tickerGroup.keywords
-              .filter(kw => {
-                // Only show keywords that were found in Redis
-                const isFound = foundKeywords.some(fk => 
-                  normalizeKeyword(fk) === normalizeKeyword(kw.keyword)
-                );
-                if (!isFound) return false;
-                
-                // Deduplicate by normalized keyword
-                const normalized = normalizeKeyword(kw.keyword);
-                if (seenKeywords.has(normalized)) return false;
-                seenKeywords.add(normalized);
-                return true;
-              })
-              .map((kw) => {
+            // Filter and deduplicate keywords
+            const filteredKeywords = tickerGroup.keywords.filter(kw => {
+              // Only show keywords that were found in Redis
+              const isFound = foundKeywords.some(fk => 
+                normalizeKeyword(fk) === normalizeKeyword(kw.keyword)
+              );
+              if (!isFound) return false;
+              
+              // Deduplicate by normalized keyword
+              const normalized = normalizeKeyword(kw.keyword);
+              if (seenKeywords.has(normalized)) return false;
+              seenKeywords.add(normalized);
+              return true;
+            });
+            
+            // Sort keywords: main keyword first, then "login", then "sign up", then rest
+            const sortedKeywords = (() => {
+              const normalize = (k: string) => k.replace(/\s+/g, '').toLowerCase();
+              
+              // Separate keywords into groups
+              const mainKeywords: typeof filteredKeywords = [];
+              const loginKeywords: typeof filteredKeywords = [];
+              const signUpKeywords: typeof filteredKeywords = [];
+              const otherKeywords: typeof filteredKeywords = [];
+              
+              filteredKeywords.forEach(kw => {
+                const norm = normalize(kw.keyword);
+                if (norm.includes('login') && !norm.includes('signup')) {
+                  loginKeywords.push(kw);
+                } else if (norm.includes('signup')) {
+                  signUpKeywords.push(kw);
+                } else {
+                  mainKeywords.push(kw);
+                }
+              });
+              
+              // Sort main keywords by length (shortest first = main company name)
+              mainKeywords.sort((a, b) => a.keyword.length - b.keyword.length);
+              
+              // Combine: main first, then login, then sign up, then rest
+              return [
+                ...mainKeywords,
+                ...loginKeywords,
+                ...signUpKeywords,
+                ...otherKeywords,
+              ];
+            })();
+            
+            let colorIdx = 0;
+            return sortedKeywords.map((kw) => {
                 const isEnabled = enabledKeywords.has(kw.keyword);
                 const color = LINE_COLORS[colorIdx % LINE_COLORS.length];
                 colorIdx++;
