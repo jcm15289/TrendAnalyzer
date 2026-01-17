@@ -124,8 +124,9 @@ export async function GET(request: NextRequest) {
       dataArray = parsedData.data;
     } else if (parsedData && typeof parsedData === 'object') {
       // Check for Alpha Vantage "Time Series (Daily)" format
-      if (parsedData["Time Series (Daily)"]) {
-        const timeSeries = parsedData["Time Series (Daily)"];
+      // It can be directly in parsedData or nested in parsedData.response
+      const timeSeries = parsedData["Time Series (Daily)"] || parsedData.response?.["Time Series (Daily)"];
+      if (timeSeries) {
         dataArray = Object.keys(timeSeries).map(date => ({
           date: date,
           close: parseFloat(timeSeries[date]["5. adjusted close"] || timeSeries[date]["4. close"] || 0),
