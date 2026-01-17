@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useMemo } from 'react';
 import {
-  LineChart,
+  ComposedChart,
   Line,
   XAxis,
   YAxis,
@@ -61,6 +61,28 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
   const [combinedData, setCombinedData] = useState<TrendDataPoint[]>([]);
   const [foundKeywords, setFoundKeywords] = useState<string[]>([]);
   const [enabledKeywords, setEnabledKeywords] = useState<Set<string>>(new Set());
+  const [stockPriceData, setStockPriceData] = useState<Array<{ date: string; close: number }>>([]);
+  const [hasStockData, setHasStockData] = useState(false);
+
+  const fetchStockPrice = async (ticker: string) => {
+    try {
+      const response = await fetch(`/api/redis/stock?symbol=${ticker}`);
+      if (!response.ok) return null;
+      
+      const result = await response.json();
+      if (!result.success || !result.data || result.data.length === 0) return null;
+      
+      // Normalize stock price data to match trend data format
+      // Stock data has { date, close } format
+      return result.data.map((item: any) => ({
+        date: item.date,
+        close: item.close || item.price || 0,
+      }));
+    } catch (err) {
+      console.warn(`Failed to fetch stock price for ${ticker}:`, err);
+      return null;
+    }
+  };
 
   const fetchTrends = async () => {
     setLoading(true);
@@ -81,7 +103,34 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
         throw new Error(result.error || 'Failed to fetch trends');
       }
 
-      setCombinedData(result.combinedData || []);
+      let trendData = result.combinedData || [];
+      
+      // Fetch stock price data
+      const stockData = await fetchStockPrice(tickerGroup.baseTicker);
+      if (stockData && stockData.length > 0) {
+        setStockPriceData(stockData);
+        setHasStockData(true);
+        
+        // Merge stock price data with trend data by date
+        const priceMap = new Map<string, number>();
+        stockData.forEach((item: { date: string; close: number }) => {
+          priceMap.set(item.date, item.close);
+        });
+        
+        // Add price to each trend data point
+        trendData = trendData.map((point: TrendDataPoint) => {
+          const price = priceMap.get(point.date);
+          return {
+            ...point,
+            Price: price !== undefined ? price : null,
+          };
+        });
+      } else {
+        setHasStockData(false);
+        setStockPriceData([]);
+      }
+
+      setCombinedData(trendData);
       
       // Track which keywords were found from API (these are the actual data keys, e.g., "Googlelogin")
       const normalizeKeyword = (kw: string) => kw.replace(/\s+/g, '').toLowerCase();
@@ -195,12 +244,8 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     }
   };
 
-  // Filter data to only include enabled keywords
+  // Filter data to only include enabled keywords, but always include Price
   const filteredData = useMemo(() => {
-    if (enabledKeywords.size === foundKeywords.length) {
-      return combinedData;
-    }
-    
     // Create a mapping from display keywords (with spaces) to API keywords (no spaces)
     const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
     const displayToApiMap = new Map<string, string>();
@@ -214,6 +259,13 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     
     return combinedData.map(point => {
       const filtered: TrendDataPoint = { date: point.date };
+      
+      // Always include Price if available
+      if (point.Price !== undefined && point.Price !== null) {
+        filtered.Price = point.Price;
+      }
+      
+      // Include enabled keywords
       enabledKeywords.forEach(displayKw => {
         const apiKw = displayToApiMap.get(displayKw);
         if (apiKw && point[apiKw] !== undefined) {
@@ -223,6 +275,17 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
       return filtered;
     });
   }, [combinedData, enabledKeywords, foundKeywords, tickerGroup.keywords]);
+  
+  // Calculate price range for Y-axis scaling
+  const priceRange = useMemo(() => {
+    if (!hasStockData || stockPriceData.length === 0) return null;
+    const prices = stockPriceData.map(d => d.close).filter(p => p > 0);
+    if (prices.length === 0) return null;
+    const min = Math.min(...prices);
+    const max = Math.max(...prices);
+    const padding = (max - min) * 0.1; // 10% padding
+    return { min: Math.max(0, min - padding), max: max + padding };
+  }, [hasStockData, stockPriceData]);
 
   const strokeWidth = isWideLayout ? 2 : 1.5;
   
@@ -397,7 +460,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
       <CardContent className="pt-2">
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={filteredData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+            <ComposedChart data={filteredData} margin={{ top: 10, right: hasStockData ? 50 : 30, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" />
               <XAxis
                 dataKey="date"
@@ -407,12 +470,26 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
                 axisLine={false}
               />
               <YAxis
+                yAxisId="trends"
                 stroke="#666"
                 fontSize={11}
                 tickLine={false}
                 axisLine={false}
                 domain={[0, 100]}
+                label={{ value: 'Trends', angle: -90, position: 'insideLeft' }}
               />
+              {hasStockData && priceRange && (
+                <YAxis
+                  yAxisId="price"
+                  orientation="right"
+                  stroke="#888"
+                  fontSize={11}
+                  tickLine={false}
+                  axisLine={false}
+                  domain={[priceRange.min, priceRange.max]}
+                  label={{ value: 'Price ($)', angle: 90, position: 'insideRight' }}
+                />
+              )}
               <Tooltip
                 contentStyle={{
                   backgroundColor: 'white',
@@ -420,6 +497,12 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
                   borderRadius: '8px',
                   fontSize: '12px',
                   boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
+                }}
+                formatter={(value: any, name: string) => {
+                  if (name === 'Price') {
+                    return [`$${value.toFixed(2)}`, 'Price'];
+                  }
+                  return [value, name];
                 }}
               />
               <Legend />
@@ -435,6 +518,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
                 return (
                   <Line
                     key={kw.keyword}
+                    yAxisId="trends"
                     type="monotone"
                     dataKey={apiKeyword} // Use API keyword (no spaces) as dataKey
                     stroke={color}
@@ -445,7 +529,20 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
                   />
                 );
               })}
-            </LineChart>
+              {hasStockData && (
+                <Line
+                  yAxisId="price"
+                  type="monotone"
+                  dataKey="Price"
+                  stroke="#666"
+                  strokeWidth={strokeWidth}
+                  strokeDasharray="5 5"
+                  dot={false}
+                  activeDot={{ r: 4, fill: '#666' }}
+                  name="Price"
+                />
+              )}
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
       </CardContent>
