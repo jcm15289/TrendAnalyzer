@@ -123,12 +123,21 @@ export async function GET(request: NextRequest) {
     } else if (Array.isArray(parsedData.data)) {
       dataArray = parsedData.data;
     } else if (parsedData && typeof parsedData === 'object') {
-      // Check for common array properties
-      const possibleArrayKeys = ['data', 'values', 'timeline', 'timelineData', 'results'];
-      for (const arrayKey of possibleArrayKeys) {
-        if (Array.isArray(parsedData[arrayKey])) {
-          dataArray = parsedData[arrayKey];
-          break;
+      // Check for Alpha Vantage "Time Series (Daily)" format
+      if (parsedData["Time Series (Daily)"]) {
+        const timeSeries = parsedData["Time Series (Daily)"];
+        dataArray = Object.keys(timeSeries).map(date => ({
+          date: date,
+          close: parseFloat(timeSeries[date]["5. adjusted close"] || timeSeries[date]["4. close"] || 0),
+        }));
+      } else {
+        // Check for common array properties
+        const possibleArrayKeys = ['data', 'values', 'timeline', 'timelineData', 'results'];
+        for (const arrayKey of possibleArrayKeys) {
+          if (Array.isArray(parsedData[arrayKey])) {
+            dataArray = parsedData[arrayKey];
+            break;
+          }
         }
       }
     }
