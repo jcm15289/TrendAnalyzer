@@ -111,23 +111,48 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
         setStockPriceData(stockData);
         setHasStockData(true);
         
+        // Normalize dates for matching (handle different formats)
+        const normalizeDate = (dateStr: string): string => {
+          // If already in YYYY-MM-DD format, return as-is
+          if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+            return dateStr;
+          }
+          // Try to parse and format
+          try {
+            const date = new Date(dateStr);
+            if (!isNaN(date.getTime())) {
+              return date.toISOString().split('T')[0];
+            }
+          } catch (e) {
+            // If parsing fails, return original
+          }
+          return dateStr;
+        };
+        
         // Merge stock price data with trend data by date
         const priceMap = new Map<string, number>();
         stockData.forEach((item: { date: string; close: number }) => {
-          priceMap.set(item.date, item.close);
+          const normalizedDate = normalizeDate(item.date);
+          priceMap.set(normalizedDate, item.close);
         });
         
         // Add price to each trend data point
         trendData = trendData.map((point: TrendDataPoint) => {
-          const price = priceMap.get(point.date);
+          const normalizedPointDate = normalizeDate(point.date);
+          const price = priceMap.get(normalizedPointDate);
           return {
             ...point,
             Price: price !== undefined ? price : null,
           };
         });
+        
+        // Log for debugging
+        const pricesWithData = trendData.filter(p => p.Price !== null && p.Price !== undefined);
+        console.log(`[TickerTrendsCard] ${tickerGroup.baseTicker}: Merged ${pricesWithData.length} price points from ${stockData.length} stock data points`);
       } else {
         setHasStockData(false);
         setStockPriceData([]);
+        console.log(`[TickerTrendsCard] ${tickerGroup.baseTicker}: No stock data found`);
       }
 
       setCombinedData(trendData);
@@ -276,16 +301,18 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     });
   }, [combinedData, enabledKeywords, foundKeywords, tickerGroup.keywords]);
   
-  // Calculate price range for Y-axis scaling
+  // Calculate price range for Y-axis scaling from merged data
   const priceRange = useMemo(() => {
-    if (!hasStockData || stockPriceData.length === 0) return null;
-    const prices = stockPriceData.map(d => d.close).filter(p => p > 0);
+    if (!hasStockData || combinedData.length === 0) return null;
+    const prices = combinedData
+      .map((d: any) => d.Price)
+      .filter((p: any) => p !== null && p !== undefined && p > 0);
     if (prices.length === 0) return null;
     const min = Math.min(...prices);
     const max = Math.max(...prices);
     const padding = (max - min) * 0.1; // 10% padding
     return { min: Math.max(0, min - padding), max: max + padding };
-  }, [hasStockData, stockPriceData]);
+  }, [hasStockData, combinedData]);
 
   const strokeWidth = isWideLayout ? 2 : 1.5;
   
@@ -529,7 +556,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
                   />
                 );
               })}
-              {hasStockData && (
+              {hasStockData && priceRange && (
                 <Line
                   yAxisId="price"
                   type="monotone"
@@ -540,6 +567,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
                   dot={false}
                   activeDot={{ r: 4, fill: '#666' }}
                   name="Price"
+                  connectNulls={false}
                 />
               )}
             </ComposedChart>
