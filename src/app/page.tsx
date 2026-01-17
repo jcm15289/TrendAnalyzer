@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { TickerTrendsCard } from '@/components/ticker-trends-card';
 import { ConfigDialog } from '@/components/config-dialog';
 import { Button } from '@/components/ui/button';
-import { Command, Settings, LayoutGrid, Rows3, List, ChevronDown, TrendingUp, Loader2, Search, X } from 'lucide-react';
+import { Command, Settings, LayoutGrid, Rows3, List, ChevronDown, TrendingUp, Loader2, Search, X, Tag } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -51,6 +51,7 @@ export default function Home() {
   const [isLocalhost, setIsLocalhost] = useState(false);
   const [filterTicker, setFilterTicker] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [filterLabel, setFilterLabel] = useState<string>('all');
   const [tickersWithData, setTickersWithData] = useState<Set<string>>(new Set());
   const searchInputRef = useRef<HTMLInputElement>(null);
   
@@ -187,13 +188,24 @@ export default function Home() {
     });
   }, []);
 
-  // Filter ticker groups based on selection and search term
+  // Filter ticker groups based on selection, search term, and label filter
   const filteredGroups = useMemo(() => {
     let groups = tickerGroups;
     
     // Filter by ticker dropdown
     if (filterTicker !== 'all') {
       groups = groups.filter(g => g.baseTicker === filterTicker);
+    }
+    
+    // Filter by label dropdown
+    if (filterLabel !== 'all') {
+      groups = groups.filter(g => {
+        const companyName = getCompanyNameFromGroup(g);
+        return g.keywords.some(kw => {
+          const label = extractLabel(kw.keyword, companyName);
+          return label === filterLabel;
+        });
+      });
     }
     
     // Filter by search term - only show tickers that have keywords matching the search
@@ -205,7 +217,105 @@ export default function Home() {
     }
     
     return groups;
-  }, [tickerGroups, filterTicker, searchTerm]);
+  }, [tickerGroups, filterTicker, filterLabel, searchTerm]);
+
+  // Extract unique labels from keywords (words after company name)
+  const extractLabel = (keyword: string, companyName: string): string | null => {
+    const keywordLower = keyword.toLowerCase();
+    const companyLower = companyName.toLowerCase();
+    
+    // If keyword is exactly the company name, no label
+    if (keywordLower === companyLower) {
+      return null;
+    }
+    
+    // Remove company name from keyword to get the label
+    let label = keywordLower;
+    if (keywordLower.startsWith(companyLower + ' ')) {
+      label = keywordLower.substring(companyLower.length + 1).trim();
+    } else if (keywordLower.startsWith(companyLower)) {
+      label = keywordLower.substring(companyLower.length).trim();
+    }
+    
+    // Common labels to extract
+    const commonLabels = [
+      'login',
+      'sign up',
+      'signup',
+      'subscription',
+      'register',
+      'registration',
+      'cloud',
+      'ads',
+      'advertising',
+      'pricing',
+      'cost',
+      'price',
+      'driver',
+      'ride',
+      'near',
+      'app',
+      'mobile',
+      'web',
+      'api',
+      'platform',
+      'service',
+      'account',
+      'profile',
+      'settings',
+      'dashboard',
+      'analytics',
+      'report',
+      'support',
+      'help',
+      'documentation',
+      'tutorial',
+      'guide',
+    ];
+    
+    // Check if label matches any common label (case-insensitive)
+    for (const commonLabel of commonLabels) {
+      if (label === commonLabel || label.startsWith(commonLabel + ' ') || label.endsWith(' ' + commonLabel)) {
+        return commonLabel;
+      }
+    }
+    
+    // If no match, return the label as-is (could be a compound label like "sign up")
+    return label || null;
+  };
+
+  // Get company name from ticker group (use first keyword as base)
+  const getCompanyNameFromGroup = (group: TickerGroup): string => {
+    if (group.keywords.length === 0) return group.baseTicker;
+    const firstKeyword = group.keywords[0].keyword;
+    // Remove common suffixes to get base company name
+    const suffixes = [' login', ' register', ' sign up', ' signup', ' cloud', ' ads'];
+    let companyName = firstKeyword;
+    for (const suffix of suffixes) {
+      if (companyName.toLowerCase().endsWith(suffix.toLowerCase())) {
+        companyName = companyName.slice(0, -suffix.length).trim();
+        break;
+      }
+    }
+    return companyName || firstKeyword;
+  };
+
+  // Extract all unique labels from all ticker groups
+  const allLabels = useMemo(() => {
+    const labelSet = new Set<string>();
+    
+    tickerGroups.forEach(group => {
+      const companyName = getCompanyNameFromGroup(group);
+      group.keywords.forEach(kw => {
+        const label = extractLabel(kw.keyword, companyName);
+        if (label) {
+          labelSet.add(label);
+        }
+      });
+    });
+    
+    return Array.from(labelSet).sort();
+  }, [tickerGroups]);
 
   // Unique tickers for the dropdown
   const allTickers = useMemo(() => {
@@ -281,6 +391,31 @@ export default function Home() {
                     </button>
                   )}
                 </div>
+                
+                {/* Label filter dropdown */}
+                <Select value={filterLabel} onValueChange={setFilterLabel}>
+                  <SelectTrigger className="w-[180px] h-9">
+                    <div className="flex items-center gap-2">
+                      <Tag className="h-4 w-4" />
+                      <SelectValue placeholder="Filter by label" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">
+                      <div className="flex items-center gap-2">
+                        <span>All Labels</span>
+                        <span className="text-xs text-muted-foreground">
+                          ({allLabels.length})
+                        </span>
+                      </div>
+                    </SelectItem>
+                    {allLabels.map((label) => (
+                      <SelectItem key={label} value={label}>
+                        {label.charAt(0).toUpperCase() + label.slice(1)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 
                 <Select value={filterTicker} onValueChange={setFilterTicker}>
                   <SelectTrigger className="w-[200px] h-9">
@@ -397,6 +532,7 @@ export default function Home() {
                   tickerGroup={group}
               isWideLayout={layoutMode === 'single'}
                   searchTerm={searchTerm}
+                  filterLabel={filterLabel}
                   onDataFound={handleDataFound}
             />
           ))}

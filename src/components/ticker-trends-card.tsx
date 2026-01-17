@@ -38,6 +38,7 @@ interface TickerTrendsCardProps {
   tickerGroup: TickerGroup;
   isWideLayout?: boolean;
   searchTerm?: string;
+  filterLabel?: string;
   onDataFound?: (ticker: string, hasData: boolean) => void;
 }
 
@@ -55,7 +56,7 @@ const LINE_COLORS = [
   '#6366F1', // Indigo
 ];
 
-export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm = '', onDataFound }: TickerTrendsCardProps) {
+export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm = '', filterLabel = 'all', onDataFound }: TickerTrendsCardProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [combinedData, setCombinedData] = useState<TrendDataPoint[]>([]);
@@ -181,21 +182,10 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
         onDataFound(tickerGroup.baseTicker, found.length > 0 || hasStockData);
       }
       
-      // Enable keywords based on search term
-      let enabledDisplayKeywords: string[] = [];
-      if (searchTerm.trim()) {
-        // When searching, only enable keywords that match the search term
-        const searchLower = searchTerm.toLowerCase().trim();
-        enabledDisplayKeywords = Array.from(apiToDisplayMap.values()).filter(displayKw =>
-          displayKw.toLowerCase().includes(searchLower)
-        );
-        setIsPriceEnabled(hasStockData && "price".includes(searchLower));
-      } else {
-        // No search term: enable all found keywords by default
-        enabledDisplayKeywords = Array.from(apiToDisplayMap.values());
-        setIsPriceEnabled(true);
-      }
-      setEnabledKeywords(new Set(enabledDisplayKeywords));
+      // Enable keywords based on search term and label filter (will be handled by useEffect)
+      // For now, enable all keywords by default
+      setEnabledKeywords(new Set(Array.from(apiToDisplayMap.values())));
+      setIsPriceEnabled(true);
     } catch (err) {
       console.error('Error fetching ticker trends:', err);
       setError(err instanceof Error ? err.message : 'Unknown error');
@@ -212,7 +202,45 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     fetchTrends();
   }, [tickerGroup.baseTicker]);
   
-  // Update enabled keywords when searchTerm changes
+  // Extract company name helper
+  const getCompanyName = useCallback((keywords: typeof tickerGroup.keywords): string => {
+    if (keywords.length === 0) return '';
+    const firstKeyword = keywords[0].keyword;
+    const suffixes = [' login', ' register', ' sign up', ' signup', ' cloud', ' ads', ' subscription'];
+    let companyName = firstKeyword;
+    for (const suffix of suffixes) {
+      if (companyName.toLowerCase().endsWith(suffix.toLowerCase())) {
+        companyName = companyName.slice(0, -suffix.length).trim();
+        break;
+      }
+    }
+    return companyName;
+  }, [tickerGroup.keywords]);
+
+  // Extract label helper
+  const extractLabel = useCallback((keyword: string, companyName: string): string | null => {
+    const keywordLower = keyword.toLowerCase();
+    const companyLower = companyName.toLowerCase();
+    
+    if (keywordLower === companyLower) return null;
+    
+    let label = keywordLower;
+    if (keywordLower.startsWith(companyLower + ' ')) {
+      label = keywordLower.substring(companyLower.length + 1).trim();
+    } else if (keywordLower.startsWith(companyLower)) {
+      label = keywordLower.substring(companyLower.length).trim();
+    }
+    
+    const commonLabels = ['login', 'sign up', 'signup', 'subscription', 'register', 'cloud', 'ads', 'driver', 'ride', 'near'];
+    for (const commonLabel of commonLabels) {
+      if (label === commonLabel || label.startsWith(commonLabel + ' ') || label.endsWith(' ' + commonLabel)) {
+        return commonLabel;
+      }
+    }
+    return label || null;
+  }, []);
+  
+  // Update enabled keywords when searchTerm or filterLabel changes
   useEffect(() => {
     if (!foundKeywords.length && !hasStockData) return;
     
@@ -226,6 +254,8 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
       }
     });
     
+    const companyName = getCompanyName(tickerGroup.keywords);
+    
     let enabledDisplayKeywords: string[] = [];
     if (searchTerm.trim()) {
       const searchLower = searchTerm.toLowerCase().trim();
@@ -233,13 +263,20 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
         displayKw.toLowerCase().includes(searchLower)
       );
       setIsPriceEnabled(hasStockData && "price".includes(searchLower));
+    } else if (filterLabel !== 'all') {
+      // When filtering by label, only enable keywords with that label
+      enabledDisplayKeywords = Array.from(apiToDisplayMap.values()).filter(displayKw => {
+        const label = extractLabel(displayKw, companyName);
+        return label === filterLabel;
+      });
+      setIsPriceEnabled(false);
     } else {
-      // If search term is cleared, re-enable all found keywords and price
+      // If filters are cleared, re-enable all found keywords and price
       enabledDisplayKeywords = Array.from(apiToDisplayMap.values());
       setIsPriceEnabled(true);
     }
     setEnabledKeywords(new Set(enabledDisplayKeywords));
-  }, [searchTerm, foundKeywords, hasStockData, tickerGroup.keywords]);
+  }, [searchTerm, filterLabel, foundKeywords, hasStockData, tickerGroup.keywords, getCompanyName, extractLabel]);
 
   const toggleKeyword = (keyword: string) => {
     setEnabledKeywords(prev => {

@@ -14,3 +14,163 @@
 [2026-01-17 01:00:00] =========================================
 [2026-01-17 01:00:00] 
 [2026-01-17 01:00:00] 
+[2026-01-17 02:00:00] =========================================
+[2026-01-17 02:00:00] =========================================
+[2026-01-17 02:00:00] Starting hourly deployment
+[2026-01-17 02:00:00] Starting hourly deployment
+[2026-01-17 02:00:00] =========================================
+[2026-01-17 02:00:00] =========================================
+[2026-01-17 02:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 02:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 02:00:01] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 02:00:01] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 02:00:01] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 02:00:01] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 02:00:01] =========================================
+[2026-01-17 02:00:01] =========================================
+[2026-01-17 02:00:01] 
+[2026-01-17 02:00:01] 
+[2026-01-17 03:00:00] =========================================
+[2026-01-17 03:00:00] =========================================
+[2026-01-17 03:00:00] Starting hourly deployment
+[2026-01-17 03:00:00] Starting hourly deployment
+[2026-01-17 03:00:00] =========================================
+[2026-01-17 03:00:00] =========================================
+[2026-01-17 03:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 03:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 03:00:00] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 03:00:00] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 03:00:00] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 03:00:00] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 03:00:00] =========================================
+[2026-01-17 03:00:00] =========================================
+[2026-01-17 03:00:00] 
+[2026-01-17 03:00:00] 
+[2026-01-17 04:00:00] =========================================
+[2026-01-17 04:00:00] =========================================
+[2026-01-17 04:00:00] Starting hourly deployment
+[2026-01-17 04:00:00] Starting hourly deployment
+[2026-01-17 04:00:00] =========================================
+[2026-01-17 04:00:00] =========================================
+[2026-01-17 04:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 04:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 04:00:00] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 04:00:00] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 04:00:00] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 04:00:00] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 04:00:00] =========================================
+[2026-01-17 04:00:00] =========================================
+[2026-01-17 04:00:00] 
+[2026-01-17 04:00:00] 
+[2026-01-17 05:00:00] =========================================
+[2026-01-17 05:00:00] =========================================
+[2026-01-17 05:00:00] Starting hourly deployment
+[2026-01-17 05:00:00] Starting hourly deployment
+[2026-01-17 05:00:00] =========================================
+[2026-01-17 05:00:00] =========================================
+[2026-01-17 05:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 05:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 05:00:00] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 05:00:00] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 05:00:00] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 05:00:00] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 05:00:00] =========================================
+[2026-01-17 05:00:00] =========================================
+[2026-01-17 05:00:00] 
+[2026-01-17 05:00:00] 
+[2026-01-17 06:00:00] =========================================
+[2026-01-17 06:00:00] =========================================
+[2026-01-17 06:00:00] Starting hourly deployment
+[2026-01-17 06:00:00] Starting hourly deployment
+[2026-01-17 06:00:00] =========================================
+[2026-01-17 06:00:00] =========================================
+[2026-01-17 06:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 06:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 06:00:00] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 06:00:00] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 06:00:00] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 06:00:00] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 06:00:00] =========================================
+[2026-01-17 06:00:00] =========================================
+[2026-01-17 06:00:00] 
+[2026-01-17 06:00:00] 
+[2026-01-17 07:00:01] =========================================
+[2026-01-17 07:00:01] =========================================
+[2026-01-17 07:00:01] Starting hourly deployment
+[2026-01-17 07:00:01] Starting hourly deployment
+[2026-01-17 07:00:01] =========================================
+[2026-01-17 07:00:01] =========================================
+[2026-01-17 07:00:01] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 07:00:01] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 07:00:01] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 07:00:01] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 07:00:01] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 07:00:01] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 07:00:01] =========================================
+[2026-01-17 07:00:01] =========================================
+[2026-01-17 07:00:01] 
+[2026-01-17 07:00:01] 
+[2026-01-17 08:00:01] =========================================
+[2026-01-17 08:00:01] =========================================
+[2026-01-17 08:00:01] Starting hourly deployment
+[2026-01-17 08:00:01] Starting hourly deployment
+[2026-01-17 08:00:01] =========================================
+[2026-01-17 08:00:01] =========================================
+[2026-01-17 08:00:01] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 08:00:01] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 08:00:01] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 08:00:01] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 08:00:01] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 08:00:01] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 08:00:01] =========================================
+[2026-01-17 08:00:01] =========================================
+[2026-01-17 08:00:01] 
+[2026-01-17 08:00:01] 
+[2026-01-17 09:00:00] =========================================
+[2026-01-17 09:00:00] =========================================
+[2026-01-17 09:00:00] Starting hourly deployment
+[2026-01-17 09:00:00] Starting hourly deployment
+[2026-01-17 09:00:00] =========================================
+[2026-01-17 09:00:00] =========================================
+[2026-01-17 09:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 09:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 09:00:00] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 09:00:00] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 09:00:00] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 09:00:00] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 09:00:00] =========================================
+[2026-01-17 09:00:00] =========================================
+[2026-01-17 09:00:00] 
+[2026-01-17 09:00:00] 
+[2026-01-17 10:00:00] =========================================
+[2026-01-17 10:00:00] =========================================
+[2026-01-17 10:00:00] Starting hourly deployment
+[2026-01-17 10:00:00] Starting hourly deployment
+[2026-01-17 10:00:00] =========================================
+[2026-01-17 10:00:00] =========================================
+[2026-01-17 10:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 10:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 10:00:00] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 10:00:00] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 10:00:00] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 10:00:00] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 10:00:00] =========================================
+[2026-01-17 10:00:00] =========================================
+[2026-01-17 10:00:00] 
+[2026-01-17 10:00:00] 
+[2026-01-17 11:00:00] =========================================
+[2026-01-17 11:00:00] =========================================
+[2026-01-17 11:00:00] Starting hourly deployment
+[2026-01-17 11:00:00] Starting hourly deployment
+[2026-01-17 11:00:00] =========================================
+[2026-01-17 11:00:00] =========================================
+[2026-01-17 11:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 11:00:00] Running: /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh
+[2026-01-17 11:00:00] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 11:00:00] /Users/juliocasalmartin/Library/CloudStorage/Dropbox/Julio/TrendAnalyzer/deploy.sh: line 5: node: command not found
+[2026-01-17 11:00:00] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 11:00:00] ❌ Hourly deployment failed with exit code: 127
+[2026-01-17 11:00:00] =========================================
+[2026-01-17 11:00:00] =========================================
+[2026-01-17 11:00:00] 
+[2026-01-17 11:00:00] 
