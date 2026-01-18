@@ -190,64 +190,71 @@ export default function Home() {
 
   // Filter ticker groups based on selection, search term, and label filter
   const filteredGroups = useMemo(() => {
-    let groups = tickerGroups;
-    
-    // Filter by ticker dropdown
-    if (filterTicker !== 'all') {
-      groups = groups.filter(g => g.baseTicker === filterTicker);
-    }
-    
-    // Filter by label dropdown
-    if (filterLabel !== 'all' && typeof filterLabel === 'string') {
-      groups = groups.filter(g => {
-        if (!g || !g.keywords || !Array.isArray(g.keywords) || g.keywords.length === 0) return false;
+    try {
+      if (!Array.isArray(tickerGroups)) return [];
+      let groups = tickerGroups;
+      
+      // Filter by ticker dropdown
+      if (filterTicker !== 'all') {
+        groups = groups.filter(g => g && g.baseTicker === filterTicker);
+      }
+      
+      // Filter by label dropdown
+      if (filterLabel !== 'all' && typeof filterLabel === 'string') {
+        groups = groups.filter(g => {
+          if (!g || !g.keywords || !Array.isArray(g.keywords) || g.keywords.length === 0) return false;
+          try {
+            const companyName = getCompanyNameFromGroup(g);
+            if (typeof companyName !== 'string' || !companyName) return false;
+            return g.keywords.some(kw => {
+              if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return false;
+              try {
+                const label = extractLabel(kw.keyword, companyName);
+                return label === filterLabel;
+              } catch (err) {
+                return false;
+              }
+            });
+          } catch (err) {
+            return false;
+          }
+        });
+      }
+      
+      // Filter by search term - only show tickers that have keywords matching the search
+      if (typeof searchTerm === 'string' && searchTerm.trim()) {
         try {
-          const companyName = getCompanyNameFromGroup(g);
-          if (typeof companyName !== 'string' || !companyName) return false;
-          return g.keywords.some(kw => {
-            if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return false;
-            try {
-              const label = extractLabel(kw.keyword, companyName);
-              return label === filterLabel;
-            } catch (err) {
+          const searchLower = searchTerm.toLowerCase().trim();
+          groups = groups.filter(g => {
+            if (!g || !g.keywords || !Array.isArray(g.keywords)) return false;
+            return g.keywords.some(kw => {
+              if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return false;
+              try {
+                return kw.keyword.toLowerCase().includes(searchLower);
+              } catch (err) {
               return false;
             }
+            });
           });
         } catch (err) {
-          return false;
+          // If search term processing fails, don't filter
         }
-      });
-    }
-    
-    // Filter by search term - only show tickers that have keywords matching the search
-    if (typeof searchTerm === 'string' && searchTerm.trim()) {
-      try {
-        const searchLower = searchTerm.toLowerCase().trim();
-        groups = groups.filter(g => {
-          if (!g || !g.keywords || !Array.isArray(g.keywords)) return false;
-          return g.keywords.some(kw => {
-            if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return false;
-            try {
-              return kw.keyword.toLowerCase().includes(searchLower);
-            } catch (err) {
-              return false;
-            }
-          });
-        });
-      } catch (err) {
-        // If search term processing fails, don't filter
       }
+      
+      return groups;
+    } catch (err) {
+      console.error('Error in filteredGroups useMemo:', err);
+      return [];
     }
-    
-    return groups;
   }, [tickerGroups, filterTicker, filterLabel, searchTerm]);
 
   // Extract unique labels from keywords (words after company name)
   const extractLabel = (keyword: string, companyName: string): string | null => {
-    if (typeof keyword !== 'string' || typeof companyName !== 'string') return null;
-    if (!keyword || !companyName) return null;
-    const keywordLower = keyword.toLowerCase();
-    const companyLower = companyName.toLowerCase();
+    try {
+      if (typeof keyword !== 'string' || typeof companyName !== 'string') return null;
+      if (!keyword || !companyName) return null;
+      const keywordLower = keyword.toLowerCase();
+      const companyLower = companyName.toLowerCase();
     
     // If keyword is exactly the company name, no label
     if (keywordLower === companyLower) {
@@ -307,6 +314,9 @@ export default function Home() {
     
     // If no match, return the label as-is (could be a compound label like "sign up")
     return label || null;
+    } catch (err) {
+      return null;
+    }
   };
 
   // Get company name from ticker group (use first keyword as base)
@@ -345,29 +355,38 @@ export default function Home() {
 
   // Extract all unique labels from all ticker groups
   const allLabels = useMemo(() => {
-    const labelSet = new Set<string>();
-    
-    if (!Array.isArray(tickerGroups)) return [];
-    
-    tickerGroups.forEach(group => {
-      if (!group || !group.keywords || !Array.isArray(group.keywords)) return;
-      const companyName = getCompanyNameFromGroup(group);
-      if (typeof companyName !== 'string' || !companyName) return;
+    try {
+      const labelSet = new Set<string>();
       
-      group.keywords.forEach(kw => {
-        if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return;
+      if (!Array.isArray(tickerGroups) || tickerGroups.length === 0) return [];
+      
+      tickerGroups.forEach(group => {
+        if (!group || !group.keywords || !Array.isArray(group.keywords)) return;
         try {
-          const label = extractLabel(kw.keyword, companyName);
-          if (label && typeof label === 'string') {
-            labelSet.add(label);
-          }
+          const companyName = getCompanyNameFromGroup(group);
+          if (typeof companyName !== 'string' || !companyName) return;
+          
+          group.keywords.forEach(kw => {
+            if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return;
+            try {
+              const label = extractLabel(kw.keyword, companyName);
+              if (label && typeof label === 'string') {
+                labelSet.add(label);
+              }
+            } catch (err) {
+              console.warn('Error extracting label:', err, { keyword: kw.keyword, companyName });
+            }
+          });
         } catch (err) {
-          console.warn('Error extracting label:', err, { keyword: kw.keyword, companyName });
+          console.warn('Error processing group:', err, { group });
         }
       });
-    });
-    
-    return Array.from(labelSet).sort();
+      
+      return Array.from(labelSet).sort();
+    } catch (err) {
+      console.error('Error in allLabels useMemo:', err);
+      return [];
+    }
   }, [tickerGroups]);
 
   // Unique tickers for the dropdown
