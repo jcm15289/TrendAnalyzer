@@ -213,8 +213,15 @@ export default function Home() {
     // Filter by search term - only show tickers that have keywords matching the search
     if (searchTerm.trim()) {
       const searchLower = searchTerm.toLowerCase().trim();
-      groups = groups.filter(g => 
-        g && g.keywords && g.keywords.some(kw => kw && kw.keyword && kw.keyword.toLowerCase().includes(searchLower))
+      groups = groups.filter(g =>
+        g &&
+        g.keywords &&
+        g.keywords.some(
+          kw =>
+            kw &&
+            typeof kw.keyword === 'string' &&
+            kw.keyword.toLowerCase().includes(searchLower),
+        ),
       );
     }
     
@@ -223,6 +230,7 @@ export default function Home() {
 
   // Extract unique labels from keywords (words after company name)
   const extractLabel = (keyword: string, companyName: string): string | null => {
+    if (typeof keyword !== 'string' || typeof companyName !== 'string') return null;
     if (!keyword || !companyName) return null;
     const keywordLower = keyword.toLowerCase();
     const companyLower = companyName.toLowerCase();
@@ -291,7 +299,7 @@ export default function Home() {
   const getCompanyNameFromGroup = (group: TickerGroup): string => {
     if (!group || !group.keywords || group.keywords.length === 0) return group?.baseTicker || '';
     const firstKeyword = group.keywords[0]?.keyword;
-    if (!firstKeyword) return group.baseTicker || '';
+    if (typeof firstKeyword !== 'string' || !firstKeyword) return group.baseTicker || '';
     // Remove common suffixes to get base company name
     const suffixes = [' login', ' register', ' sign up', ' signup', ' cloud', ' ads'];
     let companyName = firstKeyword;
