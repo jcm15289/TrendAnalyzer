@@ -200,8 +200,10 @@ export default function Home() {
     // Filter by label dropdown
     if (filterLabel !== 'all') {
       groups = groups.filter(g => {
+        if (!g || !g.keywords || g.keywords.length === 0) return false;
         const companyName = getCompanyNameFromGroup(g);
         return g.keywords.some(kw => {
+          if (!kw || !kw.keyword) return false;
           const label = extractLabel(kw.keyword, companyName);
           return label === filterLabel;
         });
@@ -212,7 +214,7 @@ export default function Home() {
     if (searchTerm.trim()) {
       const searchLower = searchTerm.toLowerCase().trim();
       groups = groups.filter(g => 
-        g.keywords.some(kw => kw.keyword.toLowerCase().includes(searchLower))
+        g && g.keywords && g.keywords.some(kw => kw && kw.keyword && kw.keyword.toLowerCase().includes(searchLower))
       );
     }
     
@@ -221,6 +223,7 @@ export default function Home() {
 
   // Extract unique labels from keywords (words after company name)
   const extractLabel = (keyword: string, companyName: string): string | null => {
+    if (!keyword || !companyName) return null;
     const keywordLower = keyword.toLowerCase();
     const companyLower = companyName.toLowerCase();
     
@@ -286,18 +289,19 @@ export default function Home() {
 
   // Get company name from ticker group (use first keyword as base)
   const getCompanyNameFromGroup = (group: TickerGroup): string => {
-    if (group.keywords.length === 0) return group.baseTicker;
-    const firstKeyword = group.keywords[0].keyword;
+    if (!group || !group.keywords || group.keywords.length === 0) return group?.baseTicker || '';
+    const firstKeyword = group.keywords[0]?.keyword;
+    if (!firstKeyword) return group.baseTicker || '';
     // Remove common suffixes to get base company name
     const suffixes = [' login', ' register', ' sign up', ' signup', ' cloud', ' ads'];
     let companyName = firstKeyword;
     for (const suffix of suffixes) {
-      if (companyName.toLowerCase().endsWith(suffix.toLowerCase())) {
+      if (companyName && companyName.toLowerCase().endsWith(suffix.toLowerCase())) {
         companyName = companyName.slice(0, -suffix.length).trim();
         break;
       }
     }
-    return companyName || firstKeyword;
+    return companyName || firstKeyword || group.baseTicker || '';
   };
 
   // Extract all unique labels from all ticker groups
@@ -305,8 +309,10 @@ export default function Home() {
     const labelSet = new Set<string>();
     
     tickerGroups.forEach(group => {
+      if (!group || !group.keywords) return;
       const companyName = getCompanyNameFromGroup(group);
       group.keywords.forEach(kw => {
+        if (!kw || !kw.keyword) return;
         const label = extractLabel(kw.keyword, companyName);
         if (label) {
           labelSet.add(label);
@@ -322,7 +328,7 @@ export default function Home() {
     return tickerGroups.map(g => g.baseTicker).sort();
   }, [tickerGroups]);
 
-  return (
+    return (
     <TooltipProvider>
       <div className="flex min-h-screen w-full flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
         <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur-sm">
@@ -344,7 +350,7 @@ export default function Home() {
                         {buildTimeDisplay}
                       </span>
                     )}
-                  </div>
+          </div>
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="text-center">
@@ -361,7 +367,7 @@ export default function Home() {
                             timeZoneName: 'short',
                           })}`
                         : 'Build time unavailable'}
-                    </div>
+          </div>
                     <div className="text-xs text-muted-foreground">ALLSYMS-Based Architecture</div>
           </div>
                 </TooltipContent>
@@ -390,7 +396,7 @@ export default function Home() {
                       <X className="h-4 w-4" />
                     </button>
                   )}
-                </div>
+      </div>
                 
                 {/* Label filter dropdown */}
                 <Select value={filterLabel} onValueChange={setFilterLabel}>
