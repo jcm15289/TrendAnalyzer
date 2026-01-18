@@ -198,31 +198,45 @@ export default function Home() {
     }
     
     // Filter by label dropdown
-    if (filterLabel !== 'all') {
+    if (filterLabel !== 'all' && typeof filterLabel === 'string') {
       groups = groups.filter(g => {
-        if (!g || !g.keywords || g.keywords.length === 0) return false;
-        const companyName = getCompanyNameFromGroup(g);
-        return g.keywords.some(kw => {
-          if (!kw || !kw.keyword) return false;
-          const label = extractLabel(kw.keyword, companyName);
-          return label === filterLabel;
-        });
+        if (!g || !g.keywords || !Array.isArray(g.keywords) || g.keywords.length === 0) return false;
+        try {
+          const companyName = getCompanyNameFromGroup(g);
+          if (typeof companyName !== 'string' || !companyName) return false;
+          return g.keywords.some(kw => {
+            if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return false;
+            try {
+              const label = extractLabel(kw.keyword, companyName);
+              return label === filterLabel;
+            } catch (err) {
+              return false;
+            }
+          });
+        } catch (err) {
+          return false;
+        }
       });
     }
     
     // Filter by search term - only show tickers that have keywords matching the search
-    if (searchTerm.trim()) {
-      const searchLower = searchTerm.toLowerCase().trim();
-      groups = groups.filter(g =>
-        g &&
-        g.keywords &&
-        g.keywords.some(
-          kw =>
-            kw &&
-            typeof kw.keyword === 'string' &&
-            kw.keyword.toLowerCase().includes(searchLower),
-        ),
-      );
+    if (typeof searchTerm === 'string' && searchTerm.trim()) {
+      try {
+        const searchLower = searchTerm.toLowerCase().trim();
+        groups = groups.filter(g => {
+          if (!g || !g.keywords || !Array.isArray(g.keywords)) return false;
+          return g.keywords.some(kw => {
+            if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return false;
+            try {
+              return kw.keyword.toLowerCase().includes(searchLower);
+            } catch (err) {
+              return false;
+            }
+          });
+        });
+      } catch (err) {
+        // If search term processing fails, don't filter
+      }
     }
     
     return groups;
@@ -297,33 +311,58 @@ export default function Home() {
 
   // Get company name from ticker group (use first keyword as base)
   const getCompanyNameFromGroup = (group: TickerGroup): string => {
-    if (!group || !group.keywords || group.keywords.length === 0) return group?.baseTicker || '';
-    const firstKeyword = group.keywords[0]?.keyword;
-    if (typeof firstKeyword !== 'string' || !firstKeyword) return group.baseTicker || '';
-    // Remove common suffixes to get base company name
-    const suffixes = [' login', ' register', ' sign up', ' signup', ' cloud', ' ads'];
-    let companyName = firstKeyword;
-    for (const suffix of suffixes) {
-      if (companyName && companyName.toLowerCase().endsWith(suffix.toLowerCase())) {
-        companyName = companyName.slice(0, -suffix.length).trim();
-        break;
+    try {
+      if (!group || !group.keywords || !Array.isArray(group.keywords) || group.keywords.length === 0) {
+        return (group?.baseTicker && typeof group.baseTicker === 'string') ? group.baseTicker : '';
       }
+      const firstKeyword = group.keywords[0]?.keyword;
+      if (typeof firstKeyword !== 'string' || !firstKeyword) {
+        return (group.baseTicker && typeof group.baseTicker === 'string') ? group.baseTicker : '';
+      }
+      // Remove common suffixes to get base company name
+      const suffixes = [' login', ' register', ' sign up', ' signup', ' cloud', ' ads'];
+      let companyName = firstKeyword;
+      for (const suffix of suffixes) {
+        if (typeof companyName === 'string' && companyName && typeof suffix === 'string') {
+          try {
+            if (companyName.toLowerCase().endsWith(suffix.toLowerCase())) {
+              companyName = companyName.slice(0, -suffix.length).trim();
+              break;
+            }
+          } catch (err) {
+            // Continue to next suffix if toLowerCase fails
+            continue;
+          }
+        }
+      }
+      return (typeof companyName === 'string' && companyName) ? companyName : 
+             (typeof firstKeyword === 'string' && firstKeyword) ? firstKeyword :
+             (group.baseTicker && typeof group.baseTicker === 'string') ? group.baseTicker : '';
+    } catch (err) {
+      return (group?.baseTicker && typeof group.baseTicker === 'string') ? group.baseTicker : '';
     }
-    return companyName || firstKeyword || group.baseTicker || '';
   };
 
   // Extract all unique labels from all ticker groups
   const allLabels = useMemo(() => {
     const labelSet = new Set<string>();
     
+    if (!Array.isArray(tickerGroups)) return [];
+    
     tickerGroups.forEach(group => {
-      if (!group || !group.keywords) return;
+      if (!group || !group.keywords || !Array.isArray(group.keywords)) return;
       const companyName = getCompanyNameFromGroup(group);
+      if (typeof companyName !== 'string' || !companyName) return;
+      
       group.keywords.forEach(kw => {
-        if (!kw || !kw.keyword) return;
-        const label = extractLabel(kw.keyword, companyName);
-        if (label) {
-          labelSet.add(label);
+        if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return;
+        try {
+          const label = extractLabel(kw.keyword, companyName);
+          if (label && typeof label === 'string') {
+            labelSet.add(label);
+          }
+        } catch (err) {
+          console.warn('Error extracting label:', err, { keyword: kw.keyword, companyName });
         }
       });
     });
