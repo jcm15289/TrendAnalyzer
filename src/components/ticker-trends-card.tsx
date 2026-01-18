@@ -204,70 +204,125 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
   
   // Extract company name helper
   const getCompanyName = useCallback((keywords: typeof tickerGroup.keywords): string => {
-    if (keywords.length === 0) return '';
-    const firstKeyword = keywords[0].keyword;
-    const suffixes = [' login', ' register', ' sign up', ' signup', ' cloud', ' ads', ' subscription'];
-    let companyName = firstKeyword;
-    for (const suffix of suffixes) {
-      if (companyName.toLowerCase().endsWith(suffix.toLowerCase())) {
-        companyName = companyName.slice(0, -suffix.length).trim();
-        break;
+    try {
+      if (!keywords || !Array.isArray(keywords) || keywords.length === 0) return '';
+      const firstKeyword = keywords[0]?.keyword;
+      if (typeof firstKeyword !== 'string' || !firstKeyword) return '';
+      const suffixes = [' login', ' register', ' sign up', ' signup', ' cloud', ' ads', ' subscription'];
+      let companyName = firstKeyword;
+      for (const suffix of suffixes) {
+        if (typeof companyName === 'string' && companyName && typeof suffix === 'string') {
+          try {
+            if (companyName.toLowerCase().endsWith(suffix.toLowerCase())) {
+              companyName = companyName.slice(0, -suffix.length).trim();
+              break;
+            }
+          } catch (err) {
+            continue;
+          }
+        }
       }
+      return (typeof companyName === 'string' && companyName) ? companyName : '';
+    } catch (err) {
+      return '';
     }
-    return companyName;
   }, [tickerGroup.keywords]);
 
   // Extract label helper
   const extractLabel = useCallback((keyword: string, companyName: string): string | null => {
-    const keywordLower = keyword.toLowerCase();
-    const companyLower = companyName.toLowerCase();
-    
-    if (keywordLower === companyLower) return null;
-    
-    let label = keywordLower;
-    if (keywordLower.startsWith(companyLower + ' ')) {
-      label = keywordLower.substring(companyLower.length + 1).trim();
-    } else if (keywordLower.startsWith(companyLower)) {
-      label = keywordLower.substring(companyLower.length).trim();
-    }
-    
-    const commonLabels = ['login', 'sign up', 'signup', 'subscription', 'register', 'cloud', 'ads', 'driver', 'ride', 'near'];
-    for (const commonLabel of commonLabels) {
-      if (label === commonLabel || label.startsWith(commonLabel + ' ') || label.endsWith(' ' + commonLabel)) {
-        return commonLabel;
+    try {
+      if (typeof keyword !== 'string' || typeof companyName !== 'string') return null;
+      if (!keyword || !companyName) return null;
+      const keywordLower = keyword.toLowerCase();
+      const companyLower = companyName.toLowerCase();
+      
+      if (keywordLower === companyLower) return null;
+      
+      let label = keywordLower;
+      if (keywordLower.startsWith(companyLower + ' ')) {
+        label = keywordLower.substring(companyLower.length + 1).trim();
+      } else if (keywordLower.startsWith(companyLower)) {
+        label = keywordLower.substring(companyLower.length).trim();
       }
+      
+      const commonLabels = ['login', 'sign up', 'signup', 'subscription', 'register', 'cloud', 'ads', 'driver', 'ride', 'near'];
+      for (const commonLabel of commonLabels) {
+        if (label === commonLabel || label.startsWith(commonLabel + ' ') || label.endsWith(' ' + commonLabel)) {
+          return commonLabel;
+        }
+      }
+      return label || null;
+    } catch (err) {
+      return null;
     }
-    return label || null;
   }, []);
   
   // Update enabled keywords when searchTerm or filterLabel changes
   useEffect(() => {
     if (!foundKeywords.length && !hasStockData) return;
     
-    const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
-    const apiToDisplayMap = new Map<string, string>();
-    tickerGroup.keywords.forEach(tk => {
-      const normalized = normalizeKeyword(tk.keyword);
-      const matchingApiKeyword = foundKeywords.find(fk => normalizeKeyword(fk) === normalized);
-      if (matchingApiKeyword) {
-        apiToDisplayMap.set(matchingApiKeyword, tk.keyword);
+    const normalizeKeyword = (k: string) => {
+      if (typeof k !== 'string' || !k) return '';
+      try {
+        return k.replace(/\s+/g, '').toLowerCase();
+      } catch (err) {
+        return '';
       }
-    });
+    };
+    
+    const apiToDisplayMap = new Map<string, string>();
+    if (tickerGroup.keywords && Array.isArray(tickerGroup.keywords)) {
+      tickerGroup.keywords.forEach(tk => {
+        if (!tk || typeof tk.keyword !== 'string' || !tk.keyword) return;
+        try {
+          const normalized = normalizeKeyword(tk.keyword);
+          const matchingApiKeyword = foundKeywords.find(fk => {
+            if (typeof fk !== 'string' || !fk) return false;
+            try {
+              return normalizeKeyword(fk) === normalized;
+            } catch (err) {
+              return false;
+            }
+          });
+          if (matchingApiKeyword) {
+            apiToDisplayMap.set(matchingApiKeyword, tk.keyword);
+          }
+        } catch (err) {
+          // Skip this keyword if normalization fails
+        }
+      });
+    }
     
     const companyName = getCompanyName(tickerGroup.keywords);
     
     let enabledDisplayKeywords: string[] = [];
-    if (searchTerm.trim()) {
-      const searchLower = searchTerm.toLowerCase().trim();
-      enabledDisplayKeywords = Array.from(apiToDisplayMap.values()).filter(displayKw =>
-        displayKw.toLowerCase().includes(searchLower)
-      );
-      setIsPriceEnabled(hasStockData && "price".includes(searchLower));
-    } else if (filterLabel !== 'all') {
+    if (typeof searchTerm === 'string' && searchTerm.trim()) {
+      try {
+        const searchLower = searchTerm.toLowerCase().trim();
+        enabledDisplayKeywords = Array.from(apiToDisplayMap.values()).filter(displayKw => {
+          if (typeof displayKw !== 'string' || !displayKw) return false;
+          try {
+            return displayKw.toLowerCase().includes(searchLower);
+          } catch (err) {
+            return false;
+          }
+        });
+        setIsPriceEnabled(hasStockData && "price".includes(searchLower));
+      } catch (err) {
+        // If search term processing fails, enable all keywords
+        enabledDisplayKeywords = Array.from(apiToDisplayMap.values());
+        setIsPriceEnabled(true);
+      }
+    } else if (typeof filterLabel === 'string' && filterLabel !== 'all') {
       // When filtering by label, only enable keywords with that label
       enabledDisplayKeywords = Array.from(apiToDisplayMap.values()).filter(displayKw => {
-        const label = extractLabel(displayKw, companyName);
-        return label === filterLabel;
+        if (typeof displayKw !== 'string' || !displayKw) return false;
+        try {
+          const label = extractLabel(displayKw, companyName);
+          return label === filterLabel;
+        } catch (err) {
+          return false;
+        }
       });
       setIsPriceEnabled(false);
     } else {
