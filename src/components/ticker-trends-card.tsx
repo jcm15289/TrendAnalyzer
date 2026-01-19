@@ -66,6 +66,22 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
   const [hasStockData, setHasStockData] = useState(false);
   const [isPriceEnabled, setIsPriceEnabled] = useState(true);
 
+  if (!tickerGroup || !Array.isArray(tickerGroup.keywords)) {
+    return (
+      <Card className="overflow-hidden">
+        <CardHeader className="pb-2">
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <AlertCircle className="h-5 w-5 text-red-500" />
+            Invalid ticker data
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm text-muted-foreground">This ticker group is missing keywords.</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   const fetchStockPrice = async (ticker: string) => {
     try {
       const response = await fetch(`/api/redis/stock?symbol=${ticker}`);
@@ -421,6 +437,8 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     return { min: Math.floor(Math.max(0, min - padding)), max: Math.ceil(max + padding) };
   }, [hasStockData, isPriceEnabled, combinedData]);
 
+  const hasPriceAxis = hasStockData && isPriceEnabled && !!priceRange;
+
   const strokeWidth = isWideLayout ? 2 : 1.5;
   
   // Get company name from keywords
@@ -618,7 +636,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
       <CardContent className="pt-2">
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={filteredData} margin={{ top: 10, right: hasStockData && isPriceEnabled ? 50 : 30, left: 0, bottom: 0 }}>
+            <ComposedChart data={filteredData} margin={{ top: 10, right: hasPriceAxis ? 50 : 30, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e5e5" />
               <XAxis
                 dataKey="date"
@@ -636,7 +654,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
                 domain={[0, 100]}
                 label={{ value: 'Trends', angle: -90, position: 'insideLeft' }}
               />
-              {hasStockData && isPriceEnabled && priceRange && (
+              {hasPriceAxis && (
                 <YAxis
                   yAxisId="price"
                   orientation="right"
@@ -687,7 +705,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
                   />
                 );
               })}
-              {hasStockData && isPriceEnabled && (
+              {hasPriceAxis && (
                 <Line
                   yAxisId="price"
                   type="monotone"
