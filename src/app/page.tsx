@@ -42,6 +42,7 @@ interface TickerGroup {
 }
 
 export default function Home() {
+  const [isMounted, setIsMounted] = useState(false);
   const [tickerGroups, setTickerGroups] = useState<TickerGroup[]>([]);
   const [isConfigDialogOpen, setConfigDialogOpen] = useState(false);
   const [isCommandMenuOpen, setCommandMenuOpen] = useState(false);
@@ -55,7 +56,9 @@ export default function Home() {
   const [tickersWithData, setTickersWithData] = useState<Set<string>>(new Set());
   const searchInputRef = useRef<HTMLInputElement>(null);
   
+  // Mark component as mounted to prevent SSR hydration issues
   useEffect(() => {
+    setIsMounted(true);
     setIsLocalhost(typeof window !== 'undefined' && window.location.hostname === 'localhost');
   }, []);
 
@@ -86,7 +89,8 @@ export default function Home() {
     }
   }, []);
 
-  const buildTimeDisplay = buildTime
+  // Only compute buildTimeDisplay after mount to prevent hydration mismatch
+  const buildTimeDisplay = isMounted && buildTime
     ? buildTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
     : null;
 
@@ -140,14 +144,18 @@ export default function Home() {
 
     loadTickerGroups();
 
-    // Load layout preference
-    const savedLayout = localStorage.getItem('trends-layout-mode');
-    if (savedLayout === 'multi' || savedLayout === 'single') {
-      setLayoutMode(savedLayout);
+    // Load layout preference (only after mount to prevent hydration issues)
+    if (isMounted) {
+      const savedLayout = localStorage.getItem('trends-layout-mode');
+      if (savedLayout === 'multi' || savedLayout === 'single') {
+        setLayoutMode(savedLayout);
+      }
     }
-  }, []);
+  }, [isMounted]);
 
   useEffect(() => {
+    if (!isMounted) return; // Only attach listeners after mount
+    
     const down = (e: KeyboardEvent) => {
       // "/" key to focus search (unless already typing in an input)
       if (e.key === '/' && !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)) {
@@ -167,7 +175,7 @@ export default function Home() {
     };
     document.addEventListener('keydown', down);
     return () => document.removeEventListener('keydown', down);
-  }, [searchTerm]);
+  }, [searchTerm, isMounted]);
 
   const toggleLayoutMode = () => {
     const newMode = layoutMode === 'single' ? 'multi' : 'single';
@@ -422,7 +430,7 @@ export default function Home() {
                   <div className="text-center">
                     <div className="font-semibold">TrendsAnalyzer v{buildVersion}</div>
                     <div className="text-xs text-muted-foreground">
-                      {buildTime
+                      {isMounted && buildTime
                         ? `Build time: ${buildTime.toLocaleString('en-US', {
                             timeZone: 'America/Los_Angeles',
                             year: 'numeric',
