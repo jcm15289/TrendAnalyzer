@@ -414,7 +414,7 @@ export default function Home() {
                     <TrendingUp className="h-6 w-6 text-[#FF6B35]" strokeWidth={2.5} />
                     <h1 className={cn(
                       "text-2xl font-bold tracking-tight leading-none",
-                      isLocalhost ? "text-red-600" : "text-[#FF6B35]"
+                      isMounted && isLocalhost ? "text-red-600" : "text-[#FF6B35]"
                     )}>TrendsAnalyzer</h1>
                     {buildTimeDisplay && (
                       <span
