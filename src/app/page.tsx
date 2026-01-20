@@ -78,6 +78,8 @@ export default function Home() {
   );
 
   useEffect(() => {
+    if (!isMounted) return; // Only access window/document after mount
+    
     const globalTimestamp =
       (window as any).__BUILD_TIMESTAMP ||
       (window as any).__NEXT_DATA__?.props?.buildTimestamp ||
@@ -87,7 +89,7 @@ export default function Home() {
     if (parsed) {
       setBuildTime(parsed);
     }
-  }, []);
+  }, [isMounted]);
 
   // Only compute buildTimeDisplay after mount to prevent hydration mismatch
   const buildTimeDisplay = isMounted && buildTime
@@ -531,18 +533,18 @@ export default function Home() {
                   onClick={toggleLayoutMode} 
                       className="flex items-center gap-2"
                 >
-                  {layoutMode === 'single' ? (
+                  {isMounted && layoutMode === 'single' ? (
                     <LayoutGrid className="h-4 w-4" />
                   ) : (
                     <Rows3 className="h-4 w-4" />
                   )}
-                      <span className="hidden sm:inline">
-                        {layoutMode === 'single' ? 'Grid' : 'Single'}
+                  <span className="hidden sm:inline">
+                        {isMounted && layoutMode === 'single' ? 'Grid' : 'Single'}
                   </span>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                {layoutMode === 'single' ? 'Switch to grid layout' : 'Switch to single column layout'}
+                {isMounted && layoutMode === 'single' ? 'Switch to grid layout' : 'Switch to single column layout'}
               </TooltipContent>
             </Tooltip>
 
@@ -599,10 +601,10 @@ export default function Home() {
             </div>
           )}
 
-          {!isLoading && !error && filteredGroups.length > 0 && (
+          {!isLoading && !error && filteredGroups.length > 0 && isMounted && (
         <div className={cn(
           "grid gap-6",
-          layoutMode === 'single' 
+          isMounted && layoutMode === 'single' 
             ? "grid-cols-1" 
             : "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3"
         )}>
@@ -610,7 +612,7 @@ export default function Home() {
                 <TickerTrendsCard
                   key={group.baseTicker}
                   tickerGroup={group}
-              isWideLayout={layoutMode === 'single'}
+              isWideLayout={isMounted && layoutMode === 'single'}
                   searchTerm={searchTerm}
                   filterLabel={filterLabel}
                   onDataFound={handleDataFound}
@@ -639,12 +641,12 @@ export default function Home() {
                   toggleLayoutMode();
                 }}
               >
-                {layoutMode === 'single' ? (
+                {isMounted && layoutMode === 'single' ? (
                   <LayoutGrid className="mr-2 h-4 w-4" />
                 ) : (
                   <Rows3 className="mr-2 h-4 w-4" />
                 )}
-                <span>Switch to {layoutMode === 'single' ? 'Grid' : 'Single Column'} Layout</span>
+                <span>Switch to {isMounted && layoutMode === 'single' ? 'Grid' : 'Single Column'} Layout</span>
               </CommandItem>
               <CommandItem
                 onSelect={() => {
