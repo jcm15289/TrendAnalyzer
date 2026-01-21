@@ -373,6 +373,11 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     return isPriceEnabled;
   }, [filterLabel, searchTerm, computedIsPriceEnabled, isPriceEnabled]);
 
+  // Create a stable key for enabled keywords to use in dependency arrays
+  const enabledKeywordsKey = useMemo(() => {
+    return Array.from(effectiveEnabledKeywords).sort().join(',');
+  }, [effectiveEnabledKeywords]);
+
   // Hide card if filtering is active but no keywords match
   // Only hide after data has loaded (foundKeywords.length > 0) to avoid hiding during initial load
   const shouldHideCard = useMemo(() => {
@@ -466,7 +471,8 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
       
       return hasAnyEnabledLine ? filtered : null;
     }).filter(Boolean) as TrendDataPoint[];
-  }, [combinedData, effectiveEnabledKeywords, foundKeywords, hasStockData, effectiveIsPriceEnabled, tickerGroup.keywords]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [combinedData, enabledKeywordsKey, foundKeywords, hasStockData, effectiveIsPriceEnabled, tickerGroup.keywords]);
   
   // Calculate price range for Y-axis scaling from merged data
   const priceRange = useMemo(() => {
