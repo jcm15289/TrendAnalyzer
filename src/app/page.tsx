@@ -58,27 +58,22 @@ export default function Home() {
   
   // Track if searchTerm was set by filterLabel (to avoid clearing user-typed searches)
   const searchTermFromLabelRef = useRef<string | null>(null);
-  const prevFilterLabelRef = useRef<string>('all');
   
   // When filterLabel changes, auto-write to search box
   useEffect(() => {
-    const prevFilterLabel = prevFilterLabelRef.current;
-    prevFilterLabelRef.current = filterLabel;
-    
     if (filterLabel !== 'all' && typeof filterLabel === 'string') {
-      // Only update if filterLabel actually changed
-      if (prevFilterLabel !== filterLabel) {
-        searchTermFromLabelRef.current = filterLabel;
-        setSearchTerm(filterLabel);
-      }
-    } else if (filterLabel === 'all' && prevFilterLabel !== 'all') {
-      // Only clear search if it was set by the label filter and we're switching away from a label
+      // Set searchTerm to match filterLabel
+      searchTermFromLabelRef.current = filterLabel;
+      setSearchTerm(filterLabel);
+    } else if (filterLabel === 'all') {
+      // Only clear search if it was set by the label filter
       if (searchTermFromLabelRef.current && searchTerm === searchTermFromLabelRef.current) {
         setSearchTerm('');
       }
       searchTermFromLabelRef.current = null;
     }
-  }, [filterLabel, searchTerm]); // Keep searchTerm to check if it matches what we set
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterLabel]); // Only depend on filterLabel to avoid circular updates
   
   // Mark component as mounted to prevent SSR hydration issues
   useEffect(() => {
