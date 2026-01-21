@@ -56,6 +56,16 @@ export default function Home() {
   const [tickersWithData, setTickersWithData] = useState<Set<string>>(new Set());
   const searchInputRef = useRef<HTMLInputElement>(null);
   
+  // When filterLabel changes, auto-write to search box
+  useEffect(() => {
+    if (filterLabel !== 'all' && typeof filterLabel === 'string') {
+      setSearchTerm(filterLabel);
+    } else if (filterLabel === 'all') {
+      // Clear search when "all" is selected
+      setSearchTerm('');
+    }
+  }, [filterLabel]);
+  
   // Mark component as mounted to prevent SSR hydration issues
   useEffect(() => {
     setIsMounted(true);
@@ -407,7 +417,7 @@ export default function Home() {
                   <div className="flex items-center gap-2 cursor-help">
                     <TrendingUp className="h-6 w-6 text-[#FF6B35]" strokeWidth={2.5} />
                     <h1 className={cn(
-                      "text-2xl font-bold tracking-tight leading-none",
+                      "text-2xl font-bold tracking-tight leading-none flex items-center",
                       isMounted && isLocalhost ? "text-red-600" : "text-[#FF6B35]"
                     )}>TrendsAnalyzer</h1>
                     {buildTimeDisplay && (
@@ -443,7 +453,7 @@ export default function Home() {
 
               <div className="flex flex-wrap items-center gap-2 flex-nowrap sm:flex-wrap w-full justify-center">
                 {/* Search box for filtering by keyword */}
-                <div className="relative w-full max-w-sm">
+                <div className="relative w-full max-w-xs">
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     ref={searchInputRef}
