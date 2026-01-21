@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo, useRef, useTransition } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { TickerTrendsCard } from '@/components/ticker-trends-card';
 import { ConfigDialog } from '@/components/config-dialog';
 import { Button } from '@/components/ui/button';
-import { Command, Settings, LayoutGrid, Rows3, List, ChevronDown, TrendingUp, Loader2, Search, X, Tag } from 'lucide-react';
+import { Command, Settings, LayoutGrid, Rows3, List, ChevronDown, TrendingUp, Loader2, Search, X } from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -28,6 +28,7 @@ import {
   CommandSeparator,
 } from '@/components/ui/command';
 import { cn } from '@/lib/utils';
+import { getCompanyName } from '@/lib/ticker-names';
 import { Input } from '@/components/ui/input';
 
 interface TickerKeyword {
@@ -41,8 +42,12 @@ interface TickerGroup {
   keywords: TickerKeyword[];
 }
 
+interface FilteredGroup {
+  group: TickerGroup;
+  filteredKeywords: TickerKeyword[];
+}
+
 export default function Home() {
-  const [isMounted, setIsMounted] = useState(false);
   const [tickerGroups, setTickerGroups] = useState<TickerGroup[]>([]);
   const [isConfigDialogOpen, setConfigDialogOpen] = useState(false);
   const [isCommandMenuOpen, setCommandMenuOpen] = useState(false);
@@ -52,26 +57,11 @@ export default function Home() {
   const [isLocalhost, setIsLocalhost] = useState(false);
   const [filterTicker, setFilterTicker] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [filterLabel, setFilterLabel] = useState<string>('all');
+  const [labelFilter, setLabelFilter] = useState<string>('all');
   const [tickersWithData, setTickersWithData] = useState<Set<string>>(new Set());
   const searchInputRef = useRef<HTMLInputElement>(null);
   
-  // Use transition to make filter changes non-blocking
-  const [isPending, startTransition] = useTransition();
-  
-  // Wrapper for setFilterLabel that uses startTransition
-  const handleFilterLabelChange = useCallback((value: string) => {
-    startTransition(() => {
-      setFilterLabel(value);
-    });
-  }, []);
-  
-  // Note: Removed auto-write to search box feature to prevent infinite loop (React error #300)
-  // The filterLabel dropdown now works independently of the search box
-  
-  // Mark component as mounted to prevent SSR hydration issues
   useEffect(() => {
-    setIsMounted(true);
     setIsLocalhost(typeof window !== 'undefined' && window.location.hostname === 'localhost');
   }, []);
 
@@ -91,8 +81,6 @@ export default function Home() {
   );
 
   useEffect(() => {
-    if (!isMounted) return; // Only access window/document after mount
-    
     const globalTimestamp =
       (window as any).__BUILD_TIMESTAMP ||
       (window as any).__NEXT_DATA__?.props?.buildTimestamp ||
@@ -102,10 +90,9 @@ export default function Home() {
     if (parsed) {
       setBuildTime(parsed);
     }
-  }, [isMounted]);
+  }, []);
 
-  // Only compute buildTimeDisplay after mount to prevent hydration mismatch
-  const buildTimeDisplay = isMounted && buildTime
+  const buildTimeDisplay = buildTime
     ? buildTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
     : null;
 
@@ -159,18 +146,14 @@ export default function Home() {
 
     loadTickerGroups();
 
-    // Load layout preference (only after mount to prevent hydration issues)
-    if (isMounted) {
-      const savedLayout = localStorage.getItem('trends-layout-mode');
-      if (savedLayout === 'multi' || savedLayout === 'single') {
-        setLayoutMode(savedLayout);
-      }
+    // Load layout preference
+    const savedLayout = localStorage.getItem('trends-layout-mode');
+    if (savedLayout === 'multi' || savedLayout === 'single') {
+      setLayoutMode(savedLayout);
     }
-  }, [isMounted]);
+  }, []);
 
   useEffect(() => {
-    if (!isMounted) return; // Only attach listeners after mount
-    
     const down = (e: KeyboardEvent) => {
       // "/" key to focus search (unless already typing in an input)
       if (e.key === '/' && !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)) {
@@ -190,7 +173,7 @@ export default function Home() {
     };
     document.addEventListener('keydown', down);
     return () => document.removeEventListener('keydown', down);
-  }, [searchTerm, isMounted]);
+  }, [searchTerm]);
 
   const toggleLayoutMode = () => {
     const newMode = layoutMode === 'single' ? 'multi' : 'single';
@@ -211,174 +194,68 @@ export default function Home() {
     });
   }, []);
 
+  const normalizeLabel = useCallback((label: string) => {
+    const normalized = label.toLowerCase().replace(/\s+/g, ' ').trim();
+    if (!normalized) return '';
+    if (normalized === 'signup' || normalized === 'sign-up') return 'sign up';
+    return normalized;
+  }, []);
+
+  const extractLabel = useCallback((group: TickerGroup, keyword: string) => {
+    const keywordLower = keyword.toLowerCase().trim();
+    const companyName = getCompanyName(group.baseTicker, group.keywords.map(k => k.keyword));
+    const companyLower = companyName.toLowerCase().trim();
+
+    if (!companyLower || !keywordLower.startsWith(companyLower)) {
+      return '';
+    }
+
+    const remainder = keyword.slice(companyLower.length).trim();
+    return normalizeLabel(remainder);
+  }, [normalizeLabel]);
+
   // Filter ticker groups based on selection, search term, and label filter
-  const filteredGroups = useMemo(() => {
-    try {
-      if (!Array.isArray(tickerGroups)) return [];
-      let groups = tickerGroups;
-      
-      // Filter by ticker dropdown
-      if (filterTicker !== 'all') {
-        groups = groups.filter(g => g && g.baseTicker === filterTicker);
-      }
-      
-      // Filter by label dropdown OR search term - use same logic for both
-      // If filterLabel is set, use that; otherwise use searchTerm
-      const filterText = filterLabel !== 'all' && typeof filterLabel === 'string' 
-        ? filterLabel.toLowerCase().trim()
-        : (typeof searchTerm === 'string' && searchTerm.trim() ? searchTerm.toLowerCase().trim() : null);
-      
-      if (filterText) {
-        try {
-          groups = groups.filter(g => {
-            if (!g || !g.keywords || !Array.isArray(g.keywords)) return false;
-            return g.keywords.some(kw => {
-              if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return false;
-              try {
-                // Simple contains check - same as searchTerm filtering
-                return kw.keyword.toLowerCase().includes(filterText);
-              } catch (err) {
-                return false;
-              }
-            });
-          });
-        } catch (err) {
-          // If filtering fails, don't filter
-        }
-      }
-      
-      return groups;
-    } catch (err) {
-      console.error('Error in filteredGroups useMemo:', err);
-      return [];
-    }
-  }, [tickerGroups, filterTicker, filterLabel, searchTerm]);
+  const filteredGroups = useMemo<FilteredGroup[]>(() => {
+    let groups = tickerGroups;
 
-  // Extract unique labels from keywords (words after company name)
-  const extractLabel = (keyword: string, companyName: string): string | null => {
-    try {
-      if (typeof keyword !== 'string' || typeof companyName !== 'string') return null;
-      if (!keyword || !companyName) return null;
-      const keywordLower = keyword.toLowerCase();
-      const companyLower = companyName.toLowerCase();
-    
-    // If keyword is exactly the company name, no label
-    if (keywordLower === companyLower) {
-      return null;
+    if (filterTicker !== 'all') {
+      groups = groups.filter(g => g.baseTicker === filterTicker);
     }
-    
-    // Remove company name from keyword to get the label
-    let label = keywordLower;
-    if (keywordLower.startsWith(companyLower + ' ')) {
-      label = keywordLower.substring(companyLower.length + 1).trim();
-    } else if (keywordLower.startsWith(companyLower)) {
-      label = keywordLower.substring(companyLower.length).trim();
-    }
-    
-    // Common labels to extract (must match ticker-trends-card.tsx)
-    const commonLabels = [
-      'login',
-      'sign up',
-      'signup',
-      'subscription',
-      'register',
-      'cloud',
-      'ads',
-      'driver',
-      'ride',
-      'near',
-    ];
-    
-    // Check if label matches any common label (case-insensitive)
-    for (const commonLabel of commonLabels) {
-      if (label === commonLabel || label.startsWith(commonLabel + ' ') || label.endsWith(' ' + commonLabel)) {
-        return commonLabel;
-      }
-    }
-    
-    // If no match, return the label as-is (could be a compound label like "sign up")
-    return label || null;
-    } catch (err) {
-      return null;
-    }
-  };
 
-  // Get company name from ticker group (use first keyword as base)
-  const getCompanyNameFromGroup = (group: TickerGroup): string => {
-    try {
-      if (!group || !group.keywords || !Array.isArray(group.keywords) || group.keywords.length === 0) {
-        return (group?.baseTicker && typeof group.baseTicker === 'string') ? group.baseTicker : '';
-      }
-      const firstKeyword = group.keywords[0]?.keyword;
-      if (typeof firstKeyword !== 'string' || !firstKeyword) {
-        return (group.baseTicker && typeof group.baseTicker === 'string') ? group.baseTicker : '';
-      }
-      // Remove common suffixes to get base company name
-      const suffixes = [' login', ' register', ' sign up', ' signup', ' cloud', ' ads'];
-      let companyName = firstKeyword;
-      for (const suffix of suffixes) {
-        if (typeof companyName === 'string' && companyName && typeof suffix === 'string') {
-          try {
-            if (companyName.toLowerCase().endsWith(suffix.toLowerCase())) {
-              companyName = companyName.slice(0, -suffix.length).trim();
-              break;
-            }
-          } catch (err) {
-            // Continue to next suffix if toLowerCase fails
-            continue;
-          }
-        }
-      }
-      return (typeof companyName === 'string' && companyName) ? companyName : 
-             (typeof firstKeyword === 'string' && firstKeyword) ? firstKeyword :
-             (group.baseTicker && typeof group.baseTicker === 'string') ? group.baseTicker : '';
-    } catch (err) {
-      return (group?.baseTicker && typeof group.baseTicker === 'string') ? group.baseTicker : '';
-    }
-  };
+    const searchLower = searchTerm.toLowerCase().trim();
+    const labelLower = labelFilter === 'all' ? '' : normalizeLabel(labelFilter);
 
-  // Extract all unique labels from all ticker groups, ordered by popularity
-  const allLabels = useMemo(() => {
-    try {
-      const labelCounts = new Map<string, number>();
-      
-      if (!Array.isArray(tickerGroups) || tickerGroups.length === 0) return [];
-      
-      tickerGroups.forEach(group => {
-        if (!group || !group.keywords || !Array.isArray(group.keywords)) return;
-        try {
-          const companyName = getCompanyNameFromGroup(group);
-          if (typeof companyName !== 'string' || !companyName) return;
-          
-          group.keywords.forEach(kw => {
-            if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return;
-            try {
-              const label = extractLabel(kw.keyword, companyName);
-              if (label && typeof label === 'string') {
-                labelCounts.set(label, (labelCounts.get(label) || 0) + 1);
-              }
-            } catch (err) {
-              console.warn('Error extracting label:', err, { keyword: kw.keyword, companyName });
-            }
-          });
-        } catch (err) {
-          console.warn('Error processing group:', err, { group });
-        }
+    return groups
+      .map(group => {
+        const filteredKeywords = group.keywords.filter(kw => {
+          const matchesSearch = !searchLower || kw.keyword.toLowerCase().includes(searchLower);
+          if (!matchesSearch) return false;
+
+          if (!labelLower) return true;
+          const label = extractLabel(group, kw.keyword);
+          return label && normalizeLabel(label) === labelLower;
+        });
+
+        return { group, filteredKeywords };
+      })
+      .filter(entry => entry.filteredKeywords.length > 0);
+  }, [tickerGroups, filterTicker, searchTerm, labelFilter, normalizeLabel, extractLabel]);
+
+  const availableLabels = useMemo(() => {
+    const labels = new Set<string>();
+    const groups = filterTicker === 'all'
+      ? tickerGroups
+      : tickerGroups.filter(g => g.baseTicker === filterTicker);
+
+    groups.forEach(group => {
+      group.keywords.forEach(kw => {
+        const label = extractLabel(group, kw.keyword);
+        if (label) labels.add(label);
       });
-      
-      // Sort by count (most popular first), then alphabetically
-      return Array.from(labelCounts.entries())
-        .filter(([_, count]) => count > 0) // Filter out labels with 0 matches
-        .sort((a, b) => {
-          if (b[1] !== a[1]) return b[1] - a[1]; // Sort by count descending
-          return a[0].localeCompare(b[0]); // Then alphabetically
-        })
-        .map(([label]) => label);
-    } catch (err) {
-      console.error('Error in allLabels useMemo:', err);
-      return [];
-    }
-  }, [tickerGroups]);
+    });
+
+    return Array.from(labels).sort((a, b) => a.localeCompare(b));
+  }, [tickerGroups, filterTicker, extractLabel]);
 
   // Unique tickers for the dropdown
   const allTickers = useMemo(() => {
@@ -396,8 +273,8 @@ export default function Home() {
                   <div className="flex items-center gap-2 cursor-help">
                     <TrendingUp className="h-6 w-6 text-[#FF6B35]" strokeWidth={2.5} />
                     <h1 className={cn(
-                      "text-2xl font-bold tracking-tight leading-none flex items-center",
-                      isMounted && isLocalhost ? "text-red-600" : "text-[#FF6B35]"
+                      "text-2xl font-bold tracking-tight leading-none",
+                      isLocalhost ? "text-red-600" : "text-[#FF6B35]"
                     )}>TrendsAnalyzer</h1>
                     {buildTimeDisplay && (
                       <span
@@ -413,7 +290,7 @@ export default function Home() {
                   <div className="text-center">
                     <div className="font-semibold">TrendsAnalyzer v{buildVersion}</div>
                     <div className="text-xs text-muted-foreground">
-                      {isMounted && buildTime
+                      {buildTime
                         ? `Build time: ${buildTime.toLocaleString('en-US', {
                             timeZone: 'America/Los_Angeles',
                             year: 'numeric',
@@ -431,8 +308,8 @@ export default function Home() {
               </Tooltip>
 
               <div className="flex flex-wrap items-center gap-2 flex-nowrap sm:flex-wrap w-full justify-center">
-                {/* Search box for filtering by keyword */}
-                <div className="relative w-full max-w-xs">
+                {/* Search box for filtering by keyword - wider and centered */}
+                <div className="relative w-full max-w-md">
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     ref={searchInputRef}
@@ -455,15 +332,10 @@ export default function Home() {
                   )}
       </div>
                 
-                {/* Label filter dropdown - TEMPORARILY DISABLED due to React #300 infinite loop */}
-                <Select value={filterLabel} onValueChange={(value) => {
-                  // Temporarily disabled to fix infinite loop
-                  console.log('Label filter temporarily disabled. Selected:', value);
-                  // handleFilterLabelChange(value);
-                }}>
-                  <SelectTrigger className="w-[180px] h-9">
+                <Select value={labelFilter} onValueChange={setLabelFilter}>
+                  <SelectTrigger className="w-[200px] h-9">
                     <div className="flex items-center gap-2">
-                      <Tag className="h-4 w-4" />
+                      <ChevronDown className="h-4 w-4" />
                       <SelectValue placeholder="Filter by label" />
                     </div>
                   </SelectTrigger>
@@ -472,18 +344,18 @@ export default function Home() {
                       <div className="flex items-center gap-2">
                         <span>All Labels</span>
                         <span className="text-xs text-muted-foreground">
-                          ({allLabels.length})
+                          ({availableLabels.length})
                         </span>
-                      </div>
+          </div>
                     </SelectItem>
-                    {allLabels.map((label) => (
+                    {availableLabels.map((label) => (
                       <SelectItem key={label} value={label}>
-                        {label.charAt(0).toUpperCase() + label.slice(1)}
+                        {label}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-                
+
                 <Select value={filterTicker} onValueChange={setFilterTicker}>
                   <SelectTrigger className="w-[200px] h-9">
                     <div className="flex items-center gap-2">
@@ -518,21 +390,21 @@ export default function Home() {
                   onClick={toggleLayoutMode} 
                       className="flex items-center gap-2"
                 >
-                  {isMounted && layoutMode === 'single' ? (
+                  {layoutMode === 'single' ? (
                     <LayoutGrid className="h-4 w-4" />
                   ) : (
                     <Rows3 className="h-4 w-4" />
                   )}
-                  <span className="hidden sm:inline">
-                        {isMounted && layoutMode === 'single' ? 'Grid' : 'Single'}
+                      <span className="hidden sm:inline">
+                        {layoutMode === 'single' ? 'Grid' : 'Single'}
                   </span>
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
-                {isMounted && layoutMode === 'single' ? 'Switch to grid layout' : 'Switch to single column layout'}
+                {layoutMode === 'single' ? 'Switch to grid layout' : 'Switch to single column layout'}
               </TooltipContent>
             </Tooltip>
-                
+
                 <Button 
                   variant="outline" 
                   size="sm" 
@@ -575,31 +447,39 @@ export default function Home() {
             </div>
           )}
 
-          {!isLoading && !error && filteredGroups.length === 0 && tickerGroups.length > 0 && searchTerm && (
+          {!isLoading && !error && filteredGroups.length === 0 && tickerGroups.length > 0 && (searchTerm || labelFilter !== 'all') && (
             <div className="flex h-[50vh] flex-col items-center justify-center rounded-lg border-2 border-dashed bg-card/50">
               <Search className="h-10 w-10 text-muted-foreground mb-4" />
               <h2 className="text-2xl font-bold tracking-tight">No matching trends</h2>
-              <p className="text-muted-foreground">No tickers have trends matching "{searchTerm}"</p>
-              <Button onClick={() => setSearchTerm('')} variant="outline" className="mt-4">
-                Clear Search
+              <p className="text-muted-foreground">
+                No tickers match the current filters.
+              </p>
+              <Button
+                onClick={() => {
+                  setSearchTerm('');
+                  setLabelFilter('all');
+                }}
+                variant="outline"
+                className="mt-4"
+              >
+                Clear Filters
               </Button>
             </div>
           )}
 
-          {!isLoading && !error && filteredGroups.length > 0 && isMounted && (
+          {!isLoading && !error && filteredGroups.length > 0 && (
         <div className={cn(
           "grid gap-6",
-          isMounted && layoutMode === 'single' 
+          layoutMode === 'single' 
             ? "grid-cols-1" 
             : "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3"
         )}>
-              {filteredGroups.map((group) => (
+              {filteredGroups.map(({ group, filteredKeywords }) => (
                 <TickerTrendsCard
                   key={group.baseTicker}
                   tickerGroup={group}
-              isWideLayout={isMounted && layoutMode === 'single'}
-                  searchTerm={searchTerm}
-                  filterLabel={filterLabel}
+              isWideLayout={layoutMode === 'single'}
+                  filteredKeywords={filteredKeywords}
                   onDataFound={handleDataFound}
             />
           ))}
@@ -626,12 +506,12 @@ export default function Home() {
                   toggleLayoutMode();
                 }}
               >
-                {isMounted && layoutMode === 'single' ? (
+                {layoutMode === 'single' ? (
                   <LayoutGrid className="mr-2 h-4 w-4" />
                 ) : (
                   <Rows3 className="mr-2 h-4 w-4" />
                 )}
-                <span>Switch to {isMounted && layoutMode === 'single' ? 'Grid' : 'Single Column'} Layout</span>
+                <span>Switch to {layoutMode === 'single' ? 'Grid' : 'Single Column'} Layout</span>
               </CommandItem>
               <CommandItem
                 onSelect={() => {
