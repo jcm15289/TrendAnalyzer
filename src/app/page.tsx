@@ -455,8 +455,12 @@ export default function Home() {
                   )}
       </div>
                 
-                {/* Label filter dropdown */}
-                <Select value={filterLabel} onValueChange={handleFilterLabelChange}>
+                {/* Label filter dropdown - TEMPORARILY DISABLED due to React #300 infinite loop */}
+                <Select value={filterLabel} onValueChange={(value) => {
+                  // Temporarily disabled to fix infinite loop
+                  console.log('Label filter temporarily disabled. Selected:', value);
+                  // handleFilterLabelChange(value);
+                }}>
                   <SelectTrigger className="w-[180px] h-9">
                     <div className="flex items-center gap-2">
                       <Tag className="h-4 w-4" />
