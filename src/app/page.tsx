@@ -60,9 +60,13 @@ export default function Home() {
   useEffect(() => {
     if (filterLabel !== 'all' && typeof filterLabel === 'string') {
       setSearchTerm(filterLabel);
-    } else if (filterLabel === 'all') {
-      // Clear search when "all" is selected
-      setSearchTerm('');
+    } else if (filterLabel === 'all' && searchTerm) {
+      // Only clear search if it matches the previous filterLabel value
+      // This prevents clearing user-typed searches
+      const prevFilterLabel = filterLabel;
+      if (prevFilterLabel !== 'all' && searchTerm === prevFilterLabel) {
+        setSearchTerm('');
+      }
     }
   }, [filterLabel]);
   
@@ -219,52 +223,28 @@ export default function Home() {
         groups = groups.filter(g => g && g.baseTicker === filterTicker);
       }
       
-      // Filter by label dropdown - same approach as searchTerm filtering
-      if (filterLabel !== 'all' && typeof filterLabel === 'string') {
-        try {
-          const filterLabelLower = filterLabel.toLowerCase().trim();
-          groups = groups.filter(g => {
-            if (!g || !g.keywords || !Array.isArray(g.keywords)) return false;
-            try {
-              const companyName = getCompanyNameFromGroup(g);
-              if (typeof companyName !== 'string' || !companyName) return false;
-              return g.keywords.some(kw => {
-                if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return false;
-                try {
-                  const label = extractLabel(kw.keyword, companyName);
-                  // Match exact label (case-insensitive) or if keyword contains the label text
-                  return (label && label.toLowerCase() === filterLabelLower) ||
-                         kw.keyword.toLowerCase().includes(filterLabelLower);
-                } catch (err) {
-                  return false;
-                }
-              });
-            } catch (err) {
-              return false;
-            }
-          });
-        } catch (err) {
-          // If label filtering fails, don't filter
-        }
-      }
+      // Filter by label dropdown OR search term - use same logic for both
+      // If filterLabel is set, use that; otherwise use searchTerm
+      const filterText = filterLabel !== 'all' && typeof filterLabel === 'string' 
+        ? filterLabel.toLowerCase().trim()
+        : (typeof searchTerm === 'string' && searchTerm.trim() ? searchTerm.toLowerCase().trim() : null);
       
-      // Filter by search term - only show tickers that have keywords matching the search
-      if (typeof searchTerm === 'string' && searchTerm.trim()) {
+      if (filterText) {
         try {
-          const searchLower = searchTerm.toLowerCase().trim();
           groups = groups.filter(g => {
             if (!g || !g.keywords || !Array.isArray(g.keywords)) return false;
             return g.keywords.some(kw => {
               if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return false;
               try {
-                return kw.keyword.toLowerCase().includes(searchLower);
+                // Simple contains check - same as searchTerm filtering
+                return kw.keyword.toLowerCase().includes(filterText);
               } catch (err) {
-              return false;
-            }
+                return false;
+              }
             });
           });
         } catch (err) {
-          // If search term processing fails, don't filter
+          // If filtering fails, don't filter
         }
       }
       
