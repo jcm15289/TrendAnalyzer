@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef, useTransition } from 'react';
 import { TickerTrendsCard } from '@/components/ticker-trends-card';
 import { ConfigDialog } from '@/components/config-dialog';
 import { Button } from '@/components/ui/button';
@@ -55,6 +55,16 @@ export default function Home() {
   const [filterLabel, setFilterLabel] = useState<string>('all');
   const [tickersWithData, setTickersWithData] = useState<Set<string>>(new Set());
   const searchInputRef = useRef<HTMLInputElement>(null);
+  
+  // Use transition to make filter changes non-blocking
+  const [isPending, startTransition] = useTransition();
+  
+  // Wrapper for setFilterLabel that uses startTransition
+  const handleFilterLabelChange = useCallback((value: string) => {
+    startTransition(() => {
+      setFilterLabel(value);
+    });
+  }, []);
   
   // Note: Removed auto-write to search box feature to prevent infinite loop (React error #300)
   // The filterLabel dropdown now works independently of the search box
@@ -446,7 +456,7 @@ export default function Home() {
       </div>
                 
                 {/* Label filter dropdown */}
-                <Select value={filterLabel} onValueChange={setFilterLabel}>
+                <Select value={filterLabel} onValueChange={handleFilterLabelChange}>
                   <SelectTrigger className="w-[180px] h-9">
                     <div className="flex items-center gap-2">
                       <Tag className="h-4 w-4" />
