@@ -56,19 +56,22 @@ export default function Home() {
   const [tickersWithData, setTickersWithData] = useState<Set<string>>(new Set());
   const searchInputRef = useRef<HTMLInputElement>(null);
   
+  // Track if searchTerm was set by filterLabel (to avoid clearing user-typed searches)
+  const searchTermFromLabelRef = useRef<string | null>(null);
+  
   // When filterLabel changes, auto-write to search box
   useEffect(() => {
     if (filterLabel !== 'all' && typeof filterLabel === 'string') {
+      searchTermFromLabelRef.current = filterLabel;
       setSearchTerm(filterLabel);
-    } else if (filterLabel === 'all' && searchTerm) {
-      // Only clear search if it matches the previous filterLabel value
-      // This prevents clearing user-typed searches
-      const prevFilterLabel = filterLabel;
-      if (prevFilterLabel !== 'all' && searchTerm === prevFilterLabel) {
+    } else if (filterLabel === 'all') {
+      // Only clear search if it was set by the label filter
+      if (searchTermFromLabelRef.current && searchTerm === searchTermFromLabelRef.current) {
         setSearchTerm('');
       }
+      searchTermFromLabelRef.current = null;
     }
-  }, [filterLabel]);
+  }, [filterLabel, searchTerm]);
   
   // Mark component as mounted to prevent SSR hydration issues
   useEffect(() => {

@@ -312,38 +312,28 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     const companyName = getCompanyName(tickerGroup.keywords);
     
     let enabledDisplayKeywords: string[] = [];
-    if (typeof searchTerm === 'string' && searchTerm.trim()) {
+    // Prioritize filterLabel over searchTerm (same as page-level filtering)
+    const filterText = (typeof filterLabel === 'string' && filterLabel !== 'all')
+      ? filterLabel.toLowerCase().trim()
+      : (typeof searchTerm === 'string' && searchTerm.trim() ? searchTerm.toLowerCase().trim() : null);
+    
+    if (filterText) {
       try {
-        const searchLower = searchTerm.toLowerCase().trim();
         enabledDisplayKeywords = Array.from(apiToDisplayMap.values()).filter(displayKw => {
           if (typeof displayKw !== 'string' || !displayKw) return false;
           try {
-            return displayKw.toLowerCase().includes(searchLower);
+            // Simple contains check - same as page-level filtering
+            return displayKw.toLowerCase().includes(filterText);
           } catch (err) {
             return false;
           }
         });
-        setIsPriceEnabled(hasStockData && "price".includes(searchLower));
+        setIsPriceEnabled(hasStockData && "price".includes(filterText));
       } catch (err) {
-        // If search term processing fails, enable all keywords
+        // If filtering fails, enable all keywords
         enabledDisplayKeywords = Array.from(apiToDisplayMap.values());
         setIsPriceEnabled(true);
       }
-    } else if (typeof filterLabel === 'string' && filterLabel !== 'all') {
-      // When filtering by label, only enable keywords with that label (case-insensitive, same as searchTerm)
-      const filterLabelLower = filterLabel.toLowerCase().trim();
-      enabledDisplayKeywords = Array.from(apiToDisplayMap.values()).filter(displayKw => {
-        if (typeof displayKw !== 'string' || !displayKw) return false;
-        try {
-          const label = extractLabel(displayKw, companyName);
-          // Match exact label (case-insensitive) or if keyword contains the label text
-          return (label && label.toLowerCase() === filterLabelLower) ||
-                 displayKw.toLowerCase().includes(filterLabelLower);
-        } catch (err) {
-          return false;
-        }
-      });
-      setIsPriceEnabled(false);
     } else {
       // If filters are cleared, re-enable all found keywords and price
       enabledDisplayKeywords = Array.from(apiToDisplayMap.values());
@@ -353,13 +343,21 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
   }, [searchTerm, filterLabel, foundKeywords, hasStockData, tickerGroup.keywords, getCompanyName, extractLabel]);
 
   // Hide card if filtering is active but no keywords match
+  // Only hide after data has loaded (foundKeywords.length > 0) to avoid hiding during initial load
   const shouldHideCard = useMemo(() => {
-    if ((!searchTerm || !searchTerm.trim()) && (!filterLabel || filterLabel === 'all')) {
-      return false; // No filtering active, show card
+    // Don't hide if data hasn't loaded yet
+    if (!foundKeywords.length && !hasStockData) {
+      return false;
     }
+    
+    // No filtering active, show card
+    if ((!searchTerm || !searchTerm.trim()) && (!filterLabel || filterLabel === 'all')) {
+      return false;
+    }
+    
     // If filtering is active but no keywords are enabled (and no price), hide the card
     return enabledKeywords.size === 0 && (!hasStockData || !isPriceEnabled);
-  }, [searchTerm, filterLabel, enabledKeywords.size, hasStockData, isPriceEnabled]);
+  }, [searchTerm, filterLabel, enabledKeywords.size, hasStockData, isPriceEnabled, foundKeywords.length]);
 
   if (shouldHideCard) {
     return null; // Don't render card if no matching keywords
