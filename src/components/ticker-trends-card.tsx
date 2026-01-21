@@ -330,12 +330,15 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
         setIsPriceEnabled(true);
       }
     } else if (typeof filterLabel === 'string' && filterLabel !== 'all') {
-      // When filtering by label, only enable keywords with that label
+      // When filtering by label, only enable keywords with that label (case-insensitive, same as searchTerm)
+      const filterLabelLower = filterLabel.toLowerCase().trim();
       enabledDisplayKeywords = Array.from(apiToDisplayMap.values()).filter(displayKw => {
         if (typeof displayKw !== 'string' || !displayKw) return false;
         try {
           const label = extractLabel(displayKw, companyName);
-          return label === filterLabel;
+          // Match exact label (case-insensitive) or if keyword contains the label text
+          return (label && label.toLowerCase() === filterLabelLower) ||
+                 displayKw.toLowerCase().includes(filterLabelLower);
         } catch (err) {
           return false;
         }

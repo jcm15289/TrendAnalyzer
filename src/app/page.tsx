@@ -348,10 +348,10 @@ export default function Home() {
     }
   };
 
-  // Extract all unique labels from all ticker groups
+  // Extract all unique labels from all ticker groups, ordered by popularity
   const allLabels = useMemo(() => {
     try {
-      const labelSet = new Set<string>();
+      const labelCounts = new Map<string, number>();
       
       if (!Array.isArray(tickerGroups) || tickerGroups.length === 0) return [];
       
@@ -366,7 +366,7 @@ export default function Home() {
             try {
               const label = extractLabel(kw.keyword, companyName);
               if (label && typeof label === 'string') {
-                labelSet.add(label);
+                labelCounts.set(label, (labelCounts.get(label) || 0) + 1);
               }
             } catch (err) {
               console.warn('Error extracting label:', err, { keyword: kw.keyword, companyName });
@@ -377,7 +377,14 @@ export default function Home() {
         }
       });
       
-      return Array.from(labelSet).sort();
+      // Sort by count (most popular first), then alphabetically
+      return Array.from(labelCounts.entries())
+        .filter(([_, count]) => count > 0) // Filter out labels with 0 matches
+        .sort((a, b) => {
+          if (b[1] !== a[1]) return b[1] - a[1]; // Sort by count descending
+          return a[0].localeCompare(b[0]); // Then alphabetically
+        })
+        .map(([label]) => label);
     } catch (err) {
       console.error('Error in allLabels useMemo:', err);
       return [];
@@ -435,8 +442,8 @@ export default function Home() {
               </Tooltip>
 
               <div className="flex flex-wrap items-center gap-2 flex-nowrap sm:flex-wrap w-full justify-center">
-                {/* Search box for filtering by keyword - wider and centered */}
-                <div className="relative w-full max-w-md">
+                {/* Search box for filtering by keyword */}
+                <div className="relative w-full max-w-sm">
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     ref={searchInputRef}
@@ -510,16 +517,6 @@ export default function Home() {
                 
                 <div className="h-6 w-px bg-border" />
                 
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => setConfigDialogOpen(true)} 
-                  className="flex items-center gap-2"
-                >
-                  <Settings className="h-4 w-4" />
-                  <span className="hidden sm:inline">Config</span>
-                </Button>
-                
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button 
@@ -542,6 +539,16 @@ export default function Home() {
                 {isMounted && layoutMode === 'single' ? 'Switch to grid layout' : 'Switch to single column layout'}
               </TooltipContent>
             </Tooltip>
+                
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => setConfigDialogOpen(true)} 
+                  className="flex items-center gap-2"
+                >
+                  <Settings className="h-4 w-4" />
+                  <span className="hidden sm:inline">Config</span>
+                </Button>
               </div>
             </div>
         </div>
