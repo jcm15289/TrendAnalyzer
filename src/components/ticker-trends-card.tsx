@@ -352,6 +352,19 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     setEnabledKeywords(new Set(enabledDisplayKeywords));
   }, [searchTerm, filterLabel, foundKeywords, hasStockData, tickerGroup.keywords, getCompanyName, extractLabel]);
 
+  // Hide card if filtering is active but no keywords match
+  const shouldHideCard = useMemo(() => {
+    if ((!searchTerm || !searchTerm.trim()) && (!filterLabel || filterLabel === 'all')) {
+      return false; // No filtering active, show card
+    }
+    // If filtering is active but no keywords are enabled (and no price), hide the card
+    return enabledKeywords.size === 0 && (!hasStockData || !isPriceEnabled);
+  }, [searchTerm, filterLabel, enabledKeywords.size, hasStockData, isPriceEnabled]);
+
+  if (shouldHideCard) {
+    return null; // Don't render card if no matching keywords
+  }
+
   const toggleKeyword = (keyword: string) => {
     setEnabledKeywords(prev => {
       const next = new Set(prev);
