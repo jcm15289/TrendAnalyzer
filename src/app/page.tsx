@@ -209,26 +209,33 @@ export default function Home() {
         groups = groups.filter(g => g && g.baseTicker === filterTicker);
       }
       
-      // Filter by label dropdown
+      // Filter by label dropdown - same approach as searchTerm filtering
       if (filterLabel !== 'all' && typeof filterLabel === 'string') {
-        groups = groups.filter(g => {
-          if (!g || !g.keywords || !Array.isArray(g.keywords) || g.keywords.length === 0) return false;
-          try {
-            const companyName = getCompanyNameFromGroup(g);
-            if (typeof companyName !== 'string' || !companyName) return false;
-            return g.keywords.some(kw => {
-              if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return false;
-              try {
-                const label = extractLabel(kw.keyword, companyName);
-                return label === filterLabel;
-              } catch (err) {
-                return false;
-              }
-            });
-          } catch (err) {
-            return false;
-          }
-        });
+        try {
+          const filterLabelLower = filterLabel.toLowerCase().trim();
+          groups = groups.filter(g => {
+            if (!g || !g.keywords || !Array.isArray(g.keywords)) return false;
+            try {
+              const companyName = getCompanyNameFromGroup(g);
+              if (typeof companyName !== 'string' || !companyName) return false;
+              return g.keywords.some(kw => {
+                if (!kw || typeof kw.keyword !== 'string' || !kw.keyword) return false;
+                try {
+                  const label = extractLabel(kw.keyword, companyName);
+                  // Match exact label (case-insensitive) or if keyword contains the label text
+                  return (label && label.toLowerCase() === filterLabelLower) ||
+                         kw.keyword.toLowerCase().includes(filterLabelLower);
+                } catch (err) {
+                  return false;
+                }
+              });
+            } catch (err) {
+              return false;
+            }
+          });
+        } catch (err) {
+          // If label filtering fails, don't filter
+        }
       }
       
       // Filter by search term - only show tickers that have keywords matching the search
@@ -279,40 +286,18 @@ export default function Home() {
       label = keywordLower.substring(companyLower.length).trim();
     }
     
-    // Common labels to extract
+    // Common labels to extract (must match ticker-trends-card.tsx)
     const commonLabels = [
       'login',
       'sign up',
       'signup',
       'subscription',
       'register',
-      'registration',
       'cloud',
       'ads',
-      'advertising',
-      'pricing',
-      'cost',
-      'price',
       'driver',
       'ride',
       'near',
-      'app',
-      'mobile',
-      'web',
-      'api',
-      'platform',
-      'service',
-      'account',
-      'profile',
-      'settings',
-      'dashboard',
-      'analytics',
-      'report',
-      'support',
-      'help',
-      'documentation',
-      'tutorial',
-      'guide',
     ];
     
     // Check if label matches any common label (case-insensitive)
@@ -525,6 +510,16 @@ export default function Home() {
                 
                 <div className="h-6 w-px bg-border" />
                 
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => setConfigDialogOpen(true)} 
+                  className="flex items-center gap-2"
+                >
+                  <Settings className="h-4 w-4" />
+                  <span className="hidden sm:inline">Config</span>
+                </Button>
+                
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button 
@@ -547,16 +542,6 @@ export default function Home() {
                 {isMounted && layoutMode === 'single' ? 'Switch to grid layout' : 'Switch to single column layout'}
               </TooltipContent>
             </Tooltip>
-
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => setConfigDialogOpen(true)} 
-                  className="flex items-center gap-2"
-                >
-                  <Settings className="h-4 w-4" />
-                  <span className="hidden sm:inline">Config</span>
-                </Button>
               </div>
             </div>
         </div>
