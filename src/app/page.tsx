@@ -56,24 +56,8 @@ export default function Home() {
   const [tickersWithData, setTickersWithData] = useState<Set<string>>(new Set());
   const searchInputRef = useRef<HTMLInputElement>(null);
   
-  // Track if searchTerm was set by filterLabel (to avoid clearing user-typed searches)
-  const searchTermFromLabelRef = useRef<string | null>(null);
-  
-  // When filterLabel changes, auto-write to search box
-  useEffect(() => {
-    if (filterLabel !== 'all' && typeof filterLabel === 'string') {
-      // Set searchTerm to match filterLabel
-      searchTermFromLabelRef.current = filterLabel;
-      setSearchTerm(filterLabel);
-    } else if (filterLabel === 'all') {
-      // Only clear search if it was set by the label filter
-      if (searchTermFromLabelRef.current && searchTerm === searchTermFromLabelRef.current) {
-        setSearchTerm('');
-      }
-      searchTermFromLabelRef.current = null;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterLabel]); // Only depend on filterLabel to avoid circular updates
+  // Note: Removed auto-write to search box feature to prevent infinite loop (React error #300)
+  // The filterLabel dropdown now works independently of the search box
   
   // Mark component as mounted to prevent SSR hydration issues
   useEffect(() => {
