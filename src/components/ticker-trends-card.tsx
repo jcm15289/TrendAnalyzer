@@ -273,16 +273,8 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     }
   }, []);
   
-  // Memoize keywords for filtering - only recompute when tickerGroup.keywords changes
-  const keywordsRef = useRef<typeof tickerGroup.keywords>(tickerGroup.keywords);
-  if (tickerGroup.keywords !== keywordsRef.current) {
-    keywordsRef.current = tickerGroup.keywords;
-  }
-
-  // Update enabled keywords when searchTerm or filterLabel changes
-  useEffect(() => {
-    if (!foundKeywords.length && !hasStockData) return;
-    
+  // Compute enabled keywords based on search/filter - using useMemo instead of useEffect to avoid state updates
+  const { computedEnabledKeywords, computedIsPriceEnabled } = useMemo(() => {
     const normalizeKeyword = (k: string) => {
       if (typeof k !== 'string' || !k) return '';
       try {
@@ -293,7 +285,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     };
     
     const apiToDisplayMap = new Map<string, string>();
-    const keywords = keywordsRef.current;
+    const keywords = tickerGroup.keywords;
     if (keywords && Array.isArray(keywords)) {
       keywords.forEach(tk => {
         if (!tk || typeof tk.keyword !== 'string' || !tk.keyword) return;
@@ -316,7 +308,14 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
       });
     }
     
-    let enabledDisplayKeywords: string[] = [];
+    // If no data loaded yet, return all keywords enabled
+    if (!foundKeywords.length && !hasStockData) {
+      return {
+        computedEnabledKeywords: new Set(Array.from(apiToDisplayMap.values())),
+        computedIsPriceEnabled: true
+      };
+    }
+    
     // Prioritize filterLabel over searchTerm (same as page-level filtering)
     const filterText = (typeof filterLabel === 'string' && filterLabel !== 'all')
       ? filterLabel.toLowerCase().trim()
@@ -324,7 +323,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     
     if (filterText) {
       try {
-        enabledDisplayKeywords = Array.from(apiToDisplayMap.values()).filter(displayKw => {
+        const enabledDisplayKeywords = Array.from(apiToDisplayMap.values()).filter(displayKw => {
           if (typeof displayKw !== 'string' || !displayKw) return false;
           try {
             // Simple contains check - same as page-level filtering
@@ -333,20 +332,46 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
             return false;
           }
         });
-        setIsPriceEnabled(hasStockData && "price".includes(filterText));
+        return {
+          computedEnabledKeywords: new Set(enabledDisplayKeywords),
+          computedIsPriceEnabled: hasStockData && "price".includes(filterText)
+        };
       } catch (err) {
         // If filtering fails, enable all keywords
-        enabledDisplayKeywords = Array.from(apiToDisplayMap.values());
-        setIsPriceEnabled(true);
+        return {
+          computedEnabledKeywords: new Set(Array.from(apiToDisplayMap.values())),
+          computedIsPriceEnabled: true
+        };
       }
     } else {
-      // If filters are cleared, re-enable all found keywords and price
-      enabledDisplayKeywords = Array.from(apiToDisplayMap.values());
-      setIsPriceEnabled(true);
+      // If filters are cleared, enable all found keywords and price
+      return {
+        computedEnabledKeywords: new Set(Array.from(apiToDisplayMap.values())),
+        computedIsPriceEnabled: true
+      };
     }
-    setEnabledKeywords(new Set(enabledDisplayKeywords));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchTerm, filterLabel, foundKeywords, hasStockData]); // Removed tickerGroup.keywords, getCompanyName, extractLabel to prevent loops
+  }, [searchTerm, filterLabel, foundKeywords, hasStockData, tickerGroup.keywords]);
+
+  // Merge computed values with user-toggled state (only when no filter is active)
+  const effectiveEnabledKeywords = useMemo(() => {
+    // If a filter is active, use computed values directly
+    const hasActiveFilter = (typeof filterLabel === 'string' && filterLabel !== 'all') ||
+                           (typeof searchTerm === 'string' && searchTerm.trim());
+    if (hasActiveFilter) {
+      return computedEnabledKeywords;
+    }
+    // If no filter, use the user-toggled state
+    return enabledKeywords;
+  }, [filterLabel, searchTerm, computedEnabledKeywords, enabledKeywords]);
+
+  const effectiveIsPriceEnabled = useMemo(() => {
+    const hasActiveFilter = (typeof filterLabel === 'string' && filterLabel !== 'all') ||
+                           (typeof searchTerm === 'string' && searchTerm.trim());
+    if (hasActiveFilter) {
+      return computedIsPriceEnabled;
+    }
+    return isPriceEnabled;
+  }, [filterLabel, searchTerm, computedIsPriceEnabled, isPriceEnabled]);
 
   // Hide card if filtering is active but no keywords match
   // Only hide after data has loaded (foundKeywords.length > 0) to avoid hiding during initial load
@@ -362,8 +387,8 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     }
     
     // If filtering is active but no keywords are enabled (and no price), hide the card
-    return enabledKeywords.size === 0 && (!hasStockData || !isPriceEnabled);
-  }, [searchTerm, filterLabel, enabledKeywords.size, hasStockData, isPriceEnabled, foundKeywords.length]);
+    return effectiveEnabledKeywords.size === 0 && (!hasStockData || !effectiveIsPriceEnabled);
+  }, [searchTerm, filterLabel, effectiveEnabledKeywords.size, hasStockData, effectiveIsPriceEnabled, foundKeywords.length]);
 
   if (shouldHideCard) {
     return null; // Don't render card if no matching keywords
@@ -394,7 +419,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     });
     const allDisplayKeywords = Array.from(apiToDisplayMap.values());
     
-    const allEnabled = enabledKeywords.size === allDisplayKeywords.length && (!hasStockData || isPriceEnabled);
+    const allEnabled = effectiveEnabledKeywords.size === allDisplayKeywords.length && (!hasStockData || effectiveIsPriceEnabled);
 
     if (allEnabled) {
       // All enabled, disable all
@@ -425,7 +450,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
       let hasAnyEnabledLine = false; // Track if any line (trend or price) is enabled for this point
       
       // Include enabled keywords
-      enabledKeywords.forEach(displayKw => {
+      effectiveEnabledKeywords.forEach(displayKw => {
         const apiKw = displayToApiMap.get(displayKw);
         if (apiKw && point[apiKw] !== undefined) {
           filtered[apiKw] = point[apiKw];
@@ -434,18 +459,18 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
       });
       
       // Include Price if enabled
-      if (hasStockData && isPriceEnabled && point.Price !== undefined && point.Price !== null) {
+      if (hasStockData && effectiveIsPriceEnabled && point.Price !== undefined && point.Price !== null) {
         filtered.Price = point.Price;
         hasAnyEnabledLine = true;
       }
       
       return hasAnyEnabledLine ? filtered : null;
     }).filter(Boolean) as TrendDataPoint[];
-  }, [combinedData, enabledKeywords, foundKeywords, hasStockData, isPriceEnabled, tickerGroup.keywords]);
+  }, [combinedData, effectiveEnabledKeywords, foundKeywords, hasStockData, effectiveIsPriceEnabled, tickerGroup.keywords]);
   
   // Calculate price range for Y-axis scaling from merged data
   const priceRange = useMemo(() => {
-    if (!hasStockData || !isPriceEnabled || combinedData.length === 0) return null;
+    if (!hasStockData || !effectiveIsPriceEnabled || combinedData.length === 0) return null;
     const prices = combinedData
       .map((d: any) => d.Price)
       .filter((p: any) => p !== null && p !== undefined && !isNaN(p as number));
@@ -455,9 +480,9 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     // Add some padding to the min/max
     const padding = (max - min) * 0.1;
     return { min: Math.floor(Math.max(0, min - padding)), max: Math.ceil(max + padding) };
-  }, [hasStockData, isPriceEnabled, combinedData]);
+  }, [hasStockData, effectiveIsPriceEnabled, combinedData]);
 
-  const hasPriceAxis = hasStockData && isPriceEnabled && !!priceRange;
+  const hasPriceAxis = hasStockData && effectiveIsPriceEnabled && !!priceRange;
 
   const strokeWidth = isWideLayout ? 2 : 1.5;
   
@@ -533,7 +558,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
             onClick={toggleAll}
             className="text-xs"
           >
-            {enabledKeywords.size === foundKeywords.length && (!hasStockData || isPriceEnabled) ? (
+            {effectiveEnabledKeywords.size === foundKeywords.length && (!hasStockData || effectiveIsPriceEnabled) ? (
               <><EyeOff className="h-3 w-3 mr-1" /> Hide All</>
             ) : (
               <><Eye className="h-3 w-3 mr-1" /> Show All</>
@@ -597,7 +622,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
             
             let colorIdx = 0;
             return sortedKeywords.map((kw) => {
-                const isEnabled = enabledKeywords.has(kw.keyword);
+                const isEnabled = effectiveEnabledKeywords.has(kw.keyword);
                 const color = LINE_COLORS[colorIdx % LINE_COLORS.length];
                 colorIdx++;
 
@@ -636,14 +661,14 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
                         : 'opacity-50 border border-dashed',
                     )}
                     style={{
-                      backgroundColor: isPriceEnabled ? `#66666615` : 'transparent',
+                      backgroundColor: effectiveIsPriceEnabled ? `#66666615` : 'transparent',
                       borderColor: '#666',
-                      color: isPriceEnabled ? '#666' : '#555',
+                      color: effectiveIsPriceEnabled ? '#666' : '#555',
                     }}
                   >
                     <span
                       className="w-2 h-2 rounded-full"
-                      style={{ backgroundColor: isPriceEnabled ? '#666' : '#ccc' }}
+                      style={{ backgroundColor: effectiveIsPriceEnabled ? '#666' : '#ccc' }}
                     />
                     Price
                   </button>
@@ -703,7 +728,7 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
               />
               <Legend />
               {tickerGroup.keywords.map((kw, idx) => {
-                if (!enabledKeywords.has(kw.keyword)) return null;
+                if (!effectiveEnabledKeywords.has(kw.keyword)) return null;
                 const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
                 const normalizedTickerKeyword = normalizeKeyword(kw.keyword);
                 // Find the API keyword (data key) that matches this tickerGroup keyword
