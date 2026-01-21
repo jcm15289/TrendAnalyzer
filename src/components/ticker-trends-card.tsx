@@ -273,6 +273,12 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     }
   }, []);
   
+  // Memoize keywords for filtering - only recompute when tickerGroup.keywords changes
+  const keywordsRef = useRef<typeof tickerGroup.keywords>(tickerGroup.keywords);
+  if (tickerGroup.keywords !== keywordsRef.current) {
+    keywordsRef.current = tickerGroup.keywords;
+  }
+
   // Update enabled keywords when searchTerm or filterLabel changes
   useEffect(() => {
     if (!foundKeywords.length && !hasStockData) return;
@@ -287,8 +293,9 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
     };
     
     const apiToDisplayMap = new Map<string, string>();
-    if (tickerGroup.keywords && Array.isArray(tickerGroup.keywords)) {
-      tickerGroup.keywords.forEach(tk => {
+    const keywords = keywordsRef.current;
+    if (keywords && Array.isArray(keywords)) {
+      keywords.forEach(tk => {
         if (!tk || typeof tk.keyword !== 'string' || !tk.keyword) return;
         try {
           const normalized = normalizeKeyword(tk.keyword);
@@ -308,8 +315,6 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
         }
       });
     }
-    
-    const companyName = getCompanyName(tickerGroup.keywords);
     
     let enabledDisplayKeywords: string[] = [];
     // Prioritize filterLabel over searchTerm (same as page-level filtering)
@@ -340,7 +345,8 @@ export function TickerTrendsCard({ tickerGroup, isWideLayout = false, searchTerm
       setIsPriceEnabled(true);
     }
     setEnabledKeywords(new Set(enabledDisplayKeywords));
-  }, [searchTerm, filterLabel, foundKeywords, hasStockData, tickerGroup.keywords, getCompanyName, extractLabel]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchTerm, filterLabel, foundKeywords, hasStockData]); // Removed tickerGroup.keywords, getCompanyName, extractLabel to prevent loops
 
   // Hide card if filtering is active but no keywords match
   // Only hide after data has loaded (foundKeywords.length > 0) to avoid hiding during initial load
