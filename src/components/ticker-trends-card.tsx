@@ -55,7 +55,7 @@ const LINE_COLORS = [
   '#6366F1', // Indigo
 ];
 
-export function TickerTrendsCard({ tickerGroup, filteredKeywords, isWideLayout = false, onDataFound }: TickerTrendsCardProps) {
+export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLayout = false, onDataFound }: TickerTrendsCardProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [combinedData, setCombinedData] = useState<TrendDataPoint[]>([]);
@@ -64,6 +64,9 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords, isWideLayout =
   const [stockPriceData, setStockPriceData] = useState<Array<{ date: string; close: number }>>([]);
   const [hasStockData, setHasStockData] = useState(false);
   const [isPriceEnabled, setIsPriceEnabled] = useState(true);
+  
+  // Ensure filteredKeywords is always an array
+  const safeFilteredKeywords = Array.isArray(filteredKeywords) ? filteredKeywords : [];
 
   const fetchStockPrice = async (ticker: string) => {
     try {
@@ -182,7 +185,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords, isWideLayout =
       }
       
       // Enable keywords based on pre-filtered keywords from the page
-      const enabledDisplayKeywords = filteredKeywords
+      const enabledDisplayKeywords = safeFilteredKeywords
         .map(kw => kw.keyword)
         .filter(displayKw => Array.from(apiToDisplayMap.values()).includes(displayKw));
       setEnabledKeywords(new Set(enabledDisplayKeywords));
@@ -217,12 +220,12 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords, isWideLayout =
       }
     });
     
-    const enabledDisplayKeywords = filteredKeywords
+    const enabledDisplayKeywords = safeFilteredKeywords
       .map(kw => kw.keyword)
       .filter(displayKw => Array.from(apiToDisplayMap.values()).includes(displayKw));
     setIsPriceEnabled(true);
     setEnabledKeywords(new Set(enabledDisplayKeywords));
-  }, [filteredKeywords, foundKeywords, hasStockData, tickerGroup.keywords]);
+  }, [safeFilteredKeywords, foundKeywords, hasStockData, tickerGroup.keywords]);
 
   const toggleKeyword = (keyword: string) => {
     setEnabledKeywords(prev => {
@@ -247,7 +250,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords, isWideLayout =
         apiToDisplayMap.set(matchingApiKeyword, tk.keyword);
       }
     });
-    const allDisplayKeywords = filteredKeywords
+    const allDisplayKeywords = safeFilteredKeywords
       .map(kw => kw.keyword)
       .filter(displayKw => Array.from(apiToDisplayMap.values()).includes(displayKw));
     
@@ -269,7 +272,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords, isWideLayout =
     // Create a mapping from display keywords (with spaces) to API keywords (no spaces)
     const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
     const displayToApiMap = new Map<string, string>();
-    filteredKeywords.forEach(tk => {
+    safeFilteredKeywords.forEach(tk => {
       const normalized = normalizeKeyword(tk.keyword);
       const matchingApiKeyword = foundKeywords.find(fk => normalizeKeyword(fk) === normalized);
       if (matchingApiKeyword) {
@@ -298,7 +301,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords, isWideLayout =
       
       return hasAnyEnabledLine ? filtered : null;
     }).filter(Boolean) as TrendDataPoint[];
-  }, [combinedData, enabledKeywords, foundKeywords, hasStockData, isPriceEnabled, filteredKeywords]);
+  }, [combinedData, enabledKeywords, foundKeywords, hasStockData, isPriceEnabled, safeFilteredKeywords]);
   
   // Calculate price range for Y-axis scaling from merged data
   const priceRange = useMemo(() => {
@@ -403,7 +406,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords, isWideLayout =
             const seenKeywords = new Set<string>();
             
             // Filter and deduplicate keywords
-            const filteredKeywordsForDisplay = filteredKeywords.filter(kw => {
+            const filteredKeywordsForDisplay = safeFilteredKeywords.filter(kw => {
               // Only show keywords that were found in Redis
               const isFound = foundKeywords.some(fk => 
                 normalizeKeyword(fk) === normalizeKeyword(kw.keyword)
@@ -557,7 +560,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords, isWideLayout =
                 }}
               />
               <Legend />
-              {filteredKeywords.map((kw, idx) => {
+              {safeFilteredKeywords.map((kw, idx) => {
                 if (!enabledKeywords.has(kw.keyword)) return null;
                 const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
                 const normalizedTickerKeyword = normalizeKeyword(kw.keyword);
