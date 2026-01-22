@@ -251,7 +251,7 @@ export default function Home() {
   }, [tickerGroups, filterTicker, searchTerm, labelFilter, normalizeLabel, extractLabel]);
 
   const availableLabels = useMemo(() => {
-    const labels = new Set<string>();
+    const labelCounts = new Map<string, number>();
     const groups = filterTicker === 'all'
       ? tickerGroups
       : tickerGroups.filter(g => g.baseTicker === filterTicker);
@@ -259,19 +259,27 @@ export default function Home() {
     groups.forEach(group => {
       group.keywords.forEach(kw => {
         const label = extractLabel(group, kw.keyword);
-        if (label) labels.add(label);
+        if (label) {
+          const normalized = normalizeLabel(label);
+          labelCounts.set(normalized, (labelCounts.get(normalized) || 0) + 1);
+        }
       });
     });
 
-    return Array.from(labels).sort((a, b) => a.localeCompare(b));
-  }, [tickerGroups, filterTicker, extractLabel]);
+    // Sort by count (descending), then alphabetically for ties
+    return Array.from(labelCounts.entries())
+      .sort((a, b) => {
+        if (b[1] !== a[1]) return b[1] - a[1]; // Sort by count descending
+        return a[0].localeCompare(b[0]); // Then alphabetically
+      });
+  }, [tickerGroups, filterTicker, extractLabel, normalizeLabel]);
 
   // Unique tickers for the dropdown
   const allTickers = useMemo(() => {
     return tickerGroups.map(g => g.baseTicker).sort();
   }, [tickerGroups]);
 
-  return (
+    return (
     <TooltipProvider>
       {!hasMounted ? (
         <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
@@ -284,10 +292,10 @@ export default function Home() {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <div className="flex items-center gap-2 cursor-help">
-                    <TrendingUp className="h-6 w-6 text-[#FF6B35]" strokeWidth={2.5} />
+                  <div className="flex items-center gap-2 cursor-help h-9">
+                    <TrendingUp className="h-5 w-5 text-[#FF6B35]" strokeWidth={2.5} />
                     <h1 className={cn(
-                      "text-2xl font-bold tracking-tight leading-none",
+                      "text-xl font-bold tracking-tight leading-none",
                       isLocalhost ? "text-red-600" : "text-[#FF6B35]"
                     )}>TrendsAnalyzer</h1>
                     {buildTimeDisplay && (
@@ -321,7 +329,7 @@ export default function Home() {
                 </TooltipContent>
               </Tooltip>
 
-              <div className="flex flex-wrap items-center gap-2 flex-nowrap sm:flex-wrap w-full justify-center">
+              <div className="flex flex-wrap items-center gap-2 flex-nowrap sm:flex-wrap w-full justify-center sm:justify-end">
                 {/* Search box for filtering by keyword - wider and centered */}
                 <div className="relative w-full max-w-md">
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -362,9 +370,12 @@ export default function Home() {
                         </span>
           </div>
                     </SelectItem>
-                    {availableLabels.map((label) => (
+                    {availableLabels.map(([label, count]) => (
                       <SelectItem key={label} value={label}>
-                        {label}
+                        <div className="flex items-center justify-between w-full">
+                          <span>{label}</span>
+                          <span className="text-xs text-muted-foreground ml-2">({count})</span>
+                        </div>
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -394,7 +405,7 @@ export default function Home() {
                   </SelectContent>
                 </Select>
                 
-                <div className="h-6 w-px bg-border" />
+                <div className="h-9 w-px bg-border" />
                 
             <Tooltip>
               <TooltipTrigger asChild>
@@ -402,7 +413,7 @@ export default function Home() {
                   variant="outline" 
                   size="sm" 
                   onClick={toggleLayoutMode} 
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 h-9"
                 >
                   {layoutMode === 'single' ? (
                     <LayoutGrid className="h-4 w-4" />
@@ -423,7 +434,7 @@ export default function Home() {
                   variant="outline" 
                   size="sm" 
                   onClick={() => setConfigDialogOpen(true)} 
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 h-9"
                 >
                   <Settings className="h-4 w-4" />
                   <span className="hidden sm:inline">Config</span>
@@ -566,7 +577,7 @@ export default function Home() {
           keywords={[]}
           onRemoveKeyword={() => {}}
         />
-        </div>
+    </div>
       )}
     </TooltipProvider>
   );
