@@ -105,6 +105,14 @@ export default function Home() {
       })
     : null;
 
+  if (!hasMounted) {
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+        <div className="text-sm text-muted-foreground">Loading...</div>
+      </div>
+    );
+  }
+
   // Load ticker groups from ALLSYMS
   useEffect(() => {
     const loadTickerGroups = async () => {
@@ -310,7 +318,7 @@ export default function Home() {
                             timeZoneName: 'short',
                           })}`
                         : 'Build time unavailable'}
-                    </div>
+          </div>
                     <div className="text-xs text-muted-foreground">ALLSYMS-Based Architecture</div>
           </div>
                 </TooltipContent>
