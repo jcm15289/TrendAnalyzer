@@ -60,9 +60,14 @@ export default function Home() {
   const [labelFilter, setLabelFilter] = useState<string>('all');
   const [tickersWithData, setTickersWithData] = useState<Set<string>>(new Set());
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const [hasMounted, setHasMounted] = useState(false);
   
   useEffect(() => {
     setIsLocalhost(typeof window !== 'undefined' && window.location.hostname === 'localhost');
+  }, []);
+
+  useEffect(() => {
+    setHasMounted(true);
   }, []);
 
   const parseBuildTimestamp = (value: string | null | undefined) => {
@@ -92,7 +97,7 @@ export default function Home() {
     }
   }, []);
 
-  const buildTimeDisplay = buildTime
+  const buildTimeDisplay = hasMounted && buildTime
     ? buildTime.toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit',
@@ -294,7 +299,7 @@ export default function Home() {
                   <div className="text-center">
                     <div className="font-semibold">TrendsAnalyzer v{buildVersion}</div>
                     <div className="text-xs text-muted-foreground">
-                      {buildTime
+                      {hasMounted && buildTime
                         ? `Build time: ${buildTime.toLocaleString('en-US', {
                             timeZone: 'America/Los_Angeles',
                             year: 'numeric',
@@ -305,7 +310,7 @@ export default function Home() {
                             timeZoneName: 'short',
                           })}`
                         : 'Build time unavailable'}
-          </div>
+                    </div>
                     <div className="text-xs text-muted-foreground">ALLSYMS-Based Architecture</div>
           </div>
                 </TooltipContent>
