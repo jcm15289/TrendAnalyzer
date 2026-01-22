@@ -93,7 +93,11 @@ export default function Home() {
   }, []);
 
   const buildTimeDisplay = buildTime
-    ? buildTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+    ? buildTime.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'America/Los_Angeles',
+      })
     : null;
 
   // Load ticker groups from ALLSYMS
