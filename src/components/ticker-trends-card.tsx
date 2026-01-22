@@ -583,7 +583,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                   />
                 );
               })}
-              {hasStockData && isPriceEnabled && (
+              {hasStockData && isPriceEnabled && priceRange && (
                 <Line
                   yAxisId="price"
                   type="monotone"
