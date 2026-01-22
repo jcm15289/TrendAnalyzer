@@ -105,14 +105,6 @@ export default function Home() {
       })
     : null;
 
-  if (!hasMounted) {
-    return (
-      <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
-        <div className="text-sm text-muted-foreground">Loading...</div>
-      </div>
-    );
-  }
-
   // Load ticker groups from ALLSYMS
   useEffect(() => {
     const loadTickerGroups = async () => {
@@ -279,9 +271,14 @@ export default function Home() {
     return tickerGroups.map(g => g.baseTicker).sort();
   }, [tickerGroups]);
 
-    return (
+  return (
     <TooltipProvider>
-      <div className="flex min-h-screen w-full flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+      {!hasMounted ? (
+        <div className="flex min-h-screen w-full items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+          <div className="text-sm text-muted-foreground">Loading...</div>
+        </div>
+      ) : (
+        <div className="flex min-h-screen w-full flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
         <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur-sm">
           <div className="container mx-auto px-4 py-4 md:px-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -569,7 +566,8 @@ export default function Home() {
           keywords={[]}
           onRemoveKeyword={() => {}}
         />
-    </div>
+        </div>
+      )}
     </TooltipProvider>
   );
 }
