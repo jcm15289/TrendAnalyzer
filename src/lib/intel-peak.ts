@@ -613,13 +613,13 @@ export function calculateIntelPeak(data: DataPoint[]): IntelPeakResult {
     
     // Prefer peaks with higher IntelPeak scores (more significant)
     // Also consider peak value and peak area as tiebreakers
-    // Peak value is VERY important - a peak of 100 is much more significant than 31
-    // Use a combination: IntelPeak percentage + significant weight for peak value
-    const peakValue = peak.value;
+        // Peak value is VERY important - a peak of 100 is much more significant than 31
+        // Use a combination: IntelPeak percentage + significant weight for peak value
+        const currentPeakValue = peak.value;
     // Weight peak value heavily - a peak of 100 should beat a peak of 31 even if percentage is slightly lower
     // Formula: IntelPeak% + (peakValue * 2) + (peakArea * 0.01)
     // This ensures high-value peaks are prioritized
-    const peakScore = score + (peakValue * 2) + (peakArea * 0.01);
+    const peakScore = score + (currentPeakValue * 2) + (peakArea * 0.01);
     
     if (peakScore > bestScore) {
       bestScore = peakScore;
