@@ -1202,6 +1202,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                     dataKey="Price"
                     stroke="#666"
                     strokeWidth={strokeWidth}
+                    strokeDasharray="5 5"
                     dot={false}
                     activeDot={{ r: 4, fill: '#666' }}
                     name="Price"
