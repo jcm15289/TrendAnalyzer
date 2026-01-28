@@ -223,8 +223,31 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       return;
     }
 
-    // Use the first found keyword for growth calculation
-    const mainKeyword = foundKeywords[0];
+    // Use the filtered keyword if available, otherwise fall back to first found keyword
+    const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
+    let mainKeyword: string | undefined = undefined;
+    
+    if (safeFilteredKeywords.length > 0) {
+      // Try to find a matching keyword from filtered keywords
+      const filteredKw = safeFilteredKeywords[0].keyword; // Use first filtered keyword
+      const normalizedFiltered = normalizeKeyword(filteredKw);
+      
+      // Find matching API keyword (foundKeywords are API keywords like "C3ailogin")
+      mainKeyword = foundKeywords.find(fk => normalizeKeyword(fk) === normalizedFiltered);
+      
+      console.log(`[AreaAlgorithm] Looking for filtered keyword "${filteredKw}" (normalized: "${normalizedFiltered}")`, {
+        foundKeywords,
+        matchedKeyword: mainKeyword,
+        safeFilteredKeywords: safeFilteredKeywords.map(kw => kw.keyword),
+      });
+    }
+    
+    // Fallback to first found keyword if no filtered keyword matches
+    if (!mainKeyword) {
+      mainKeyword = foundKeywords[0];
+      console.log(`[AreaAlgorithm] Using fallback keyword: "${mainKeyword}"`);
+    }
+    
     if (!mainKeyword) {
       return;
     }
@@ -253,10 +276,12 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     
     console.log(`[TickerTrendsCard] ${tickerGroup.baseTicker}: Parsed ${parsed.length} data points for growth calculation`, {
       mainKeyword,
+      filteredKeyword: safeFilteredKeywords.length > 0 ? safeFilteredKeywords[0].keyword : 'none',
       firstDate: parsed[0]?.date.toISOString(),
       lastDate: parsed[parsed.length - 1]?.date.toISOString(),
       sampleValues: parsed.slice(0, 5).map(p => ({ date: p.date.toISOString(), value: p.value })),
       totalSum: parsed.reduce((sum, p) => sum + p.value, 0),
+      allFoundKeywords: foundKeywords,
     });
 
     // Calculate window summaries (3m, 6m, 12m)
@@ -525,7 +550,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     
     callback(tickerGroup.baseTicker, summary);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [combinedData.length, foundKeywords.length, tickerGroup.baseTicker, growthMode]);
+  }, [combinedData.length, foundKeywords.length, tickerGroup.baseTicker, growthMode, safeFilteredKeywords]);
 
   const toggleKeyword = (keyword: string) => {
     setEnabledKeywords(prev => {
