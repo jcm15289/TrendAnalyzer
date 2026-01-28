@@ -272,14 +272,54 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
         }
       });
 
-      const lastMax = lastValues.length > 0 ? Math.max(...lastValues) : 0;
-      const prevMax = prevValues.length > 0 ? Math.max(...prevValues) : 0;
+      // Detect actual peaks (local maxima) in each window, not just max values
+      const detectPeaksInWindow = (values: number[], dates: Date[]): { value: number; date: Date | undefined } => {
+        if (values.length === 0) return { value: 0, date: undefined };
+        if (values.length === 1) return { value: values[0], date: dates[0] };
+        
+        // Find local maxima (peaks) - points that are higher than their neighbors
+        const peaks: Array<{ value: number; date: Date; index: number }> = [];
+        
+        // Check first point
+        if (values.length > 1 && values[0] > values[1] && values[0] > 0) {
+          peaks.push({ value: values[0], date: dates[0], index: 0 });
+        }
+        
+        // Check middle points
+        for (let i = 1; i < values.length - 1; i++) {
+          if (values[i] > values[i - 1] && values[i] > values[i + 1] && values[i] > 0) {
+            peaks.push({ value: values[i], date: dates[i], index: i });
+          }
+        }
+        
+        // Check last point
+        if (values.length > 1 && values[values.length - 1] > values[values.length - 2] && values[values.length - 1] > 0) {
+          peaks.push({ 
+            value: values[values.length - 1], 
+            date: dates[dates.length - 1], 
+            index: values.length - 1 
+          });
+        }
+        
+        // If no peaks found, return the max value (but this shouldn't be called a "peak")
+        if (peaks.length === 0) {
+          const maxValue = Math.max(...values);
+          const maxIndex = values.indexOf(maxValue);
+          return { value: maxValue, date: maxIndex >= 0 ? dates[maxIndex] : undefined };
+        }
+        
+        // Return the highest peak
+        const highestPeak = peaks.reduce((max, peak) => peak.value > max.value ? peak : max);
+        return { value: highestPeak.value, date: highestPeak.date };
+      };
       
-      // Find the dates where the max values occurred
-      const lastMaxIndex = lastValues.indexOf(lastMax);
-      const prevMaxIndex = prevValues.indexOf(prevMax);
-      const lastMaxDate = lastMaxIndex >= 0 && lastDates.length > lastMaxIndex ? lastDates[lastMaxIndex] : undefined;
-      const prevMaxDate = prevMaxIndex >= 0 && prevDates.length > prevMaxIndex ? prevDates[prevMaxIndex] : undefined;
+      const lastPeak = detectPeaksInWindow(lastValues, lastDates);
+      const prevPeak = detectPeaksInWindow(prevValues, prevDates);
+      
+      const lastMax = lastPeak.value;
+      const prevMax = prevPeak.value;
+      const lastMaxDate = lastPeak.date;
+      const prevMaxDate = prevPeak.date;
       
       // Debug logging to help diagnose window calculation issues
       if (lastMax >= 90 || prevMax >= 90) {
