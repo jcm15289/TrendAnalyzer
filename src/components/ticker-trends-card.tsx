@@ -882,11 +882,16 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
               ];
             })();
             
-            let colorIdx = 0;
+            // Create a map from keyword to its index in sortedKeywords for consistent color assignment
+            const keywordToIndexMap = new Map<string, number>();
+            sortedKeywords.forEach((kw, idx) => {
+              keywordToIndexMap.set(kw.keyword, idx);
+            });
+            
             return sortedKeywords.map((kw) => {
                 const isEnabled = enabledKeywords.has(kw.keyword);
+                const colorIdx = keywordToIndexMap.get(kw.keyword) ?? 0;
                 const color = LINE_COLORS[colorIdx % LINE_COLORS.length];
-                colorIdx++;
 
                 return (
                   <button
@@ -989,19 +994,66 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                 }}
               />
               <Legend />
-              {safeFilteredKeywords.map((kw, idx) => {
-                // Always show lines for filtered keywords (they're already filtered by label)
+              {(() => {
+                // Use the same sorting logic as labels to ensure consistent color assignment
                 const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
-                const normalizedTickerKeyword = normalizeKeyword(kw.keyword);
-                // Find the API keyword (data key) that matches this tickerGroup keyword
-                const apiKeyword = foundKeywords.find(fk => normalizeKeyword(fk) === normalizedTickerKeyword);
-                if (!apiKeyword) return null;
+                const seenKeywords = new Set<string>();
                 
-                // Check if this keyword has data in filteredData
-                const hasData = filteredData.some(point => point[apiKeyword] !== undefined && point[apiKeyword] !== null);
-                if (!hasData) return null;
+                // Filter and deduplicate keywords (same as labels)
+                const filteredKeywordsForDisplay = safeFilteredKeywords.filter(kw => {
+                  const isFound = foundKeywords.some(fk => 
+                    normalizeKeyword(fk) === normalizeKeyword(kw.keyword)
+                  );
+                  if (!isFound) return false;
+                  
+                  const normalized = normalizeKeyword(kw.keyword);
+                  if (seenKeywords.has(normalized)) return false;
+                  seenKeywords.add(normalized);
+                  return true;
+                });
                 
-                const color = LINE_COLORS[idx % LINE_COLORS.length];
+                // Sort keywords (same as labels)
+                const sortedKeywords = (() => {
+                  const normalize = (k: string) => k.replace(/\s+/g, '').toLowerCase();
+                  const mainKeywords: typeof filteredKeywords = [];
+                  const loginKeywords: typeof filteredKeywords = [];
+                  const signUpKeywords: typeof filteredKeywords = [];
+                  const otherKeywords: typeof filteredKeywords = [];
+                  
+                  filteredKeywordsForDisplay.forEach(kw => {
+                    const norm = normalize(kw.keyword);
+                    if (norm.includes('login') && !norm.includes('signup')) {
+                      loginKeywords.push(kw);
+                    } else if (norm.includes('signup')) {
+                      signUpKeywords.push(kw);
+                    } else {
+                      mainKeywords.push(kw);
+                    }
+                  });
+                  
+                  mainKeywords.sort((a, b) => a.keyword.length - b.keyword.length);
+                  
+                  return [
+                    ...mainKeywords,
+                    ...loginKeywords,
+                    ...signUpKeywords,
+                    ...otherKeywords,
+                  ];
+                })();
+                
+                return sortedKeywords.map((kw, idx) => {
+                  // Always show lines for filtered keywords (they're already filtered by label)
+                  const normalizedTickerKeyword = normalizeKeyword(kw.keyword);
+                  // Find the API keyword (data key) that matches this tickerGroup keyword
+                  const apiKeyword = foundKeywords.find(fk => normalizeKeyword(fk) === normalizedTickerKeyword);
+                  if (!apiKeyword) return null;
+                  
+                  // Check if this keyword has data in filteredData
+                  const hasData = filteredData.some(point => point[apiKeyword] !== undefined && point[apiKeyword] !== null);
+                  if (!hasData) return null;
+                  
+                  // Use the same index as labels for consistent color
+                  const color = LINE_COLORS[idx % LINE_COLORS.length];
                 
                 return (
                   <Line
@@ -1016,7 +1068,8 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                     name={kw.keyword} // Display name with spaces
                   />
                 );
-              })}
+                }).filter(Boolean);
+              })()}
               {hasStockData && isPriceEnabled && priceRange && (
                 <Line
                   yAxisId="price"
