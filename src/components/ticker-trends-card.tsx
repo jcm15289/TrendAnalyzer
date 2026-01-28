@@ -73,6 +73,9 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
   const [combinedData, setCombinedData] = useState<TrendDataPoint[]>([]);
   const [foundKeywords, setFoundKeywords] = useState<string[]>([]);
   const [enabledKeywords, setEnabledKeywords] = useState<Set<string>>(new Set());
+  const [stockPriceData, setStockPriceData] = useState<any[] | null>(null);
+  const [hasStockData, setHasStockData] = useState(false);
+  const [isPriceEnabled, setIsPriceEnabled] = useState(true);
   const [growthSummary, setGrowthSummary] = useState<{
     bestLabel?: string;
     bestPercent?: number | null;
@@ -124,6 +127,30 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
   };
 
 
+  const fetchStockPrice = async () => {
+    try {
+      const symbol = tickerGroup.baseTicker;
+      const response = await fetch(`/api/redis/stock?symbol=${symbol}`);
+      
+      if (!response.ok) {
+        setHasStockData(false);
+        return;
+      }
+      
+      const result = await response.json();
+      
+      if (result.success && result.data && result.data.length > 0) {
+        setStockPriceData(result.data);
+        setHasStockData(true);
+      } else {
+        setHasStockData(false);
+      }
+    } catch (error) {
+      console.error(`[TickerTrendsCard] Failed to fetch stock price for ${tickerGroup.baseTicker}:`, error);
+      setHasStockData(false);
+    }
+  };
+
   const fetchTrends = async () => {
     setLoading(true);
     setError(null);
@@ -145,6 +172,9 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
 
       const trendData = result.combinedData || [];
       setCombinedData(trendData);
+      
+      // Fetch stock price data
+      fetchStockPrice();
       
       // Track which keywords were found from API (these are the actual data keys, e.g., "Googlelogin")
       const normalizeKeyword = (kw: string) => kw.replace(/\s+/g, '').toLowerCase();
@@ -590,6 +620,25 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     }
   };
 
+  // Normalize date for merging price data
+  const normalizeDate = (date: Date | string): string => {
+    if (date instanceof Date) {
+      return date.toISOString().split('T')[0];
+    }
+    if (typeof date === 'string') {
+      // Handle various date formats
+      const d = new Date(date);
+      if (!isNaN(d.getTime())) {
+        return d.toISOString().split('T')[0];
+      }
+      // If already in YYYY-MM-DD format, return as-is
+      if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        return date;
+      }
+    }
+    return '';
+  };
+
   // Filter data to include filtered keywords (for chart) and enabled keywords (for display control)
   const filteredData = useMemo(() => {
     // Create a mapping from display keywords (with spaces) to API keywords (no spaces)
@@ -602,6 +651,17 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
         displayToApiMap.set(tk.keyword, matchingApiKeyword);
       }
     });
+    
+    // Create price map for merging
+    const priceMap = new Map<string, number>();
+    if (hasStockData && stockPriceData && isPriceEnabled) {
+      stockPriceData.forEach((pricePoint: any) => {
+        const dateKey = normalizeDate(pricePoint.date);
+        if (dateKey && pricePoint.close !== undefined && pricePoint.close !== null) {
+          priceMap.set(dateKey, pricePoint.close);
+        }
+      });
+    }
     
     return combinedData.map(point => {
       const filtered: TrendDataPoint = { date: point.date };
@@ -617,11 +677,56 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
         }
       });
       
+      // Merge price data
+      if (hasStockData && isPriceEnabled && priceMap.size > 0) {
+        const dateKey = normalizeDate(point.date);
+        const priceValue = priceMap.get(dateKey);
+        if (priceValue !== undefined) {
+          filtered.Price = priceValue;
+          hasAnyLine = true;
+        } else {
+          // Try to find closest date within 7 days
+          let closestPrice: number | undefined = undefined;
+          let closestDiff = Infinity;
+          priceMap.forEach((price, priceDate) => {
+            const diff = Math.abs(new Date(dateKey).getTime() - new Date(priceDate).getTime());
+            const daysDiff = diff / (1000 * 60 * 60 * 24);
+            if (daysDiff <= 7 && daysDiff < closestDiff) {
+              closestDiff = daysDiff;
+              closestPrice = price;
+            }
+          });
+          if (closestPrice !== undefined) {
+            filtered.Price = closestPrice;
+            hasAnyLine = true;
+          }
+        }
+      }
+      
       // Include point if it has any data
       return hasAnyLine ? filtered : null;
     }).filter(Boolean) as TrendDataPoint[];
-  }, [combinedData, foundKeywords, safeFilteredKeywords]);
+  }, [combinedData, foundKeywords, safeFilteredKeywords, hasStockData, stockPriceData, isPriceEnabled]);
   
+  // Calculate price range for Y-axis
+  const priceRange = useMemo(() => {
+    if (!hasStockData || !isPriceEnabled || !filteredData.length) return null;
+    
+    const prices = filteredData
+      .map(point => point.Price)
+      .filter((price): price is number => typeof price === 'number' && !isNaN(price));
+    
+    if (prices.length === 0) return null;
+    
+    const min = Math.min(...prices);
+    const max = Math.max(...prices);
+    const padding = (max - min) * 0.1; // 10% padding
+    
+    return {
+      min: Math.max(0, min - padding),
+      max: max + padding,
+    };
+  }, [filteredData, hasStockData, isPriceEnabled]);
 
   const strokeWidth = isWideLayout ? 2 : 1.5;
   
@@ -833,6 +938,9 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                 <><Eye className="h-3 w-3 mr-1" /> Show All</>
               )}
             </Button>
+            <Badge variant="outline" className="text-xs">
+              {foundKeywords.length}{hasStockData ? ` + ${isPriceEnabled ? '1' : '0'} price` : ''} lines
+            </Badge>
           </div>
         </div>
         
@@ -896,7 +1004,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
               keywordToIndexMap.set(kw.keyword, idx);
             });
             
-            return sortedKeywords.map((kw) => {
+            const keywordButtons = sortedKeywords.map((kw) => {
                 const isEnabled = enabledKeywords.has(kw.keyword);
                 const colorIdx = keywordToIndexMap.get(kw.keyword) ?? 0;
                 const color = LINE_COLORS[colorIdx % LINE_COLORS.length];
@@ -925,6 +1033,35 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                   </button>
                 );
               });
+              
+              // Add price toggle button if stock data is available
+              if (hasStockData) {
+                keywordButtons.push(
+                  <button
+                    key="Price"
+                    onClick={() => setIsPriceEnabled(prev => !prev)}
+                    className={cn(
+                      'px-2 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1.5',
+                      isPriceEnabled
+                        ? 'shadow-sm border-2'
+                        : 'opacity-50 border border-dashed',
+                    )}
+                    style={{
+                      backgroundColor: isPriceEnabled ? '#66615' : 'transparent',
+                      borderColor: '#666',
+                      color: isPriceEnabled ? '#666' : '#555',
+                    }}
+                  >
+                    <span
+                      className="w-2 h-2 rounded-full"
+                      style={{ backgroundColor: isPriceEnabled ? '#666' : '#ccc' }}
+                    />
+                    Price
+                  </button>
+                );
+              }
+              
+              return keywordButtons;
           })()}
         </div>
       </CardHeader>
@@ -950,6 +1087,19 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                 domain={[0, 100]}
                 label={{ value: 'Trends', angle: -90, position: 'insideLeft' }}
               />
+              {hasStockData && isPriceEnabled && priceRange && (
+                <YAxis
+                  yAxisId="price"
+                  orientation="right"
+                  stroke="#666"
+                  fontSize={11}
+                  tickLine={false}
+                  axisLine={false}
+                  domain={[priceRange.min, priceRange.max]}
+                  tickFormatter={() => ''}
+                  hide={true}
+                />
+              )}
               <Tooltip
                 contentStyle={{
                   backgroundColor: 'white',
@@ -1043,12 +1193,28 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                   );
                 }).filter(Boolean);
                 
-                // If there are no trend lines, don't render the chart (even if price exists)
-                if (trendLines.length === 0) {
+                // Add price line if available
+                const priceLine = hasStockData && isPriceEnabled && filteredData.some(point => point.Price !== undefined && point.Price !== null) ? (
+                  <Line
+                    key="Price"
+                    yAxisId="price"
+                    type="monotone"
+                    dataKey="Price"
+                    stroke="#666"
+                    strokeWidth={strokeWidth}
+                    dot={false}
+                    activeDot={{ r: 4, fill: '#666' }}
+                    name="Price"
+                    connectNulls={false}
+                  />
+                ) : null;
+                
+                // If there are no trend lines and no price line, don't render the chart
+                if (trendLines.length === 0 && !priceLine) {
                   return null;
                 }
                 
-                return trendLines;
+                return [...trendLines, priceLine].filter(Boolean);
               })()}
             </ComposedChart>
           </ResponsiveContainer>
