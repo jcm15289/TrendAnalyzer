@@ -89,6 +89,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       lastSum: number;
       prevSum: number;
       areaPercent: number | null;
+      isInvalid?: boolean;
       lastMax: number;
       prevMax: number;
       peakPercent: number | null;
@@ -425,8 +426,16 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
         });
       }
 
+      // Check if 60% or more of values are zeros (invalid window)
+      const allValues = [...lastValues, ...prevValues];
+      const zeroCount = allValues.filter(v => v === 0).length;
+      const zeroPercentage = allValues.length > 0 ? (zeroCount / allValues.length) * 100 : 0;
+      const isInvalid = zeroPercentage >= 60;
+      
       let areaPercent: number | null = null;
-      if (prevSum === 0) {
+      if (isInvalid) {
+        areaPercent = null; // Mark as invalid
+      } else if (prevSum === 0) {
         areaPercent = lastSum > 0 ? 100 : 0;
       } else {
         areaPercent = ((lastSum - prevSum) / prevSum) * 100;
@@ -494,6 +503,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
         lastSum,
         prevSum,
         areaPercent,
+        isInvalid, // Add invalid flag
         lastMax,
         prevMax,
         peakPercent,
@@ -505,6 +515,9 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     });
 
     const bestAreaWindow = windowSummaries.reduce((best, current) => {
+      // Skip invalid windows
+      if (current.isInvalid || current.areaPercent === null) return best;
+      if (best && (best.isInvalid || best.areaPercent === null)) return current;
       const currentPercent = current.areaPercent ?? -Infinity;
       const bestPercent = best ? best.areaPercent ?? -Infinity : -Infinity;
       return currentPercent > bestPercent ? current : best;
@@ -566,7 +579,8 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
 
     // Find 6m window for sorting
     const sixMonthWindow = windowSummaries.find(w => w.months === 6);
-    const sixMonthValue = sixMonthWindow?.areaPercent ?? null;
+    // If invalid, treat as 0 for sorting (will be sorted to bottom)
+    const sixMonthValue = sixMonthWindow?.isInvalid ? 0 : (sixMonthWindow?.areaPercent ?? null);
     
     const summary = {
       bestLabel,
@@ -869,7 +883,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                         {growthDetails.bestAreaWindow && (
                           <div className="flex items-center gap-2">
                             <span className={growthDetails.bestAreaWindow.percent !== null && growthDetails.bestAreaWindow.percent >= 0 ? 'text-emerald-600 font-medium' : 'text-red-500 font-medium'}>
-                              {growthDetails.bestAreaWindow.percent !== null ? `${growthDetails.bestAreaWindow.percent >= 0 ? '+' : ''}${growthDetails.bestAreaWindow.percent.toFixed(1)}%` : 'N/A'}
+                              {growthDetails.bestAreaWindow.percent !== null ? `${growthDetails.bestAreaWindow.percent >= 0 ? '+' : ''}${growthDetails.bestAreaWindow.percent.toFixed(1)}%` : '-'}
                             </span>
                             <span className="text-[10px]">Best window: {growthDetails.bestAreaWindow.label}</span>
                           </div>
@@ -878,7 +892,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                           {growthDetails.windowSummaries.map((window) => (
                             <div key={`area-${window.label}`} className="flex flex-col">
                               <span>
-                                {window.label}: {window.areaPercent !== null ? `${window.areaPercent >= 0 ? '+' : ''}${window.areaPercent.toFixed(1)}%` : 'N/A'}
+                                {window.label}: {window.isInvalid ? '-' : (window.areaPercent !== null ? `${window.areaPercent >= 0 ? '+' : ''}${window.areaPercent.toFixed(1)}%` : 'N/A')}
                                 <span className="text-muted-foreground"> (Σ {Math.round(window.lastSum)}/{Math.round(window.prevSum)})</span>
                               </span>
                               <span className="text-[9px] text-muted-foreground ml-1">

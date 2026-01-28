@@ -298,9 +298,10 @@ export default function Home() {
       }
 
       // Always use 6m value for sorting
-      const metricValue = summary.sixMonthValue ?? null;
+      // If null (invalid), treat as 0 for sorting (will be sorted to bottom)
+      const metricValue = summary.sixMonthValue ?? 0;
 
-      if (metricValue === null || Number.isNaN(metricValue)) {
+      if (Number.isNaN(metricValue)) {
         const next = { ...prev };
         delete next[ticker];
         return next;
