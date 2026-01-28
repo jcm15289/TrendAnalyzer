@@ -298,10 +298,10 @@ export default function Home() {
       }
 
       // Always use 6m value for sorting
-      // If null (invalid), treat as 0 for sorting (will be sorted to bottom)
-      const metricValue = summary.sixMonthValue ?? 0;
+      // If null (invalid), don't add to metrics (card won't be shown)
+      const metricValue = summary.sixMonthValue;
 
-      if (Number.isNaN(metricValue)) {
+      if (metricValue === null || metricValue === undefined || Number.isNaN(metricValue)) {
         const next = { ...prev };
         delete next[ticker];
         return next;

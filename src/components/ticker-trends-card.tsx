@@ -579,8 +579,13 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
 
     // Find 6m window for sorting
     const sixMonthWindow = windowSummaries.find(w => w.months === 6);
-    // If invalid, treat as 0 for sorting (will be sorted to bottom)
-    const sixMonthValue = sixMonthWindow?.isInvalid ? 0 : (sixMonthWindow?.areaPercent ?? null);
+    // If invalid (60%+ zeros), don't show this card at all
+    if (sixMonthWindow?.isInvalid) {
+      // Don't call callback, don't set state - card will be hidden
+      return;
+    }
+    
+    const sixMonthValue = sixMonthWindow?.areaPercent ?? null;
     
     const summary = {
       bestLabel,
@@ -828,6 +833,14 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     // No label filter - need at least some trend data
     if (!hasAnyKeywordData) {
       return null;
+    }
+  }
+  
+  // Hide card if 6m window is invalid (60%+ zeros)
+  if (growthDetails?.windowSummaries) {
+    const sixMonthWindow = growthDetails.windowSummaries.find(w => w.months === 6);
+    if (sixMonthWindow?.isInvalid) {
+      return null; // Don't show card if invalid
     }
   }
 
