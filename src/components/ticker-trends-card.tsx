@@ -240,8 +240,22 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       .sort((a, b) => a.date.getTime() - b.date.getTime());
 
     if (parsed.length === 0) {
+      console.warn(`[TickerTrendsCard] ${tickerGroup.baseTicker}: No parsed data for growth calculation`, {
+        mainKeyword,
+        combinedDataLength: combinedData.length,
+        samplePoint: combinedData[0],
+        availableKeys: combinedData.length > 0 ? Object.keys(combinedData[0]) : [],
+      });
       return;
     }
+    
+    console.log(`[TickerTrendsCard] ${tickerGroup.baseTicker}: Parsed ${parsed.length} data points for growth calculation`, {
+      mainKeyword,
+      firstDate: parsed[0]?.date.toISOString(),
+      lastDate: parsed[parsed.length - 1]?.date.toISOString(),
+      sampleValues: parsed.slice(0, 5).map(p => ({ date: p.date.toISOString(), value: p.value })),
+      totalSum: parsed.reduce((sum, p) => sum + p.value, 0),
+    });
 
     // Calculate window summaries (3m, 6m, 12m)
     const windowsToEvaluate = [3, 6, 12];
@@ -344,6 +358,19 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       } else {
         areaPercent = ((lastSum - prevSum) / prevSum) * 100;
       }
+      
+      // Debug logging for area calculations
+      console.log(`[AreaAlgorithm] ${tickerGroup.baseTicker} ${months}m window:`, {
+        lastWindowStart: lastWindowStart.toISOString(),
+        prevWindowStart: prevWindowStart.toISOString(),
+        lastWindowDataPoints: lastValues.length,
+        prevWindowDataPoints: prevValues.length,
+        lastSum,
+        prevSum,
+        areaPercent,
+        sampleLastValues: lastValues.slice(0, 5),
+        samplePrevValues: prevValues.slice(0, 5),
+      });
 
       let peakPercent: number | null = null;
       if (prevMax === 0) {
