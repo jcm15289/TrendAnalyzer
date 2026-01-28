@@ -1062,7 +1062,11 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                 })();
                 
                 const trendLines = sortedKeywords.map((kw, idx) => {
-                  // Always show lines for filtered keywords (they're already filtered by label)
+                  // Only show lines for enabled keywords
+                  if (!enabledKeywords.has(kw.keyword)) {
+                    return null;
+                  }
+                  
                   const normalizedTickerKeyword = normalizeKeyword(kw.keyword);
                   // Find the API keyword (data key) that matches this tickerGroup keyword
                   const apiKeyword = foundKeywords.find(fk => normalizeKeyword(fk) === normalizedTickerKeyword);
