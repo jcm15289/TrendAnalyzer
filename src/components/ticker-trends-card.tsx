@@ -91,6 +91,8 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       lastMax: number;
       prevMax: number;
       peakPercent: number | null;
+      lastMaxDate?: Date;
+      prevMaxDate?: Date;
     }>;
     bestAreaWindow: { label: string; percent: number | null } | null;
     bestPeakWindow: { label: string; percent: number | null } | null;
@@ -331,18 +333,45 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       let prevSum = 0;
       const lastValues: number[] = [];
       const prevValues: number[] = [];
+      const lastDates: Date[] = [];
+      const prevDates: Date[] = [];
       parsed.forEach(({ date, value }) => {
         if (date > lastWindowStart) {
           lastSum += value;
           lastValues.push(value);
+          lastDates.push(date);
         } else if (date > prevWindowStart) {
           prevSum += value;
           prevValues.push(value);
+          prevDates.push(date);
         }
       });
 
       const lastMax = lastValues.length > 0 ? Math.max(...lastValues) : 0;
       const prevMax = prevValues.length > 0 ? Math.max(...prevValues) : 0;
+      
+      // Find the dates where the max values occurred
+      const lastMaxIndex = lastValues.indexOf(lastMax);
+      const prevMaxIndex = prevValues.indexOf(prevMax);
+      const lastMaxDate = lastMaxIndex >= 0 && lastDates.length > lastMaxIndex ? lastDates[lastMaxIndex] : undefined;
+      const prevMaxDate = prevMaxIndex >= 0 && prevDates.length > prevMaxIndex ? prevDates[prevMaxIndex] : undefined;
+      
+      // Debug logging to help diagnose window calculation issues
+      if (lastMax >= 90 || prevMax >= 90) {
+        console.log(`[PeakAlgorithm] ${months}m window calculation:`, {
+          latestEntryDate: latestEntry.date.toISOString(),
+          lastWindowStart: lastWindowStart.toISOString(),
+          prevWindowStart: prevWindowStart.toISOString(),
+          lastWindowDataPoints: lastValues.length,
+          prevWindowDataPoints: prevValues.length,
+          lastMax,
+          prevMax,
+          lastMaxDate: lastMaxDate?.toISOString() || 'N/A',
+          prevMaxDate: prevMaxDate?.toISOString() || 'N/A',
+          lastWindowSampleValues: lastValues.slice(0, 5),
+          prevWindowSampleValues: prevValues.slice(0, 5),
+        });
+      }
 
       let areaPercent: number | null = null;
       if (prevSum === 0) {
@@ -367,6 +396,8 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
         lastMax,
         prevMax,
         peakPercent,
+        lastMaxDate,
+        prevMaxDate,
       };
     });
 
@@ -687,10 +718,19 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                         )}
                         <div className="flex flex-wrap gap-2 text-[10px]">
                           {growthDetails.windowSummaries.map((window) => (
-                            <span key={`peak-${window.label}`}>
-                              {window.label}: {window.peakPercent !== null ? `${window.peakPercent >= 0 ? '+' : ''}${window.peakPercent.toFixed(1)}%` : 'N/A'}
-                              <span className="text-muted-foreground"> (max {Math.round(window.lastMax)}/{Math.round(window.prevMax)})</span>
-                            </span>
+                            <div key={`peak-${window.label}`} className="flex flex-col">
+                              <span>
+                                {window.label}: {window.peakPercent !== null ? `${window.peakPercent >= 0 ? '+' : ''}${window.peakPercent.toFixed(1)}%` : 'N/A'}
+                                <span className="text-muted-foreground"> (max {Math.round(window.lastMax)}/{Math.round(window.prevMax)})</span>
+                              </span>
+                              {(window.lastMaxDate || window.prevMaxDate) && (
+                                <span className="text-[9px] text-muted-foreground ml-1">
+                                  {window.lastMaxDate && `Peak: ${window.lastMaxDate.toLocaleDateString()}`}
+                                  {window.lastMaxDate && window.prevMaxDate && ' • '}
+                                  {window.prevMaxDate && `Prev: ${window.prevMaxDate.toLocaleDateString()}`}
+                                </span>
+                              )}
+                            </div>
                           ))}
                         </div>
                       </div>
