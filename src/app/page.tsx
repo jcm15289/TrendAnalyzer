@@ -62,7 +62,8 @@ export default function Home() {
   const [tickersWithData, setTickersWithData] = useState<Set<string>>(new Set());
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [hasMounted, setHasMounted] = useState(false);
-  const [growthMode, setGrowthMode] = useState<'area' | 'peak' | 'both'>('area');
+  const [selectedWindow, setSelectedWindow] = useState<'3m' | '6m' | '12m'>('6m');
+  const growthMode = 'area'; // Always use area algorithm
   const [growthDebug, setGrowthDebug] = useState(false);
   const [growthMetrics, setGrowthMetrics] = useState<Record<string, number>>({});
   
@@ -287,18 +288,22 @@ export default function Home() {
   const handleGrowthComputed = useCallback((ticker: string, summary: {
     bestLabel?: string;
     bestPercent?: number | null;
-    sixMonthValue?: number | null;
+    windowValues?: {
+      '3m': number | null;
+      '6m': number | null;
+      '12m': number | null;
+    };
   } | null) => {
     setGrowthMetrics((prev) => {
-      if (!summary) {
+      if (!summary || !summary.windowValues) {
         const next = { ...prev };
         delete next[ticker];
         return next;
       }
 
-      // Always use 6m value for sorting
+      // Use selected window value for sorting
       // If null (invalid), exclude from metrics (card will be hidden)
-      const metricValue = summary.sixMonthValue;
+      const metricValue = summary.windowValues[selectedWindow];
 
       if (metricValue === null || metricValue === undefined || Number.isNaN(metricValue)) {
         const next = { ...prev };
@@ -316,7 +321,7 @@ export default function Home() {
         [ticker]: metricValue,
       };
     });
-  }, []);
+  }, [selectedWindow]);
 
   // Sort filtered groups by growth metrics ONLY when a label is selected
   const sortedFilteredGroups = useMemo(() => {
@@ -442,20 +447,20 @@ export default function Home() {
                 
               <div className="h-9 w-px bg-border" />
                 
-              {/* Peak measurement mode selector */}
+              {/* Window selector for area sorting */}
               <div className="flex items-center gap-1 rounded-md border border-input bg-background px-1 py-1 text-xs font-medium text-muted-foreground">
                 {[
-                  { value: 'area' as const, label: 'Area' },
-                  { value: 'peak' as const, label: 'Peak' },
-                  { value: 'both' as const, label: 'Both' },
+                  { value: '3m' as const, label: '3m' },
+                  { value: '6m' as const, label: '6m' },
+                  { value: '12m' as const, label: '12m' },
                 ].map(({ value, label }) => (
                   <button
                     key={value}
                     type="button"
-                    onClick={() => setGrowthMode(value)}
+                    onClick={() => setSelectedWindow(value)}
                     className={cn(
                       'px-3 py-1 rounded-sm transition-colors',
-                      growthMode === value
+                      selectedWindow === value
                         ? 'bg-primary text-primary-foreground shadow-sm'
                         : 'text-muted-foreground hover:text-foreground',
                     )}
@@ -578,7 +583,7 @@ export default function Home() {
                   filteredKeywords={filteredKeywords}
                   onDataFound={handleDataFound}
                   onGrowthComputed={(ticker, summary) => handleGrowthComputed(ticker, summary)}
-                  growthMode={growthMode}
+                  selectedWindow={selectedWindow}
                   showGrowthPercentage={labelFilter !== 'all'}
                   showGrowthDetails={growthDebug}
             />

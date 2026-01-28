@@ -44,10 +44,14 @@ interface TickerTrendsCardProps {
     summary: {
       bestLabel?: string;
       bestPercent?: number | null;
-      sixMonthValue?: number | null;
+      windowValues?: {
+        '3m': number | null;
+        '6m': number | null;
+        '12m': number | null;
+      };
     } | null
   ) => void;
-  growthMode?: 'area' | 'peak' | 'both';
+  selectedWindow?: '3m' | '6m' | '12m';
   showGrowthPercentage?: boolean;
   showGrowthDetails?: boolean;
 }
@@ -66,7 +70,7 @@ const LINE_COLORS = [
   '#6366F1', // Indigo
 ];
 
-export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLayout = false, onDataFound, onGrowthComputed, growthMode = 'area', showGrowthPercentage = false, showGrowthDetails = false }: TickerTrendsCardProps) {
+export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLayout = false, onDataFound, onGrowthComputed, selectedWindow = '6m', showGrowthPercentage = false, showGrowthDetails = false }: TickerTrendsCardProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [combinedData, setCombinedData] = useState<TrendDataPoint[]>([]);
@@ -516,33 +520,30 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       return currentPercent > bestPercent ? current : best;
     }, null as (typeof windowSummaries)[number] | null);
 
-    // Determine best percent based on growth mode
+    // Always use area algorithm, find best area window
     let bestPercent: number | null = null;
     let bestLabel: string = 'n/a';
 
-    if (growthMode === 'area' && bestAreaWindow) {
+    if (bestAreaWindow) {
       bestPercent = bestAreaWindow.areaPercent;
       bestLabel = bestAreaWindow.label;
-    } else if (growthMode === 'peak' && bestPeakWindow) {
-      bestPercent = bestPeakWindow.peakPercent;
-      bestLabel = bestPeakWindow.label;
-    } else if (growthMode === 'both') {
-      // For 'both', use the better of area or peak
-      const areaPercent = bestAreaWindow?.areaPercent ?? -Infinity;
-      const peakPercent = bestPeakWindow?.peakPercent ?? -Infinity;
-      if (areaPercent > peakPercent) {
-        bestPercent = areaPercent;
-        bestLabel = bestAreaWindow?.label ?? 'n/a';
-      } else {
-        bestPercent = peakPercent;
-        bestLabel = bestPeakWindow?.label ?? 'n/a';
-      }
     }
 
-    // Find 6m window for sorting
-    const sixMonthWindow = windowSummaries.find(w => w.months === 6);
-    // If invalid, return null so card is excluded from sorting (will be hidden)
-    const sixMonthValue = sixMonthWindow?.isInvalid ? null : (sixMonthWindow?.areaPercent ?? null);
+    // Get values for all windows for sorting
+    const windowValues = {
+      '3m': windowSummaries.find(w => w.months === 3)?.isInvalid ? null : (windowSummaries.find(w => w.months === 3)?.areaPercent ?? null),
+      '6m': windowSummaries.find(w => w.months === 6)?.isInvalid ? null : (windowSummaries.find(w => w.months === 6)?.areaPercent ?? null),
+      '12m': windowSummaries.find(w => w.months === 12)?.isInvalid ? null : (windowSummaries.find(w => w.months === 12)?.areaPercent ?? null),
+    };
+    
+    // Check if selected window is invalid
+    const selectedWindowValue = windowValues[selectedWindow];
+    const selectedWindowData = windowSummaries.find(w => {
+      if (selectedWindow === '3m') return w.months === 3;
+      if (selectedWindow === '6m') return w.months === 6;
+      if (selectedWindow === '12m') return w.months === 12;
+      return false;
+    });
     
     // Store detailed calculation data for debug display
     setGrowthDetails({
@@ -552,8 +553,8 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       intelPeakDetails: null,
     });
     
-    // If 6m window is invalid, mark as invalid and don't call callback (card will be hidden)
-    if (sixMonthWindow?.isInvalid) {
+    // If selected window is invalid, mark as invalid and don't call callback (card will be hidden)
+    if (selectedWindowData?.isInvalid) {
       setIsInvalidWindow(true);
       return; // Exit early, card will be hidden
     }
@@ -563,13 +564,13 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     const summary = {
       bestLabel,
       bestPercent,
-      sixMonthValue, // Add 6m value for sorting
+      windowValues, // Add all window values for sorting
     };
     setGrowthSummary(summary);
     
     callback(tickerGroup.baseTicker, summary);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [combinedData.length, foundKeywords.length, tickerGroup.baseTicker, growthMode, safeFilteredKeywords]);
+  }, [combinedData.length, foundKeywords.length, tickerGroup.baseTicker, selectedWindow, safeFilteredKeywords]);
 
   const toggleKeyword = (keyword: string) => {
     setEnabledKeywords(prev => {
@@ -827,8 +828,8 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                 </span>
                 {showGrowthDetails && growthDetails && (
                   <div className="flex flex-col gap-2 text-xs text-muted-foreground mt-1 max-w-lg">
-                    {/* Area details */}
-                    {(growthMode === 'area' || growthMode === 'both') && (
+                    {/* Area details - always show since we only use area */}
+                    {true && (
                       <div className="flex flex-col gap-1 p-2 bg-blue-50 rounded border border-blue-200">
                         <div className="font-semibold text-blue-700 text-[10px] uppercase tracking-wide">Area Algorithm</div>
                         {growthDetails.bestAreaWindow && (
@@ -857,37 +858,6 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                                   </>
                                 )}
                               </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                    {/* Peak details */}
-                    {(growthMode === 'peak' || growthMode === 'both') && (
-                      <div className="flex flex-col gap-1 p-2 bg-green-50 rounded border border-green-200">
-                        <div className="font-semibold text-green-700 text-[10px] uppercase tracking-wide">Peak Algorithm</div>
-                        {growthDetails.bestPeakWindow && (
-                          <div className="flex items-center gap-2">
-                            <span className={growthDetails.bestPeakWindow.percent !== null && growthDetails.bestPeakWindow.percent >= 0 ? 'text-emerald-600 font-medium' : 'text-red-500 font-medium'}>
-                              {growthDetails.bestPeakWindow.percent !== null ? `${growthDetails.bestPeakWindow.percent >= 0 ? '+' : ''}${growthDetails.bestPeakWindow.percent.toFixed(1)}%` : 'N/A'}
-                            </span>
-                            <span className="text-[10px]">Best window: {growthDetails.bestPeakWindow.label}</span>
-                          </div>
-                        )}
-                        <div className="flex flex-wrap gap-2 text-[10px]">
-                          {growthDetails.windowSummaries.map((window) => (
-                            <div key={`peak-${window.label}`} className="flex flex-col">
-                              <span>
-                                {window.label}: {window.peakPercent !== null ? `${window.peakPercent >= 0 ? '+' : ''}${window.peakPercent.toFixed(1)}%` : 'N/A'}
-                                <span className="text-muted-foreground"> (max {Math.round(window.lastMax)}/{Math.round(window.prevMax)})</span>
-                              </span>
-                              {(window.lastMaxDate || window.prevMaxDate) && (
-                                <span className="text-[9px] text-muted-foreground ml-1">
-                                  {window.lastMaxDate && `Peak: ${window.lastMaxDate.toLocaleDateString()}`}
-                                  {window.lastMaxDate && window.prevMaxDate && ' • '}
-                                  {window.prevMaxDate && `Prev: ${window.prevMaxDate.toLocaleDateString()}`}
-                                </span>
-                              )}
                             </div>
                           ))}
                         </div>
