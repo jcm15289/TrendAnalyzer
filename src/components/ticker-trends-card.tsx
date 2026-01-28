@@ -77,6 +77,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
   const [stockPriceData, setStockPriceData] = useState<any[] | null>(null);
   const [hasStockData, setHasStockData] = useState(false);
   const [isPriceEnabled, setIsPriceEnabled] = useState(true);
+  const [isInvalidWindow, setIsInvalidWindow] = useState(false);
   const [growthSummary, setGrowthSummary] = useState<{
     bestLabel?: string;
     bestPercent?: number | null;
@@ -579,21 +580,8 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
 
     // Find 6m window for sorting
     const sixMonthWindow = windowSummaries.find(w => w.months === 6);
-    // If invalid (60%+ zeros), don't show this card at all
-    if (sixMonthWindow?.isInvalid) {
-      // Don't call callback, don't set state - card will be hidden
-      return;
-    }
-    
-    const sixMonthValue = sixMonthWindow?.areaPercent ?? null;
-    
-    const summary = {
-      bestLabel,
-      bestPercent,
-      intelPeak,
-      sixMonthValue, // Add 6m value for sorting
-    };
-    setGrowthSummary(summary);
+    // If invalid, return null so card is excluded from sorting (will be hidden)
+    const sixMonthValue = sixMonthWindow?.isInvalid ? null : (sixMonthWindow?.areaPercent ?? null);
     
     // Store detailed calculation data for debug display
     setGrowthDetails({
@@ -602,6 +590,22 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       bestPeakWindow: bestPeakWindow ? { label: bestPeakWindow.label, percent: bestPeakWindow.peakPercent } : null,
       intelPeakDetails,
     });
+    
+    // If 6m window is invalid, mark as invalid and don't call callback (card will be hidden)
+    if (sixMonthWindow?.isInvalid) {
+      setIsInvalidWindow(true);
+      return; // Exit early, card will be hidden
+    }
+    
+    setIsInvalidWindow(false);
+    
+    const summary = {
+      bestLabel,
+      bestPercent,
+      intelPeak,
+      sixMonthValue, // Add 6m value for sorting
+    };
+    setGrowthSummary(summary);
     
     callback(tickerGroup.baseTicker, summary);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -837,11 +841,8 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
   }
   
   // Hide card if 6m window is invalid (60%+ zeros)
-  if (growthDetails?.windowSummaries) {
-    const sixMonthWindow = growthDetails.windowSummaries.find(w => w.months === 6);
-    if (sixMonthWindow?.isInvalid) {
-      return null; // Don't show card if invalid
-    }
+  if (isInvalidWindow) {
+    return null; // Hide card if 6m window is invalid
   }
 
   return (

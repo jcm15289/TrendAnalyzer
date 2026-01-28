@@ -298,7 +298,7 @@ export default function Home() {
       }
 
       // Always use 6m value for sorting
-      // If null (invalid), don't add to metrics (card won't be shown)
+      // If null (invalid), exclude from metrics (card will be hidden)
       const metricValue = summary.sixMonthValue;
 
       if (metricValue === null || metricValue === undefined || Number.isNaN(metricValue)) {
