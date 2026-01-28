@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { AlertCircle, RefreshCw, Eye, EyeOff, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getCompanyName } from '@/lib/ticker-names';
+import { calculateIntelPeak } from '@/lib/intel-peak';
 
 interface TickerKeyword {
   ticker: string;
@@ -39,6 +40,15 @@ interface TickerTrendsCardProps {
   isWideLayout?: boolean;
   filteredKeywords: TickerKeyword[];
   onDataFound?: (ticker: string, hasData: boolean) => void;
+  onGrowthComputed?: (
+    ticker: string,
+    summary: {
+      bestLabel?: string;
+      bestPercent?: number | null;
+      intelPeak?: number | null;
+    } | null
+  ) => void;
+  growthMode?: 'area' | 'peak' | 'both' | 'intelpeak';
 }
 
 // Colors for different trend lines
@@ -55,7 +65,7 @@ const LINE_COLORS = [
   '#6366F1', // Indigo
 ];
 
-export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLayout = false, onDataFound }: TickerTrendsCardProps) {
+export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLayout = false, onDataFound, onGrowthComputed, growthMode = 'intelpeak' }: TickerTrendsCardProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [combinedData, setCombinedData] = useState<TrendDataPoint[]>([]);
@@ -226,6 +236,147 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     setIsPriceEnabled(true);
     setEnabledKeywords(new Set(enabledDisplayKeywords));
   }, [safeFilteredKeywords, foundKeywords, hasStockData, tickerGroup.keywords]);
+
+  // Calculate growth metrics
+  useEffect(() => {
+    if (!onGrowthComputed || !combinedData.length || !foundKeywords.length) {
+      if (onGrowthComputed) {
+        onGrowthComputed(tickerGroup.baseTicker, null);
+      }
+      return;
+    }
+
+    // Use the first found keyword for growth calculation
+    const mainKeyword = foundKeywords[0];
+    if (!mainKeyword) {
+      onGrowthComputed(tickerGroup.baseTicker, null);
+      return;
+    }
+
+    // Parse data points
+    const parsed = combinedData
+      .map((point) => {
+        const date = point.date ? new Date(point.date) : null;
+        const value = point[mainKeyword] != null ? Number(point[mainKeyword]) : null;
+        return date && !Number.isNaN(date.getTime()) && typeof value === 'number' && !Number.isNaN(value)
+          ? { date, value }
+          : null;
+      })
+      .filter((entry): entry is { date: Date; value: number } => entry !== null)
+      .sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    if (parsed.length === 0) {
+      onGrowthComputed(tickerGroup.baseTicker, null);
+      return;
+    }
+
+    // Calculate window summaries (1m, 2m, 3m)
+    const windowsToEvaluate = [1, 2, 3];
+    const latestEntry = parsed[parsed.length - 1];
+
+    const windowSummaries = windowsToEvaluate.map((months) => {
+      const days = months * 30;
+      const lastWindowStart = new Date(latestEntry.date);
+      lastWindowStart.setDate(lastWindowStart.getDate() - days);
+      const prevWindowStart = new Date(lastWindowStart);
+      prevWindowStart.setDate(prevWindowStart.getDate() - days);
+
+      let lastSum = 0;
+      let prevSum = 0;
+      const lastValues: number[] = [];
+      const prevValues: number[] = [];
+      parsed.forEach(({ date, value }) => {
+        if (date > lastWindowStart) {
+          lastSum += value;
+          lastValues.push(value);
+        } else if (date > prevWindowStart) {
+          prevSum += value;
+          prevValues.push(value);
+        }
+      });
+
+      const lastMax = lastValues.length > 0 ? Math.max(...lastValues) : 0;
+      const prevMax = prevValues.length > 0 ? Math.max(...prevValues) : 0;
+
+      let areaPercent: number | null = null;
+      if (prevSum === 0) {
+        areaPercent = lastSum > 0 ? 100 : 0;
+      } else {
+        areaPercent = ((lastSum - prevSum) / prevSum) * 100;
+      }
+
+      let peakPercent: number | null = null;
+      if (prevMax === 0) {
+        peakPercent = lastMax > 0 ? 100 : 0;
+      } else {
+        peakPercent = ((lastMax - prevMax) / prevMax) * 100;
+      }
+
+      return {
+        label: `${months}m`,
+        months,
+        lastSum,
+        prevSum,
+        areaPercent,
+        lastMax,
+        prevMax,
+        peakPercent,
+      };
+    });
+
+    const bestAreaWindow = windowSummaries.reduce((best, current) => {
+      const currentPercent = current.areaPercent ?? -Infinity;
+      const bestPercent = best ? best.areaPercent ?? -Infinity : -Infinity;
+      return currentPercent > bestPercent ? current : best;
+    }, null as (typeof windowSummaries)[number] | null);
+
+    const bestPeakWindow = windowSummaries.reduce((best, current) => {
+      const currentPercent = current.peakPercent ?? -Infinity;
+      const bestPercent = best ? best.peakPercent ?? -Infinity : -Infinity;
+      return currentPercent > bestPercent ? current : best;
+    }, null as (typeof windowSummaries)[number] | null);
+
+    // Calculate IntelPeak
+    let intelPeak: number | null = null;
+    try {
+      const intelPeakResult = calculateIntelPeak(parsed);
+      intelPeak = intelPeakResult.intelPeak;
+    } catch (error) {
+      console.error('[TickerTrendsCard] Error calculating IntelPeak:', error);
+    }
+
+    // Determine best percent based on growth mode
+    let bestPercent: number | null = null;
+    let bestLabel: string = 'n/a';
+
+    if (growthMode === 'intelpeak' && intelPeak !== null) {
+      bestPercent = intelPeak;
+      bestLabel = 'IntelPeak';
+    } else if (growthMode === 'area' && bestAreaWindow) {
+      bestPercent = bestAreaWindow.areaPercent;
+      bestLabel = bestAreaWindow.label;
+    } else if (growthMode === 'peak' && bestPeakWindow) {
+      bestPercent = bestPeakWindow.peakPercent;
+      bestLabel = bestPeakWindow.label;
+    } else if (growthMode === 'both') {
+      // For 'both', use the better of area or peak
+      const areaPercent = bestAreaWindow?.areaPercent ?? -Infinity;
+      const peakPercent = bestPeakWindow?.peakPercent ?? -Infinity;
+      if (areaPercent > peakPercent) {
+        bestPercent = areaPercent;
+        bestLabel = bestAreaWindow?.label ?? 'n/a';
+      } else {
+        bestPercent = peakPercent;
+        bestLabel = bestPeakWindow?.label ?? 'n/a';
+      }
+    }
+
+    onGrowthComputed(tickerGroup.baseTicker, {
+      bestLabel,
+      bestPercent,
+      intelPeak,
+    });
+  }, [combinedData, foundKeywords, onGrowthComputed, tickerGroup.baseTicker, growthMode]);
 
   const toggleKeyword = (keyword: string) => {
     setEnabledKeywords(prev => {

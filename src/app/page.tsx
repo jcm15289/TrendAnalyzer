@@ -63,6 +63,7 @@ export default function Home() {
   const [hasMounted, setHasMounted] = useState(false);
   const [growthMode, setGrowthMode] = useState<'area' | 'peak' | 'both' | 'intelpeak'>('intelpeak');
   const [growthDebug, setGrowthDebug] = useState(false);
+  const [growthMetrics, setGrowthMetrics] = useState<Record<string, number>>({});
   
   useEffect(() => {
     setIsLocalhost(typeof window !== 'undefined' && window.location.hostname === 'localhost');
@@ -281,6 +282,55 @@ export default function Home() {
     return tickerGroups.map(g => g.baseTicker).sort();
   }, [tickerGroups]);
 
+  // Handle growth metrics computed from cards
+  const handleGrowthComputed = useCallback((ticker: string, summary: {
+    bestLabel?: string;
+    bestPercent?: number | null;
+    intelPeak?: number | null;
+  } | null) => {
+    setGrowthMetrics((prev) => {
+      if (!summary) {
+        const next = { ...prev };
+        delete next[ticker];
+        return next;
+      }
+
+      // Use IntelPeak if available and mode is intelpeak, otherwise use bestPercent
+      const metricValue = (growthMode === 'intelpeak' && summary.intelPeak !== null && summary.intelPeak !== undefined)
+        ? summary.intelPeak
+        : (summary.bestPercent ?? null);
+
+      if (metricValue === null || Number.isNaN(metricValue)) {
+        const next = { ...prev };
+        delete next[ticker];
+        return next;
+      }
+
+      const currentValue = prev[ticker];
+      if (currentValue === metricValue) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        [ticker]: metricValue,
+      };
+    });
+  }, [growthMode]);
+
+  // Sort filtered groups by growth metrics
+  const sortedFilteredGroups = useMemo(() => {
+    const sorted = [...filteredGroups].sort((a, b) => {
+      const scoreA = growthMetrics[a.group.baseTicker] ?? -Infinity;
+      const scoreB = growthMetrics[b.group.baseTicker] ?? -Infinity;
+      if (scoreA !== scoreB) {
+        return scoreB - scoreA; // Descending order
+      }
+      return a.group.baseTicker.localeCompare(b.group.baseTicker);
+    });
+    return sorted;
+  }, [filteredGroups, growthMetrics]);
+
     return (
     <TooltipProvider>
       {!hasMounted ? (
@@ -290,9 +340,10 @@ export default function Home() {
       ) : (
         <div className="flex min-h-screen w-full flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
         <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur-sm">
-          <div className="container mx-auto px-4 py-4 md:px-6">
-            {/* Top row: Logo and Config button */}
-            <div className="flex items-center justify-between mb-4">
+          <div className="container mx-auto px-4 py-3 md:px-6">
+            {/* All elements in one line */}
+            <div className="flex items-center gap-3 flex-wrap">
+              {/* Logo */}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div className="flex items-center gap-2 cursor-help h-9">
@@ -332,21 +383,8 @@ export default function Home() {
                 </TooltipContent>
               </Tooltip>
 
-              <Button 
-                variant="outline" 
-                size="sm" 
-                onClick={() => setConfigDialogOpen(true)} 
-                className="flex items-center gap-2 h-9"
-              >
-                <Settings className="h-4 w-4" />
-                <span className="hidden sm:inline">Config</span>
-              </Button>
-            </div>
-
-            {/* Second row: Search box, dropdowns, and Grid button */}
-            <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start">
-              {/* Search box for filtering by keyword - wider and centered */}
-              <div className="relative w-full max-w-md">
+              {/* Search box - half width */}
+              <div className="relative flex-1 max-w-md">
                 <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   ref={searchInputRef}
@@ -369,6 +407,7 @@ export default function Home() {
                 )}
               </div>
                 
+              {/* Label filter dropdown */}
               <Select value={labelFilter} onValueChange={setLabelFilter}>
                 <SelectTrigger className="w-[200px] h-9">
                   <div className="flex items-center gap-2">
@@ -395,33 +434,10 @@ export default function Home() {
                   ))}
                 </SelectContent>
               </Select>
-
-              <Select value={filterTicker} onValueChange={setFilterTicker}>
-                <SelectTrigger className="w-[200px] h-9">
-                  <div className="flex items-center gap-2">
-                    <List className="h-4 w-4" />
-                    <SelectValue placeholder="Filter by ticker" />
-                  </div>
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">
-                    <div className="flex items-center gap-2">
-                      <span>All Tickers</span>
-                      <span className="text-xs text-muted-foreground">
-                        ({tickerGroups.length})
-                      </span>
-                    </div>
-                  </SelectItem>
-                  {allTickers.map((ticker) => (
-                    <SelectItem key={ticker} value={ticker}>
-                      {ticker}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
                 
               <div className="h-9 w-px bg-border" />
                 
+              {/* Peak measurement mode selector */}
               <div className="flex items-center gap-1 rounded-md border border-input bg-background px-1 py-1 text-xs font-medium text-muted-foreground">
                 {[
                   { value: 'intelpeak' as const, label: 'IntelPeak' },
@@ -445,6 +461,7 @@ export default function Home() {
                 ))}
               </div>
               
+              {/* Debug toggle */}
               <button
                 type="button"
                 onClick={() => setGrowthDebug((prev) => !prev)}
@@ -459,6 +476,7 @@ export default function Home() {
                 Debug {growthDebug ? 'On' : 'Off'}
               </button>
                 
+              {/* Grid button */}
               <Tooltip>
                 <TooltipTrigger asChild>
                   <Button 
@@ -481,6 +499,17 @@ export default function Home() {
                   {layoutMode === 'single' ? 'Switch to grid layout' : 'Switch to single column layout'}
                 </TooltipContent>
               </Tooltip>
+
+              {/* Config button */}
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setConfigDialogOpen(true)} 
+                className="flex items-center gap-2 h-9"
+              >
+                <Settings className="h-4 w-4" />
+                <span className="hidden sm:inline">Config</span>
+              </Button>
             </div>
           </div>
       </header>
@@ -533,20 +562,22 @@ export default function Home() {
             </div>
           )}
 
-          {!isLoading && !error && filteredGroups.length > 0 && (
+          {!isLoading && !error && sortedFilteredGroups.length > 0 && (
         <div className={cn(
           "grid gap-6",
           layoutMode === 'single' 
             ? "grid-cols-1" 
             : "grid-cols-1 lg:grid-cols-2 xl:grid-cols-3"
         )}>
-              {filteredGroups.map(({ group, filteredKeywords }) => (
+              {sortedFilteredGroups.map(({ group, filteredKeywords }) => (
                 <TickerTrendsCard
                   key={group.baseTicker}
                   tickerGroup={group}
               isWideLayout={layoutMode === 'single'}
                   filteredKeywords={filteredKeywords}
                   onDataFound={handleDataFound}
+                  onGrowthComputed={(ticker, summary) => handleGrowthComputed(ticker, summary)}
+                  growthMode={growthMode}
             />
           ))}
             </div>
