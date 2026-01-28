@@ -275,16 +275,29 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       const lastDates: Date[] = [];
       const prevDates: Date[] = [];
       parsed.forEach(({ date, value }) => {
-        if (date > lastWindowStart) {
+        // Use >= to include boundary dates
+        if (date >= lastWindowStart) {
           lastSum += value;
           lastValues.push(value);
           lastDates.push(date);
-        } else if (date > prevWindowStart) {
+        } else if (date >= prevWindowStart) {
           prevSum += value;
           prevValues.push(value);
           prevDates.push(date);
         }
       });
+      
+      // Additional validation: ensure we have data in windows
+      if (lastValues.length === 0 && prevValues.length === 0) {
+        console.warn(`[AreaAlgorithm] ${tickerGroup.baseTicker} ${months}m: No data found in either window`, {
+          latestEntryDate: latestEntry.date.toISOString(),
+          lastWindowStart: lastWindowStart.toISOString(),
+          prevWindowStart: prevWindowStart.toISOString(),
+          totalParsedPoints: parsed.length,
+          firstParsedDate: parsed[0]?.date.toISOString(),
+          lastParsedDate: parsed[parsed.length - 1]?.date.toISOString(),
+        });
+      }
 
       // Detect actual peaks (local maxima) in each window, not just max values
       const detectPeaksInWindow = (values: number[], dates: Date[]): { value: number; date: Date | undefined } => {
