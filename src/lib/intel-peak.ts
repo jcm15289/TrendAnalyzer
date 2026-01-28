@@ -200,8 +200,14 @@ function findPeakDuration(
     }
     
     // Update end index as we go, but don't extend past significant drops
+    // Also, if we hit a zero value after a high peak, end immediately (sparse peak)
     if (currentValue >= threshold) {
       endIndex = i;
+    } else if (currentValue === 0 && peakValue >= 50) {
+      // For high peaks (>=50), if we hit zero, end the peak immediately
+      // This prevents extending sparse peaks unnecessarily
+      endIndex = i - 1;
+      break;
     }
   }
   
@@ -385,24 +391,34 @@ export function calculateIntelPeak(data: DataPoint[]): IntelPeakResult {
     const peakEndIndex = durationResult.endIndex;
     const durationDays = durationResult.durationDays;
     
-    // Use the actual detected peak period, but ensure minimum 7 days for meaningful comparison
-    // If detected period is shorter, extend it symmetrically around the peak
+    // Use the actual detected peak period
+    // Check if this is a sparse peak (mostly zeros with one spike) BEFORE extending
     let effectiveStartIndex = peakStartIndex;
     let effectiveEndIndex = peakEndIndex;
-    const effectiveDuration = Math.max(durationDays, 7);
     
-    if (durationDays < 7) {
+    const initialPeakPeriod = sortedData.slice(peakStartIndex, peakEndIndex + 1);
+    const nonZeroPoints = initialPeakPeriod.filter(p => p.value > 0).length;
+    const totalPoints = initialPeakPeriod.length;
+    const peakValue = sortedData[peakIndex].value;
+    
+    // Detect sparse peaks: very few non-zero points relative to total, or single high spike
+    const isSparsePeak = (nonZeroPoints <= 2 && totalPoints > 3) || 
+                         (nonZeroPoints === 1 && peakValue >= 50 && durationDays > 7);
+    
+    // Only extend if not sparse and duration is too short
+    // For sparse peaks, use the actual detected duration (don't artificially extend)
+    if (!isSparsePeak && durationDays < 7) {
       // Extend symmetrically around the peak
       const extension = Math.ceil((7 - durationDays) / 2);
       effectiveStartIndex = Math.max(0, peakStartIndex - extension);
       effectiveEndIndex = Math.min(sortedData.length - 1, peakEndIndex + extension);
     }
     
-    // Cap at 90 days (3 months) maximum
-    const maxDurationDays = 90;
+    // Cap at 90 days (3 months) maximum, but only for non-sparse peaks
+    const maxDurationDays = isSparsePeak ? Math.min(30, durationDays + 3) : 90; // Limit sparse peaks to 30 days max
     const currentDuration = Math.ceil((sortedData[effectiveEndIndex].date.getTime() - sortedData[effectiveStartIndex].date.getTime()) / (1000 * 60 * 60 * 24));
     if (currentDuration > maxDurationDays) {
-      // Cap the end index to 90 days from start
+      // Cap the end index to maxDurationDays from start
       const maxEndDate = new Date(sortedData[effectiveStartIndex].date);
       maxEndDate.setDate(maxEndDate.getDate() + maxDurationDays);
       
@@ -416,6 +432,7 @@ export function calculateIntelPeak(data: DataPoint[]): IntelPeakResult {
       }
     }
     
+    // Recalculate peak period with effective indices (in case we extended it)
     const peakPeriod = sortedData.slice(effectiveStartIndex, effectiveEndIndex + 1);
     const peakPeriodLength = peakPeriod.length; // Actual number of data points
     
