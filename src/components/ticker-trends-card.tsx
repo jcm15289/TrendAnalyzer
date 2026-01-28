@@ -935,14 +935,14 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                         : 'opacity-50 border border-dashed',
                     )}
                     style={{
-                      backgroundColor: isPriceEnabled ? `#66666615` : 'transparent',
-                      borderColor: '#666',
-                      color: isPriceEnabled ? '#666' : '#555',
+                      backgroundColor: isPriceEnabled ? `#8B5CF615` : 'transparent',
+                      borderColor: '#8B5CF6',
+                      color: isPriceEnabled ? '#8B5CF6' : '#555',
                     }}
                   >
                     <span
                       className="w-2 h-2 rounded-full"
-                      style={{ backgroundColor: isPriceEnabled ? '#666' : '#ccc' }}
+                      style={{ backgroundColor: isPriceEnabled ? '#8B5CF6' : '#ccc' }}
                     />
                     Price
                   </button>
@@ -1089,11 +1089,11 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                   yAxisId="price"
                   type="monotone"
                   dataKey="Price"
-                  stroke="#666"
+                  stroke="#8B5CF6"
                   strokeWidth={strokeWidth}
                   strokeDasharray="5 5"
                   dot={false}
-                  activeDot={{ r: 4, fill: '#666' }}
+                  activeDot={{ r: 4, fill: '#8B5CF6' }}
                   name="Price"
                   connectNulls={false}
                 />
