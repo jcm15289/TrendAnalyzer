@@ -50,6 +50,7 @@ interface TickerTrendsCardProps {
   ) => void;
   growthMode?: 'area' | 'peak' | 'both' | 'intelpeak';
   showGrowthPercentage?: boolean;
+  showGrowthDetails?: boolean;
 }
 
 // Colors for different trend lines
@@ -66,7 +67,7 @@ const LINE_COLORS = [
   '#6366F1', // Indigo
 ];
 
-export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLayout = false, onDataFound, onGrowthComputed, growthMode = 'intelpeak', showGrowthPercentage = false }: TickerTrendsCardProps) {
+export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLayout = false, onDataFound, onGrowthComputed, growthMode = 'intelpeak', showGrowthPercentage = false, showGrowthDetails = false }: TickerTrendsCardProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [combinedData, setCombinedData] = useState<TrendDataPoint[]>([]);
@@ -79,6 +80,32 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     bestLabel?: string;
     bestPercent?: number | null;
     intelPeak?: number | null;
+  } | null>(null);
+  const [growthDetails, setGrowthDetails] = useState<{
+    windowSummaries: Array<{
+      label: string;
+      months: number;
+      lastSum: number;
+      prevSum: number;
+      areaPercent: number | null;
+      lastMax: number;
+      prevMax: number;
+      peakPercent: number | null;
+    }>;
+    bestAreaWindow: { label: string; percent: number | null } | null;
+    bestPeakWindow: { label: string; percent: number | null } | null;
+    intelPeakDetails: {
+      peakDate: Date | null;
+      peakDuration: number;
+      peakArea: number;
+      baselineArea: number;
+      ratio: number | null;
+      peakStartDate: Date | null;
+      peakEndDate: Date | null;
+      baselineStartDate: Date | null;
+      baselineEndDate: Date | null;
+      higherPeaksCount?: number;
+    } | null;
   } | null>(null);
   
   // Ensure filteredKeywords is always an array
@@ -351,9 +378,22 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
 
     // Calculate IntelPeak
     let intelPeak: number | null = null;
+    let intelPeakDetails = null;
     try {
       const intelPeakResult = calculateIntelPeak(parsed);
       intelPeak = intelPeakResult.intelPeak;
+      intelPeakDetails = {
+        peakDate: intelPeakResult.peakDate,
+        peakDuration: intelPeakResult.peakDuration,
+        peakArea: intelPeakResult.peakArea,
+        baselineArea: intelPeakResult.baselineArea,
+        ratio: intelPeakResult.ratio,
+        peakStartDate: intelPeakResult.peakStartDate,
+        peakEndDate: intelPeakResult.peakEndDate,
+        baselineStartDate: intelPeakResult.baselineStartDate,
+        baselineEndDate: intelPeakResult.baselineEndDate,
+        higherPeaksCount: intelPeakResult.higherPeaksCount,
+      };
     } catch (error) {
       console.error('[TickerTrendsCard] Error calculating IntelPeak:', error);
     }
@@ -390,6 +430,15 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       intelPeak,
     };
     setGrowthSummary(summary);
+    
+    // Store detailed calculation data for debug display
+    setGrowthDetails({
+      windowSummaries,
+      bestAreaWindow: bestAreaWindow ? { label: bestAreaWindow.label, percent: bestAreaWindow.areaPercent } : null,
+      bestPeakWindow: bestPeakWindow ? { label: bestPeakWindow.label, percent: bestPeakWindow.peakPercent } : null,
+      intelPeakDetails,
+    });
+    
     callback(tickerGroup.baseTicker, summary);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [combinedData.length, foundKeywords.length, tickerGroup.baseTicker, growthMode]);
@@ -552,26 +601,101 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
               {foundKeywords.length + (hasStockData ? 1 : 0)} lines
             </Badge>
           </CardTitle>
-          {showGrowthPercentage && growthSummary && growthSummary.bestPercent !== null && growthSummary.bestPercent !== undefined && (
-            <span className="text-xl font-semibold text-emerald-600 shrink-0">
-              {growthSummary.bestPercent >= 0 ? '+' : ''}{formatNumberWithCommas(growthSummary.bestPercent)}%
-              <span className="ml-2 text-xs text-muted-foreground font-normal">
-                {growthSummary.bestLabel || 'Peak'}
-              </span>
-            </span>
-          )}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={toggleAll}
-            className="text-xs"
-          >
-            {enabledKeywords.size === foundKeywords.length && (!hasStockData || isPriceEnabled) ? (
-              <><EyeOff className="h-3 w-3 mr-1" /> Hide All</>
-            ) : (
-              <><Eye className="h-3 w-3 mr-1" /> Show All</>
+          <div className="flex items-center gap-2">
+            {showGrowthPercentage && growthSummary && growthSummary.bestPercent !== null && growthSummary.bestPercent !== undefined && (
+              <div className="flex flex-col items-end gap-1">
+                <span className="text-xl font-semibold text-emerald-600 shrink-0">
+                  {growthSummary.bestPercent >= 0 ? '+' : ''}{formatNumberWithCommas(growthSummary.bestPercent)}%
+                  <span className="ml-2 text-xs text-muted-foreground font-normal">
+                    {growthSummary.bestLabel || 'Peak'}
+                  </span>
+                </span>
+                {showGrowthDetails && growthDetails && (
+                  <div className="flex flex-col gap-2 text-xs text-muted-foreground mt-1 max-w-lg">
+                    {/* IntelPeak details */}
+                    {growthDetails.intelPeakDetails && growthSummary.intelPeak !== null && (
+                      <div className="flex flex-col gap-1 p-2 bg-purple-50 rounded border border-purple-200">
+                        <div className="font-semibold text-purple-700 text-[10px] uppercase tracking-wide">IntelPeak</div>
+                        <div className="flex items-center gap-2">
+                          <span className={growthSummary.intelPeak >= 0 ? 'text-emerald-600 font-medium' : 'text-red-500 font-medium'}>
+                            {growthSummary.intelPeak >= 0 ? '+' : ''}{growthSummary.intelPeak.toFixed(1)}%
+                          </span>
+                          <span className="text-[10px]">
+                            Peak area: {growthDetails.intelPeakDetails.peakArea.toFixed(0)} | Baseline: {growthDetails.intelPeakDetails.baselineArea.toFixed(0)}
+                            {growthDetails.intelPeakDetails.ratio && ` | Ratio: ${growthDetails.intelPeakDetails.ratio.toFixed(2)}x`}
+                          </span>
+                        </div>
+                        {growthDetails.intelPeakDetails.peakDuration > 0 && (
+                          <div className="text-[10px]">
+                            Duration: {growthDetails.intelPeakDetails.peakDuration} days
+                            {growthDetails.intelPeakDetails.higherPeaksCount !== undefined && growthDetails.intelPeakDetails.higherPeaksCount > 0 && (
+                              <span className="text-blue-600"> | Higher peaks: {growthDetails.intelPeakDetails.higherPeaksCount}</span>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    {/* Area details */}
+                    {(growthMode === 'area' || growthMode === 'both') && (
+                      <div className="flex flex-col gap-1 p-2 bg-blue-50 rounded border border-blue-200">
+                        <div className="font-semibold text-blue-700 text-[10px] uppercase tracking-wide">Area Algorithm</div>
+                        {growthDetails.bestAreaWindow && (
+                          <div className="flex items-center gap-2">
+                            <span className={growthDetails.bestAreaWindow.percent !== null && growthDetails.bestAreaWindow.percent >= 0 ? 'text-emerald-600 font-medium' : 'text-red-500 font-medium'}>
+                              {growthDetails.bestAreaWindow.percent !== null ? `${growthDetails.bestAreaWindow.percent >= 0 ? '+' : ''}${growthDetails.bestAreaWindow.percent.toFixed(1)}%` : 'N/A'}
+                            </span>
+                            <span className="text-[10px]">Best window: {growthDetails.bestAreaWindow.label}</span>
+                          </div>
+                        )}
+                        <div className="flex flex-wrap gap-2 text-[10px]">
+                          {growthDetails.windowSummaries.map((window) => (
+                            <span key={`area-${window.label}`}>
+                              {window.label}: {window.areaPercent !== null ? `${window.areaPercent >= 0 ? '+' : ''}${window.areaPercent.toFixed(1)}%` : 'N/A'}
+                              <span className="text-muted-foreground"> (Σ {Math.round(window.lastSum)}/{Math.round(window.prevSum)})</span>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {/* Peak details */}
+                    {(growthMode === 'peak' || growthMode === 'both') && (
+                      <div className="flex flex-col gap-1 p-2 bg-green-50 rounded border border-green-200">
+                        <div className="font-semibold text-green-700 text-[10px] uppercase tracking-wide">Peak Algorithm</div>
+                        {growthDetails.bestPeakWindow && (
+                          <div className="flex items-center gap-2">
+                            <span className={growthDetails.bestPeakWindow.percent !== null && growthDetails.bestPeakWindow.percent >= 0 ? 'text-emerald-600 font-medium' : 'text-red-500 font-medium'}>
+                              {growthDetails.bestPeakWindow.percent !== null ? `${growthDetails.bestPeakWindow.percent >= 0 ? '+' : ''}${growthDetails.bestPeakWindow.percent.toFixed(1)}%` : 'N/A'}
+                            </span>
+                            <span className="text-[10px]">Best window: {growthDetails.bestPeakWindow.label}</span>
+                          </div>
+                        )}
+                        <div className="flex flex-wrap gap-2 text-[10px]">
+                          {growthDetails.windowSummaries.map((window) => (
+                            <span key={`peak-${window.label}`}>
+                              {window.label}: {window.peakPercent !== null ? `${window.peakPercent >= 0 ? '+' : ''}${window.peakPercent.toFixed(1)}%` : 'N/A'}
+                              <span className="text-muted-foreground"> (max {Math.round(window.lastMax)}/{Math.round(window.prevMax)})</span>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             )}
-          </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={toggleAll}
+              className="text-xs"
+            >
+              {enabledKeywords.size === foundKeywords.length && (!hasStockData || isPriceEnabled) ? (
+                <><EyeOff className="h-3 w-3 mr-1" /> Hide All</>
+              ) : (
+                <><Eye className="h-3 w-3 mr-1" /> Show All</>
+              )}
+            </Button>
+          </div>
         </div>
         
         {/* Keyword toggles - only show found keywords, deduplicated and sorted */}

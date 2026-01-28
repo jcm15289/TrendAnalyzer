@@ -584,6 +584,7 @@ export default function Home() {
                   onGrowthComputed={(ticker, summary) => handleGrowthComputed(ticker, summary)}
                   growthMode={growthMode}
                   showGrowthPercentage={labelFilter !== 'all'}
+                  showGrowthDetails={labelFilter !== 'all' && growthDebug}
             />
           ))}
             </div>
