@@ -62,7 +62,7 @@ export default function Home() {
   const [tickersWithData, setTickersWithData] = useState<Set<string>>(new Set());
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [hasMounted, setHasMounted] = useState(false);
-  const [growthMode, setGrowthMode] = useState<'area' | 'peak' | 'both' | 'intelpeak'>('intelpeak');
+  const [growthMode, setGrowthMode] = useState<'area' | 'peak' | 'both'>('area');
   const [growthDebug, setGrowthDebug] = useState(false);
   const [growthMetrics, setGrowthMetrics] = useState<Record<string, number>>({});
   
@@ -287,7 +287,6 @@ export default function Home() {
   const handleGrowthComputed = useCallback((ticker: string, summary: {
     bestLabel?: string;
     bestPercent?: number | null;
-    intelPeak?: number | null;
     sixMonthValue?: number | null;
   } | null) => {
     setGrowthMetrics((prev) => {
@@ -446,7 +445,6 @@ export default function Home() {
               {/* Peak measurement mode selector */}
               <div className="flex items-center gap-1 rounded-md border border-input bg-background px-1 py-1 text-xs font-medium text-muted-foreground">
                 {[
-                  { value: 'intelpeak' as const, label: 'IntelPeak' },
                   { value: 'area' as const, label: 'Area' },
                   { value: 'peak' as const, label: 'Peak' },
                   { value: 'both' as const, label: 'Both' },

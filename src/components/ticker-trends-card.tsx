@@ -17,7 +17,6 @@ import { Button } from '@/components/ui/button';
 import { AlertCircle, RefreshCw, Eye, EyeOff, TrendingUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getCompanyName } from '@/lib/ticker-names';
-import { calculateIntelPeak } from '@/lib/intel-peak';
 
 interface TickerKeyword {
   ticker: string;
@@ -45,11 +44,10 @@ interface TickerTrendsCardProps {
     summary: {
       bestLabel?: string;
       bestPercent?: number | null;
-      intelPeak?: number | null;
       sixMonthValue?: number | null;
     } | null
   ) => void;
-  growthMode?: 'area' | 'peak' | 'both' | 'intelpeak';
+  growthMode?: 'area' | 'peak' | 'both';
   showGrowthPercentage?: boolean;
   showGrowthDetails?: boolean;
 }
@@ -68,7 +66,7 @@ const LINE_COLORS = [
   '#6366F1', // Indigo
 ];
 
-export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLayout = false, onDataFound, onGrowthComputed, growthMode = 'intelpeak', showGrowthPercentage = false, showGrowthDetails = false }: TickerTrendsCardProps) {
+export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLayout = false, onDataFound, onGrowthComputed, growthMode = 'area', showGrowthPercentage = false, showGrowthDetails = false }: TickerTrendsCardProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [combinedData, setCombinedData] = useState<TrendDataPoint[]>([]);
@@ -81,7 +79,6 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
   const [growthSummary, setGrowthSummary] = useState<{
     bestLabel?: string;
     bestPercent?: number | null;
-    intelPeak?: number | null;
   } | null>(null);
   const [growthDetails, setGrowthDetails] = useState<{
     windowSummaries: Array<{
@@ -101,18 +98,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     }>;
     bestAreaWindow: { label: string; percent: number | null } | null;
     bestPeakWindow: { label: string; percent: number | null } | null;
-    intelPeakDetails: {
-      peakDate: Date | null;
-      peakDuration: number;
-      peakArea: number;
-      baselineArea: number;
-      ratio: number | null;
-      peakStartDate: Date | null;
-      peakEndDate: Date | null;
-      baselineStartDate: Date | null;
-      baselineEndDate: Date | null;
-      higherPeaksCount?: number;
-    } | null;
+    intelPeakDetails: null;
   } | null>(null);
   
   // Ensure filteredKeywords is always an array
@@ -530,36 +516,11 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       return currentPercent > bestPercent ? current : best;
     }, null as (typeof windowSummaries)[number] | null);
 
-    // Calculate IntelPeak
-    let intelPeak: number | null = null;
-    let intelPeakDetails = null;
-    try {
-      const intelPeakResult = calculateIntelPeak(parsed);
-      intelPeak = intelPeakResult.intelPeak;
-      intelPeakDetails = {
-        peakDate: intelPeakResult.peakDate,
-        peakDuration: intelPeakResult.peakDuration,
-        peakArea: intelPeakResult.peakArea,
-        baselineArea: intelPeakResult.baselineArea,
-        ratio: intelPeakResult.ratio,
-        peakStartDate: intelPeakResult.peakStartDate,
-        peakEndDate: intelPeakResult.peakEndDate,
-        baselineStartDate: intelPeakResult.baselineStartDate,
-        baselineEndDate: intelPeakResult.baselineEndDate,
-        higherPeaksCount: intelPeakResult.higherPeaksCount,
-      };
-    } catch (error) {
-      console.error('[TickerTrendsCard] Error calculating IntelPeak:', error);
-    }
-
     // Determine best percent based on growth mode
     let bestPercent: number | null = null;
     let bestLabel: string = 'n/a';
 
-    if (growthMode === 'intelpeak' && intelPeak !== null) {
-      bestPercent = intelPeak;
-      bestLabel = 'IntelPeak';
-    } else if (growthMode === 'area' && bestAreaWindow) {
+    if (growthMode === 'area' && bestAreaWindow) {
       bestPercent = bestAreaWindow.areaPercent;
       bestLabel = bestAreaWindow.label;
     } else if (growthMode === 'peak' && bestPeakWindow) {
@@ -588,7 +549,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       windowSummaries,
       bestAreaWindow: bestAreaWindow ? { label: bestAreaWindow.label, percent: bestAreaWindow.areaPercent } : null,
       bestPeakWindow: bestPeakWindow ? { label: bestPeakWindow.label, percent: bestPeakWindow.peakPercent } : null,
-      intelPeakDetails,
+      intelPeakDetails: null,
     });
     
     // If 6m window is invalid, mark as invalid and don't call callback (card will be hidden)
@@ -602,7 +563,6 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     const summary = {
       bestLabel,
       bestPercent,
-      intelPeak,
       sixMonthValue, // Add 6m value for sorting
     };
     setGrowthSummary(summary);
@@ -867,29 +827,6 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                 </span>
                 {showGrowthDetails && growthDetails && (
                   <div className="flex flex-col gap-2 text-xs text-muted-foreground mt-1 max-w-lg">
-                    {/* IntelPeak details */}
-                    {growthDetails.intelPeakDetails && growthSummary.intelPeak !== null && (
-                      <div className="flex flex-col gap-1 p-2 bg-purple-50 rounded border border-purple-200">
-                        <div className="font-semibold text-purple-700 text-[10px] uppercase tracking-wide">IntelPeak</div>
-                        <div className="flex items-center gap-2">
-                          <span className={growthSummary.intelPeak >= 0 ? 'text-emerald-600 font-medium' : 'text-red-500 font-medium'}>
-                            {growthSummary.intelPeak >= 0 ? '+' : ''}{growthSummary.intelPeak.toFixed(1)}%
-                          </span>
-                          <span className="text-[10px]">
-                            Peak area: {growthDetails.intelPeakDetails.peakArea.toFixed(0)} | Baseline: {growthDetails.intelPeakDetails.baselineArea.toFixed(0)}
-                            {growthDetails.intelPeakDetails.ratio && ` | Ratio: ${growthDetails.intelPeakDetails.ratio.toFixed(2)}x`}
-                          </span>
-                        </div>
-                        {growthDetails.intelPeakDetails.peakDuration > 0 && (
-                          <div className="text-[10px]">
-                            Duration: {growthDetails.intelPeakDetails.peakDuration} days
-                            {growthDetails.intelPeakDetails.higherPeaksCount !== undefined && growthDetails.intelPeakDetails.higherPeaksCount > 0 && (
-                              <span className="text-blue-600"> | Higher peaks: {growthDetails.intelPeakDetails.higherPeaksCount}</span>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    )}
                     {/* Area details */}
                     {(growthMode === 'area' || growthMode === 'both') && (
                       <div className="flex flex-col gap-1 p-2 bg-blue-50 rounded border border-blue-200">
