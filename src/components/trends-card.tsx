@@ -326,7 +326,7 @@ export default function TrendsCard({
       return;
     }
 
-    const windowsToEvaluate = [1, 2, 3];
+    const windowsToEvaluate = [3, 6, 12];
     const latestEntry = parsed[parsed.length - 1];
 
     const windowSummaries = windowsToEvaluate.map((months) => {

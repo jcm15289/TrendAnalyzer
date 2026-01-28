@@ -371,8 +371,8 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       return;
     }
 
-    // Calculate window summaries (1m, 2m, 3m)
-    const windowsToEvaluate = [1, 2, 3];
+    // Calculate window summaries (3m, 6m, 12m)
+    const windowsToEvaluate = [3, 6, 12];
     const latestEntry = parsed[parsed.length - 1];
 
     const windowSummaries = windowsToEvaluate.map((months) => {
