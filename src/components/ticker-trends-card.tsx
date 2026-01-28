@@ -77,6 +77,12 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
   
   // Ensure filteredKeywords is always an array
   const safeFilteredKeywords = Array.isArray(filteredKeywords) ? filteredKeywords : [];
+  
+  // Use ref to avoid infinite loops with onGrowthComputed
+  const onGrowthComputedRef = React.useRef(onGrowthComputed);
+  React.useEffect(() => {
+    onGrowthComputedRef.current = onGrowthComputed;
+  }, [onGrowthComputed]);
 
   const fetchStockPrice = async (ticker: string) => {
     try {
@@ -239,17 +245,14 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
 
   // Calculate growth metrics
   useEffect(() => {
-    if (!onGrowthComputed || !combinedData.length || !foundKeywords.length) {
-      if (onGrowthComputed) {
-        onGrowthComputed(tickerGroup.baseTicker, null);
-      }
+    const callback = onGrowthComputedRef.current;
+    if (!callback || !combinedData.length || !foundKeywords.length) {
       return;
     }
 
     // Use the first found keyword for growth calculation
     const mainKeyword = foundKeywords[0];
     if (!mainKeyword) {
-      onGrowthComputed(tickerGroup.baseTicker, null);
       return;
     }
 
@@ -266,7 +269,6 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       .sort((a, b) => a.date.getTime() - b.date.getTime());
 
     if (parsed.length === 0) {
-      onGrowthComputed(tickerGroup.baseTicker, null);
       return;
     }
 
@@ -371,12 +373,13 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       }
     }
 
-    onGrowthComputed(tickerGroup.baseTicker, {
+    callback(tickerGroup.baseTicker, {
       bestLabel,
       bestPercent,
       intelPeak,
     });
-  }, [combinedData, foundKeywords, onGrowthComputed, tickerGroup.baseTicker, growthMode]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [combinedData.length, foundKeywords.length, tickerGroup.baseTicker, growthMode]);
 
   const toggleKeyword = (keyword: string) => {
     setEnabledKeywords(prev => {
