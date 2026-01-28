@@ -49,6 +49,7 @@ interface TickerTrendsCardProps {
     } | null
   ) => void;
   growthMode?: 'area' | 'peak' | 'both' | 'intelpeak';
+  showGrowthPercentage?: boolean;
 }
 
 // Colors for different trend lines
@@ -65,7 +66,7 @@ const LINE_COLORS = [
   '#6366F1', // Indigo
 ];
 
-export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLayout = false, onDataFound, onGrowthComputed, growthMode = 'intelpeak' }: TickerTrendsCardProps) {
+export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLayout = false, onDataFound, onGrowthComputed, growthMode = 'intelpeak', showGrowthPercentage = false }: TickerTrendsCardProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [combinedData, setCombinedData] = useState<TrendDataPoint[]>([]);
@@ -74,6 +75,11 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
   const [stockPriceData, setStockPriceData] = useState<Array<{ date: string; close: number }>>([]);
   const [hasStockData, setHasStockData] = useState(false);
   const [isPriceEnabled, setIsPriceEnabled] = useState(true);
+  const [growthSummary, setGrowthSummary] = useState<{
+    bestLabel?: string;
+    bestPercent?: number | null;
+    intelPeak?: number | null;
+  } | null>(null);
   
   // Ensure filteredKeywords is always an array
   const safeFilteredKeywords = Array.isArray(filteredKeywords) ? filteredKeywords : [];
@@ -83,6 +89,11 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
   React.useEffect(() => {
     onGrowthComputedRef.current = onGrowthComputed;
   }, [onGrowthComputed]);
+  
+  // Format number with commas
+  const formatNumberWithCommas = (num: number): string => {
+    return num.toFixed(1).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  };
 
   const fetchStockPrice = async (ticker: string) => {
     try {
@@ -373,11 +384,13 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       }
     }
 
-    callback(tickerGroup.baseTicker, {
+    const summary = {
       bestLabel,
       bestPercent,
       intelPeak,
-    });
+    };
+    setGrowthSummary(summary);
+    callback(tickerGroup.baseTicker, summary);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [combinedData.length, foundKeywords.length, tickerGroup.baseTicker, growthMode]);
 
@@ -539,6 +552,14 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
               {foundKeywords.length + (hasStockData ? 1 : 0)} lines
             </Badge>
           </CardTitle>
+          {showGrowthPercentage && growthSummary && growthSummary.bestPercent !== null && growthSummary.bestPercent !== undefined && (
+            <span className="text-xl font-semibold text-emerald-600 shrink-0">
+              {growthSummary.bestPercent >= 0 ? '+' : ''}{formatNumberWithCommas(growthSummary.bestPercent)}%
+              <span className="ml-2 text-xs text-muted-foreground font-normal">
+                {growthSummary.bestLabel || 'Peak'}
+              </span>
+            </span>
+          )}
           <Button
             variant="ghost"
             size="sm"

@@ -318,8 +318,13 @@ export default function Home() {
     });
   }, [growthMode]);
 
-  // Sort filtered groups by growth metrics
+  // Sort filtered groups by growth metrics ONLY when a label is selected
   const sortedFilteredGroups = useMemo(() => {
+    // Only sort when a label is selected (not 'all')
+    if (labelFilter === 'all') {
+      return filteredGroups;
+    }
+    
     const sorted = [...filteredGroups].sort((a, b) => {
       const scoreA = growthMetrics[a.group.baseTicker] ?? -Infinity;
       const scoreB = growthMetrics[b.group.baseTicker] ?? -Infinity;
@@ -329,7 +334,7 @@ export default function Home() {
       return a.group.baseTicker.localeCompare(b.group.baseTicker);
     });
     return sorted;
-  }, [filteredGroups, growthMetrics]);
+  }, [filteredGroups, growthMetrics, labelFilter]);
 
     return (
     <TooltipProvider>
@@ -578,6 +583,7 @@ export default function Home() {
                   onDataFound={handleDataFound}
                   onGrowthComputed={(ticker, summary) => handleGrowthComputed(ticker, summary)}
                   growthMode={growthMode}
+                  showGrowthPercentage={labelFilter !== 'all'}
             />
           ))}
             </div>
