@@ -597,6 +597,15 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     );
   }
 
+  // Hide cards when the filtered keywords have no matching data
+  const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
+  const hasFilteredKeywordData = safeFilteredKeywords.some(kw =>
+    foundKeywords.some(fk => normalizeKeyword(fk) === normalizeKeyword(kw.keyword))
+  );
+  if (!hasFilteredKeywordData && !hasStockData) {
+    return null;
+  }
+
   return (
     <Card className="overflow-hidden">
       <CardHeader className="pb-2">
