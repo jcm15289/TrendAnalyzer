@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { TickerTrendsCard } from '@/components/ticker-trends-card';
 import { ConfigDialog } from '@/components/config-dialog';
 import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
 import { Command, Settings, LayoutGrid, Rows3, List, ChevronDown, TrendingUp, Loader2, Search, X } from 'lucide-react';
 import {
   Select,
@@ -467,19 +468,16 @@ export default function Home() {
               </div>
               
               {/* Debug toggle */}
-              <button
-                type="button"
-                onClick={() => setGrowthDebug((prev) => !prev)}
-                className={cn(
-                  'px-2 py-1 rounded-md border text-xs font-medium transition-colors whitespace-nowrap h-9',
-                  growthDebug
-                    ? 'border-amber-300 bg-amber-500/10 text-amber-700 shadow-sm'
-                    : 'border-input text-muted-foreground hover:text-foreground',
-                )}
-                aria-pressed={growthDebug}
-              >
-                Debug {growthDebug ? 'On' : 'Off'}
-              </button>
+              <div className="flex items-center gap-2 px-2 py-1 rounded-md border border-input h-9">
+                <label htmlFor="debug-toggle" className="text-xs font-medium text-muted-foreground cursor-pointer">
+                  Debug
+                </label>
+                <Switch
+                  id="debug-toggle"
+                  checked={growthDebug}
+                  onCheckedChange={setGrowthDebug}
+                />
+              </div>
                 
               {/* Grid button */}
               <Tooltip>
