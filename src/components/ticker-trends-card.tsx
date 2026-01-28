@@ -90,6 +90,8 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       peakPercent: number | null;
       lastMaxDate?: Date;
       prevMaxDate?: Date;
+      lastWindowStart: Date;
+      prevWindowStart: Date;
     }>;
     bestAreaWindow: { label: string; percent: number | null } | null;
     bestPeakWindow: { label: string; percent: number | null } | null;
@@ -275,16 +277,18 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       const lastDates: Date[] = [];
       const prevDates: Date[] = [];
       parsed.forEach(({ date, value }) => {
-        // Use >= to include boundary dates
-        if (date >= lastWindowStart) {
+        // Use > (not >=) to avoid double-counting boundary dates
+        // lastWindowStart is the start of the current window, prevWindowStart is the start of previous window
+        if (date > lastWindowStart) {
           lastSum += value;
           lastValues.push(value);
           lastDates.push(date);
-        } else if (date >= prevWindowStart) {
+        } else if (date > prevWindowStart) {
           prevSum += value;
           prevValues.push(value);
           prevDates.push(date);
         }
+        // Dates <= prevWindowStart are ignored (too old)
       });
       
       // Additional validation: ensure we have data in windows
@@ -372,17 +376,53 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
         areaPercent = ((lastSum - prevSum) / prevSum) * 100;
       }
       
-      // Debug logging for area calculations
-      console.log(`[AreaAlgorithm] ${tickerGroup.baseTicker} ${months}m window:`, {
+      // Detailed logging for Area algorithm formula
+      console.log(`[AreaAlgorithm] ${tickerGroup.baseTicker} ${months}m window calculation:`, {
+        formula: 'areaPercent = ((lastSum - prevSum) / prevSum) * 100',
+        latestEntryDate: latestEntry.date.toISOString(),
         lastWindowStart: lastWindowStart.toISOString(),
         prevWindowStart: prevWindowStart.toISOString(),
+        lastWindowEnd: latestEntry.date.toISOString(),
+        prevWindowEnd: lastWindowStart.toISOString(),
         lastWindowDataPoints: lastValues.length,
         prevWindowDataPoints: prevValues.length,
         lastSum,
         prevSum,
+        calculation: `((${lastSum} - ${prevSum}) / ${prevSum}) * 100`,
         areaPercent,
-        sampleLastValues: lastValues.slice(0, 5),
-        samplePrevValues: prevValues.slice(0, 5),
+        lastWindowSampleValues: lastValues.slice(0, 10),
+        prevWindowSampleValues: prevValues.slice(0, 10),
+        lastWindowSampleDates: lastDates.slice(0, 5).map(d => d.toISOString().split('T')[0]),
+        prevWindowSampleDates: prevDates.slice(0, 5).map(d => d.toISOString().split('T')[0]),
+      });
+      
+      // Detailed logging for Area algorithm formula
+      console.log(`[AreaAlgorithm] ${tickerGroup.baseTicker} ${months}m window calculation:`, {
+        formula: 'areaPercent = ((lastSum - prevSum) / prevSum) * 100',
+        latestEntryDate: latestEntry.date.toISOString(),
+        windowBoundaries: {
+          lastWindowStart: lastWindowStart.toISOString(),
+          lastWindowEnd: latestEntry.date.toISOString(),
+          prevWindowStart: prevWindowStart.toISOString(),
+          prevWindowEnd: lastWindowStart.toISOString(),
+        },
+        dataPoints: {
+          lastWindowCount: lastValues.length,
+          prevWindowCount: prevValues.length,
+          totalParsedPoints: parsed.length,
+        },
+        sums: {
+          lastSum,
+          prevSum,
+          calculation: `((${lastSum} - ${prevSum}) / ${prevSum}) * 100`,
+          result: areaPercent,
+        },
+        sampleData: {
+          lastWindowValues: lastValues.slice(0, 10),
+          prevWindowValues: prevValues.slice(0, 10),
+          lastWindowDates: lastDates.slice(0, 5).map(d => d.toISOString().split('T')[0]),
+          prevWindowDates: prevDates.slice(0, 5).map(d => d.toISOString().split('T')[0]),
+        },
       });
 
       let peakPercent: number | null = null;
@@ -403,6 +443,8 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
         peakPercent,
         lastMaxDate,
         prevMaxDate,
+        lastWindowStart,
+        prevWindowStart,
       };
     });
 
@@ -696,12 +738,25 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                             <span className="text-[10px]">Best window: {growthDetails.bestAreaWindow.label}</span>
                           </div>
                         )}
-                        <div className="flex flex-wrap gap-2 text-[10px]">
+                        <div className="flex flex-col gap-1 text-[10px]">
                           {growthDetails.windowSummaries.map((window) => (
-                            <span key={`area-${window.label}`}>
-                              {window.label}: {window.areaPercent !== null ? `${window.areaPercent >= 0 ? '+' : ''}${window.areaPercent.toFixed(1)}%` : 'N/A'}
-                              <span className="text-muted-foreground"> (Σ {Math.round(window.lastSum)}/{Math.round(window.prevSum)})</span>
-                            </span>
+                            <div key={`area-${window.label}`} className="flex flex-col">
+                              <span>
+                                {window.label}: {window.areaPercent !== null ? `${window.areaPercent >= 0 ? '+' : ''}${window.areaPercent.toFixed(1)}%` : 'N/A'}
+                                <span className="text-muted-foreground"> (Σ {Math.round(window.lastSum)}/{Math.round(window.prevSum)})</span>
+                              </span>
+                              <span className="text-[9px] text-muted-foreground ml-1">
+                                Formula: (({Math.round(window.lastSum)} - {Math.round(window.prevSum)}) / {Math.round(window.prevSum)}) × 100
+                                {window.lastWindowStart && window.prevWindowStart && (
+                                  <>
+                                    <br />
+                                    Current window: {new Date(window.lastWindowStart).toLocaleDateString()} to {combinedData.length > 0 ? new Date(combinedData[combinedData.length - 1].date).toLocaleDateString() : 'now'}
+                                    <br />
+                                    Previous window: {new Date(window.prevWindowStart).toLocaleDateString()} to {new Date(window.lastWindowStart).toLocaleDateString()}
+                                  </>
+                                )}
+                              </span>
+                            </div>
                           ))}
                         </div>
                       </div>
