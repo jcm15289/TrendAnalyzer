@@ -288,6 +288,7 @@ export default function Home() {
     bestLabel?: string;
     bestPercent?: number | null;
     intelPeak?: number | null;
+    sixMonthValue?: number | null;
   } | null) => {
     setGrowthMetrics((prev) => {
       if (!summary) {
@@ -296,10 +297,8 @@ export default function Home() {
         return next;
       }
 
-      // Use IntelPeak if available and mode is intelpeak, otherwise use bestPercent
-      const metricValue = (growthMode === 'intelpeak' && summary.intelPeak !== null && summary.intelPeak !== undefined)
-        ? summary.intelPeak
-        : (summary.bestPercent ?? null);
+      // Always use 6m value for sorting
+      const metricValue = summary.sixMonthValue ?? null;
 
       if (metricValue === null || Number.isNaN(metricValue)) {
         const next = { ...prev };
@@ -317,7 +316,7 @@ export default function Home() {
         [ticker]: metricValue,
       };
     });
-  }, [growthMode]);
+  }, []);
 
   // Sort filtered groups by growth metrics ONLY when a label is selected
   const sortedFilteredGroups = useMemo(() => {
@@ -582,7 +581,7 @@ export default function Home() {
                   onGrowthComputed={(ticker, summary) => handleGrowthComputed(ticker, summary)}
                   growthMode={growthMode}
                   showGrowthPercentage={labelFilter !== 'all'}
-                  showGrowthDetails={labelFilter !== 'all' && growthDebug}
+                  showGrowthDetails={growthDebug}
             />
           ))}
             </div>

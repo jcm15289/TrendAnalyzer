@@ -46,6 +46,7 @@ interface TickerTrendsCardProps {
       bestLabel?: string;
       bestPercent?: number | null;
       intelPeak?: number | null;
+      sixMonthValue?: number | null;
     } | null
   ) => void;
   growthMode?: 'area' | 'peak' | 'both' | 'intelpeak';
@@ -563,10 +564,15 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       }
     }
 
+    // Find 6m window for sorting
+    const sixMonthWindow = windowSummaries.find(w => w.months === 6);
+    const sixMonthValue = sixMonthWindow?.areaPercent ?? null;
+    
     const summary = {
       bestLabel,
       bestPercent,
       intelPeak,
+      sixMonthValue, // Add 6m value for sorting
     };
     setGrowthSummary(summary);
     
