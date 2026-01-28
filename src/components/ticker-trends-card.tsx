@@ -172,9 +172,14 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
         setHasStockData(true);
         
         // Normalize dates for matching (handle different formats)
-        const normalizeDate = (dateStr: string): string => {
+        const normalizeDate = (dateStr: string | Date): string => {
+          if (!dateStr) return '';
+          // If already a Date object
+          if (dateStr instanceof Date) {
+            return dateStr.toISOString().split('T')[0];
+          }
           // If already in YYYY-MM-DD format, return as-is
-          if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+          if (typeof dateStr === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
             return dateStr;
           }
           // Try to parse and format
@@ -186,20 +191,61 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
           } catch (e) {
             // If parsing fails, return original
           }
-          return dateStr;
+          return String(dateStr);
         };
         
         // Merge stock price data with trend data by date
+        // Create a map with normalized dates as keys
         const priceMap = new Map<string, number>();
         stockData.forEach((item: { date: string; close: number }) => {
           const normalizedDate = normalizeDate(item.date);
-          priceMap.set(normalizedDate, item.close);
+          if (normalizedDate && item.close && !isNaN(item.close)) {
+            priceMap.set(normalizedDate, item.close);
+          }
+        });
+        
+        console.log(`[TickerTrendsCard] ${tickerGroup.baseTicker}: Price map created with ${priceMap.size} entries`, {
+          sampleStockDates: stockData.slice(0, 3).map((s: any) => ({ original: s.date, normalized: normalizeDate(s.date) })),
+          sampleTrendDates: trendData.slice(0, 3).map((t: any) => ({ original: t.date, normalized: normalizeDate(t.date) })),
         });
         
         // Add price to each trend data point
+        // Also try to find closest match if exact match fails (within 7 days)
         trendData = trendData.map((point: TrendDataPoint) => {
           const normalizedPointDate = normalizeDate(point.date);
-          const price = priceMap.get(normalizedPointDate);
+          let price = priceMap.get(normalizedPointDate);
+          
+          // If no exact match, try to find closest date within 7 days
+          if (price === undefined && normalizedPointDate) {
+            try {
+              const pointDate = new Date(normalizedPointDate);
+              if (!isNaN(pointDate.getTime())) {
+                // Check dates within ±7 days
+                for (let daysOffset = 1; daysOffset <= 7; daysOffset++) {
+                  // Check day before
+                  const beforeDate = new Date(pointDate);
+                  beforeDate.setDate(beforeDate.getDate() - daysOffset);
+                  const beforeKey = normalizeDate(beforeDate);
+                  if (priceMap.has(beforeKey)) {
+                    price = priceMap.get(beforeKey);
+                    break;
+                  }
+                  
+                  // Check day after
+                  const afterDate = new Date(pointDate);
+                  afterDate.setDate(afterDate.getDate() + daysOffset);
+                  const afterKey = normalizeDate(afterDate);
+                  if (priceMap.has(afterKey)) {
+                    price = priceMap.get(afterKey);
+                    break;
+                  }
+                }
+              }
+            } catch (e) {
+              // Ignore date matching errors
+            }
+          }
+          
           return {
             ...point,
             Price: price !== undefined ? price : null,
@@ -208,7 +254,14 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
         
         // Log for debugging
         const pricesWithData = trendData.filter(p => p.Price !== null && p.Price !== undefined);
-        console.log(`[TickerTrendsCard] ${tickerGroup.baseTicker}: Merged ${pricesWithData.length} price points from ${stockData.length} stock data points`);
+        console.log(`[TickerTrendsCard] ${tickerGroup.baseTicker}: Merged ${pricesWithData.length} price points from ${stockData.length} stock data points`, {
+          totalTrendPoints: trendData.length,
+          priceCoverage: `${((pricesWithData.length / trendData.length) * 100).toFixed(1)}%`,
+          priceRange: pricesWithData.length > 0 ? {
+            min: Math.min(...pricesWithData.map(p => p.Price!)),
+            max: Math.max(...pricesWithData.map(p => p.Price!)),
+          } : null,
+        });
       } else {
         setHasStockData(false);
         setStockPriceData([]);
@@ -547,12 +600,20 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
         }
       });
       
-      // Include Price if enabled
-      if (hasStockData && isPriceEnabled && point.Price !== undefined && point.Price !== null) {
-        filtered.Price = point.Price;
-        hasAnyLine = true;
+      // Include Price if enabled - always include it in filteredData even if null
+      // This ensures the Price line can be rendered (it will handle nulls with connectNulls=false)
+      if (hasStockData && isPriceEnabled) {
+        if (point.Price !== undefined && point.Price !== null) {
+          filtered.Price = point.Price;
+          hasAnyLine = true;
+        } else {
+          // Include Price field even if null so the line component knows to render
+          filtered.Price = null;
+        }
       }
       
+      // Include point if it has any data (trend keywords OR price)
+      // This ensures Price-only points are included
       return hasAnyLine ? filtered : null;
     }).filter(Boolean) as TrendDataPoint[];
   }, [combinedData, foundKeywords, hasStockData, isPriceEnabled, safeFilteredKeywords]);
@@ -562,14 +623,27 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     if (!hasStockData || !isPriceEnabled || combinedData.length === 0) return null;
     const prices = combinedData
       .map((d: any) => d.Price)
-      .filter((p: any) => p !== null && p !== undefined && !isNaN(p as number));
-    if (prices.length === 0) return null;
+      .filter((p: any) => p !== null && p !== undefined && !isNaN(p as number) && p > 0);
+    if (prices.length === 0) {
+      console.warn(`[TickerTrendsCard] ${tickerGroup.baseTicker}: No valid price data found in combinedData`, {
+        combinedDataLength: combinedData.length,
+        sampleData: combinedData.slice(0, 3).map((d: any) => ({ date: d.date, Price: d.Price })),
+      });
+      return null;
+    }
     const min = Math.min(...prices);
     const max = Math.max(...prices);
     // Add some padding to the min/max
     const padding = (max - min) * 0.1;
-    return { min: Math.floor(Math.max(0, min - padding)), max: Math.ceil(max + padding) };
-  }, [hasStockData, isPriceEnabled, combinedData]);
+    const range = { min: Math.floor(Math.max(0, min - padding)), max: Math.ceil(max + padding) };
+    console.log(`[TickerTrendsCard] ${tickerGroup.baseTicker}: Price range calculated`, {
+      priceCount: prices.length,
+      range,
+      minPrice: min,
+      maxPrice: max,
+    });
+    return range;
+  }, [hasStockData, isPriceEnabled, combinedData, tickerGroup.baseTicker]);
 
   const strokeWidth = isWideLayout ? 2 : 1.5;
   
