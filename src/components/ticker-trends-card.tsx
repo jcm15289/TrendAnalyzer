@@ -260,9 +260,13 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     fetchTrends();
   }, [tickerGroup.baseTicker]);
   
-  // Update enabled keywords when filtered keywords change
+  // Update enabled keywords when filtered keywords change - auto-enable all filtered keywords
   useEffect(() => {
-    if (!foundKeywords.length && !hasStockData) return;
+    if (!foundKeywords.length && !hasStockData) {
+      // If no keywords found, clear enabled keywords
+      setEnabledKeywords(new Set());
+      return;
+    }
     
     const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
     const apiToDisplayMap = new Map<string, string>();
@@ -274,11 +278,13 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       }
     });
     
+    // Auto-enable all filtered keywords (when label is selected, show all matching keywords)
     const enabledDisplayKeywords = safeFilteredKeywords
       .map(kw => kw.keyword)
       .filter(displayKw => Array.from(apiToDisplayMap.values()).includes(displayKw));
-    setIsPriceEnabled(true);
+    
     setEnabledKeywords(new Set(enabledDisplayKeywords));
+    setIsPriceEnabled(true);
   }, [safeFilteredKeywords, foundKeywords, hasStockData, tickerGroup.keywords]);
 
   // Calculate growth metrics
@@ -483,7 +489,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     }
   };
 
-  // Filter data to only include enabled keywords and Price (if enabled)
+  // Filter data to include filtered keywords (for chart) and enabled keywords (for display control)
   const filteredData = useMemo(() => {
     // Create a mapping from display keywords (with spaces) to API keywords (no spaces)
     const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
@@ -498,26 +504,27 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
     
     return combinedData.map(point => {
       const filtered: TrendDataPoint = { date: point.date };
-      let hasAnyEnabledLine = false; // Track if any line (trend or price) is enabled for this point
+      let hasAnyLine = false; // Track if any line (trend or price) has data for this point
       
-      // Include enabled keywords
-      enabledKeywords.forEach(displayKw => {
-        const apiKw = displayToApiMap.get(displayKw);
-        if (apiKw && point[apiKw] !== undefined) {
+      // Include ALL filtered keywords (not just enabled ones) - this ensures chart lines show
+      // The enabledKeywords control visibility via the Line component rendering, but data must be present
+      safeFilteredKeywords.forEach(tk => {
+        const apiKw = displayToApiMap.get(tk.keyword);
+        if (apiKw && point[apiKw] !== undefined && point[apiKw] !== null) {
           filtered[apiKw] = point[apiKw];
-          hasAnyEnabledLine = true;
+          hasAnyLine = true;
         }
       });
       
       // Include Price if enabled
       if (hasStockData && isPriceEnabled && point.Price !== undefined && point.Price !== null) {
         filtered.Price = point.Price;
-        hasAnyEnabledLine = true;
+        hasAnyLine = true;
       }
       
-      return hasAnyEnabledLine ? filtered : null;
+      return hasAnyLine ? filtered : null;
     }).filter(Boolean) as TrendDataPoint[];
-  }, [combinedData, enabledKeywords, foundKeywords, hasStockData, isPriceEnabled, safeFilteredKeywords]);
+  }, [combinedData, foundKeywords, hasStockData, isPriceEnabled, safeFilteredKeywords]);
   
   // Calculate price range for Y-axis scaling from merged data
   const priceRange = useMemo(() => {
@@ -860,12 +867,17 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
               />
               <Legend />
               {safeFilteredKeywords.map((kw, idx) => {
-                if (!enabledKeywords.has(kw.keyword)) return null;
+                // Always show lines for filtered keywords (they're already filtered by label)
                 const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
                 const normalizedTickerKeyword = normalizeKeyword(kw.keyword);
                 // Find the API keyword (data key) that matches this tickerGroup keyword
                 const apiKeyword = foundKeywords.find(fk => normalizeKeyword(fk) === normalizedTickerKeyword);
                 if (!apiKeyword) return null;
+                
+                // Check if this keyword has data in filteredData
+                const hasData = filteredData.some(point => point[apiKeyword] !== undefined && point[apiKeyword] !== null);
+                if (!hasData) return null;
+                
                 const color = LINE_COLORS[idx % LINE_COLORS.length];
                 
                 return (
