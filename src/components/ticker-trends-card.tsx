@@ -321,18 +321,18 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       const lastDates: Date[] = [];
       const prevDates: Date[] = [];
       parsed.forEach(({ date, value }) => {
-        // Use > (not >=) to avoid double-counting boundary dates
+        // Use >= to include boundary dates (consistent with window display)
         // lastWindowStart is the start of the current window, prevWindowStart is the start of previous window
-        if (date > lastWindowStart) {
+        if (date >= lastWindowStart) {
           lastSum += value;
           lastValues.push(value);
           lastDates.push(date);
-        } else if (date > prevWindowStart) {
+        } else if (date >= prevWindowStart) {
           prevSum += value;
           prevValues.push(value);
           prevDates.push(date);
         }
-        // Dates <= prevWindowStart are ignored (too old)
+        // Dates < prevWindowStart are ignored (too old)
       });
       
       // Additional validation: ensure we have data in windows
