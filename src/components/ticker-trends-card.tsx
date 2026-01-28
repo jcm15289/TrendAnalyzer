@@ -520,15 +520,6 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       return currentPercent > bestPercent ? current : best;
     }, null as (typeof windowSummaries)[number] | null);
 
-    // Always use area algorithm, find best area window
-    let bestPercent: number | null = null;
-    let bestLabel: string = 'n/a';
-
-    if (bestAreaWindow) {
-      bestPercent = bestAreaWindow.areaPercent;
-      bestLabel = bestAreaWindow.label;
-    }
-
     // Get values for all windows for sorting
     const windowValues = {
       '3m': windowSummaries.find(w => w.months === 3)?.isInvalid ? null : (windowSummaries.find(w => w.months === 3)?.areaPercent ?? null),
@@ -544,6 +535,10 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
       if (selectedWindow === '12m') return w.months === 12;
       return false;
     });
+    
+    // Use selected window's value for display and sorting
+    let bestPercent: number | null = selectedWindowValue;
+    let bestLabel: string = selectedWindow;
     
     // Store detailed calculation data for debug display
     setGrowthDetails({
@@ -832,16 +827,27 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                     {true && (
                       <div className="flex flex-col gap-1 p-2 bg-blue-50 rounded border border-blue-200">
                         <div className="font-semibold text-blue-700 text-[10px] uppercase tracking-wide">Area Algorithm</div>
-                        {growthDetails.bestAreaWindow && (
+                        {growthSummary && growthSummary.bestPercent !== null && (
                           <div className="flex items-center gap-2">
-                            <span className={growthDetails.bestAreaWindow.percent !== null && growthDetails.bestAreaWindow.percent >= 0 ? 'text-emerald-600 font-medium' : 'text-red-500 font-medium'}>
-                              {growthDetails.bestAreaWindow.percent !== null ? `${growthDetails.bestAreaWindow.percent >= 0 ? '+' : ''}${growthDetails.bestAreaWindow.percent.toFixed(1)}%` : '-'}
+                            <span className={growthSummary.bestPercent >= 0 ? 'text-emerald-600 font-medium' : 'text-red-500 font-medium'}>
+                              {growthSummary.bestPercent >= 0 ? '+' : ''}{growthSummary.bestPercent.toFixed(1)}%
                             </span>
-                            <span className="text-[10px]">Best window: {growthDetails.bestAreaWindow.label}</span>
+                            <span className="text-[10px]">Window: {growthSummary.bestLabel}</span>
                           </div>
                         )}
                         <div className="flex flex-col gap-1 text-[10px]">
-                          {growthDetails.windowSummaries.map((window) => (
+                          {growthDetails.windowSummaries
+                            .filter(window => {
+                              // Only show the selected window when not in debug mode
+                              if (!showGrowthDetails) {
+                                if (selectedWindow === '3m') return window.months === 3;
+                                if (selectedWindow === '6m') return window.months === 6;
+                                if (selectedWindow === '12m') return window.months === 12;
+                              }
+                              // Show all windows when debug is on
+                              return true;
+                            })
+                            .map((window) => (
                             <div key={`area-${window.label}`} className="flex flex-col">
                               <span>
                                 {window.label}: {window.isInvalid ? '-' : (window.areaPercent !== null ? `${window.areaPercent >= 0 ? '+' : ''}${window.areaPercent.toFixed(1)}%` : 'N/A')}
