@@ -61,6 +61,8 @@ export default function Home() {
   const [tickersWithData, setTickersWithData] = useState<Set<string>>(new Set());
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [hasMounted, setHasMounted] = useState(false);
+  const [growthMode, setGrowthMode] = useState<'area' | 'peak' | 'both' | 'intelpeak'>('intelpeak');
+  const [growthDebug, setGrowthDebug] = useState(false);
   
   useEffect(() => {
     setIsLocalhost(typeof window !== 'undefined' && window.location.hostname === 'localhost');
@@ -289,7 +291,8 @@ export default function Home() {
         <div className="flex min-h-screen w-full flex-col bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
         <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur-sm">
           <div className="container mx-auto px-4 py-4 md:px-6">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            {/* Top row: Logo and Config button */}
+            <div className="flex items-center justify-between mb-4">
               <Tooltip>
                 <TooltipTrigger asChild>
                   <div className="flex items-center gap-2 cursor-help h-9">
@@ -306,7 +309,7 @@ export default function Home() {
                         {buildTimeDisplay}
                       </span>
                     )}
-          </div>
+                  </div>
                 </TooltipTrigger>
                 <TooltipContent>
                   <div className="text-center">
@@ -323,125 +326,163 @@ export default function Home() {
                             timeZoneName: 'short',
                           })}`
                         : 'Build time unavailable'}
-          </div>
+                    </div>
                     <div className="text-xs text-muted-foreground">ALLSYMS-Based Architecture</div>
-          </div>
+                  </div>
                 </TooltipContent>
               </Tooltip>
 
-              <div className="flex flex-wrap items-center gap-2 flex-nowrap sm:flex-wrap w-full justify-center sm:justify-end">
-                {/* Search box for filtering by keyword - wider and centered */}
-                <div className="relative w-full max-w-md">
-                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    ref={searchInputRef}
-                    type="text"
-                    placeholder="Search trends... (Press / to focus)"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full h-9 pl-8 pr-8"
-                  />
-                  {searchTerm && (
-                    <button
-                      onClick={() => {
-                        setSearchTerm('');
-                        searchInputRef.current?.focus();
-                      }}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  )}
-      </div>
-                
-                <Select value={labelFilter} onValueChange={setLabelFilter}>
-                  <SelectTrigger className="w-[200px] h-9">
-                    <div className="flex items-center gap-2">
-                      <ChevronDown className="h-4 w-4" />
-                      <SelectValue placeholder="Filter by label" />
-                    </div>
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">
-                      <div className="flex items-center gap-2">
-                        <span>All Labels</span>
-                        <span className="text-xs text-muted-foreground">
-                          ({availableLabels.length})
-                        </span>
-          </div>
-                    </SelectItem>
-                    {availableLabels.map(([label, count]) => (
-                      <SelectItem key={label} value={label}>
-                        <div className="flex items-center justify-between w-full">
-                          <span>{label}</span>
-                          <span className="text-xs text-muted-foreground ml-2">({count})</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={() => setConfigDialogOpen(true)} 
+                className="flex items-center gap-2 h-9"
+              >
+                <Settings className="h-4 w-4" />
+                <span className="hidden sm:inline">Config</span>
+              </Button>
+            </div>
 
-                <Select value={filterTicker} onValueChange={setFilterTicker}>
-                  <SelectTrigger className="w-[200px] h-9">
+            {/* Second row: Search box, dropdowns, and Grid button */}
+            <div className="flex flex-wrap items-center gap-2 justify-center sm:justify-start">
+              {/* Search box for filtering by keyword - wider and centered */}
+              <div className="relative w-full max-w-md">
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  ref={searchInputRef}
+                  type="text"
+                  placeholder="Search trends... (Press / to focus)"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full h-9 pl-8 pr-8"
+                />
+                {searchTerm && (
+                  <button
+                    onClick={() => {
+                      setSearchTerm('');
+                      searchInputRef.current?.focus();
+                    }}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+                
+              <Select value={labelFilter} onValueChange={setLabelFilter}>
+                <SelectTrigger className="w-[200px] h-9">
+                  <div className="flex items-center gap-2">
+                    <ChevronDown className="h-4 w-4" />
+                    <SelectValue placeholder="Filter by label" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">
                     <div className="flex items-center gap-2">
-                      <List className="h-4 w-4" />
-                      <SelectValue placeholder="Filter by ticker" />
-        </div>
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">
-        <div className="flex items-center gap-2">
-                        <span>All Tickers</span>
-                        <span className="text-xs text-muted-foreground">
-                          ({tickerGroups.length})
-                        </span>
+                      <span>All Labels</span>
+                      <span className="text-xs text-muted-foreground">
+                        ({availableLabels.length})
+                      </span>
+                    </div>
+                  </SelectItem>
+                  {availableLabels.map(([label, count]) => (
+                    <SelectItem key={label} value={label}>
+                      <div className="flex items-center justify-between w-full">
+                        <span>{label}</span>
+                        <span className="text-xs text-muted-foreground ml-2">({count})</span>
                       </div>
                     </SelectItem>
-                    {allTickers.map((ticker) => (
-                      <SelectItem key={ticker} value={ticker}>
-                        {ticker}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                
-                <div className="h-9 w-px bg-border" />
-                
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={toggleLayoutMode} 
-                      className="flex items-center gap-2 h-9"
-                >
-                  {layoutMode === 'single' ? (
-                    <LayoutGrid className="h-4 w-4" />
-                  ) : (
-                    <Rows3 className="h-4 w-4" />
-                  )}
-                      <span className="hidden sm:inline">
-                        {layoutMode === 'single' ? 'Grid' : 'Single'}
-                  </span>
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent>
-                {layoutMode === 'single' ? 'Switch to grid layout' : 'Switch to single column layout'}
-              </TooltipContent>
-            </Tooltip>
+                  ))}
+                </SelectContent>
+              </Select>
 
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={() => setConfigDialogOpen(true)} 
-                  className="flex items-center gap-2 h-9"
-                >
-                  <Settings className="h-4 w-4" />
-                  <span className="hidden sm:inline">Config</span>
-                </Button>
+              <Select value={filterTicker} onValueChange={setFilterTicker}>
+                <SelectTrigger className="w-[200px] h-9">
+                  <div className="flex items-center gap-2">
+                    <List className="h-4 w-4" />
+                    <SelectValue placeholder="Filter by ticker" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">
+                    <div className="flex items-center gap-2">
+                      <span>All Tickers</span>
+                      <span className="text-xs text-muted-foreground">
+                        ({tickerGroups.length})
+                      </span>
+                    </div>
+                  </SelectItem>
+                  {allTickers.map((ticker) => (
+                    <SelectItem key={ticker} value={ticker}>
+                      {ticker}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+                
+              <div className="h-9 w-px bg-border" />
+                
+              <div className="flex items-center gap-1 rounded-md border border-input bg-background px-1 py-1 text-xs font-medium text-muted-foreground">
+                {[
+                  { value: 'intelpeak' as const, label: 'IntelPeak' },
+                  { value: 'area' as const, label: 'Area' },
+                  { value: 'peak' as const, label: 'Peak' },
+                  { value: 'both' as const, label: 'Both' },
+                ].map(({ value, label }) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => setGrowthMode(value)}
+                    className={cn(
+                      'px-3 py-1 rounded-sm transition-colors',
+                      growthMode === value
+                        ? 'bg-primary text-primary-foreground shadow-sm'
+                        : 'text-muted-foreground hover:text-foreground',
+                    )}
+                  >
+                    {label}
+                  </button>
+                ))}
               </div>
+              
+              <button
+                type="button"
+                onClick={() => setGrowthDebug((prev) => !prev)}
+                className={cn(
+                  'px-2 py-1 rounded-md border text-xs font-medium transition-colors whitespace-nowrap h-9',
+                  growthDebug
+                    ? 'border-amber-300 bg-amber-500/10 text-amber-700 shadow-sm'
+                    : 'border-input text-muted-foreground hover:text-foreground',
+                )}
+                aria-pressed={growthDebug}
+              >
+                Debug {growthDebug ? 'On' : 'Off'}
+              </button>
+                
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={toggleLayoutMode} 
+                    className="flex items-center gap-2 h-9"
+                  >
+                    {layoutMode === 'single' ? (
+                      <LayoutGrid className="h-4 w-4" />
+                    ) : (
+                      <Rows3 className="h-4 w-4" />
+                    )}
+                    <span className="hidden sm:inline">
+                      {layoutMode === 'single' ? 'Grid' : 'Single'}
+                    </span>
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  {layoutMode === 'single' ? 'Switch to grid layout' : 'Switch to single column layout'}
+                </TooltipContent>
+              </Tooltip>
             </div>
-        </div>
+          </div>
       </header>
       
       <main className="flex-1 p-4 md:p-6">
