@@ -707,7 +707,14 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
   const hasFilteredKeywordData = safeFilteredKeywords.some(kw =>
     foundKeywords.some(fk => normalizeKeyword(fk) === normalizeKeyword(kw.keyword))
   );
+  
+  // Hide card if there are no trend keywords with data (only price data is not enough)
   if (!hasFilteredKeywordData && !hasStockData) {
+    return null;
+  }
+  
+  // Hide card if there are no trend keywords but only price data (no trends = no chart)
+  if (!hasFilteredKeywordData && hasStockData) {
     return null;
   }
 
@@ -1041,7 +1048,7 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                   ];
                 })();
                 
-                return sortedKeywords.map((kw, idx) => {
+                const trendLines = sortedKeywords.map((kw, idx) => {
                   // Always show lines for filtered keywords (they're already filtered by label)
                   const normalizedTickerKeyword = normalizeKeyword(kw.keyword);
                   // Find the API keyword (data key) that matches this tickerGroup keyword
@@ -1055,20 +1062,27 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
                   // Use the same index as labels for consistent color
                   const color = LINE_COLORS[idx % LINE_COLORS.length];
                 
-                return (
-                  <Line
-                    key={kw.keyword}
-                    yAxisId="trends"
-                    type="monotone"
-                    dataKey={apiKeyword} // Use API keyword (no spaces) as dataKey
-                    stroke={color}
-                    strokeWidth={strokeWidth}
-                    dot={false}
-                    activeDot={{ r: 4, fill: color }}
-                    name={kw.keyword} // Display name with spaces
-                  />
-                );
+                  return (
+                    <Line
+                      key={kw.keyword}
+                      yAxisId="trends"
+                      type="monotone"
+                      dataKey={apiKeyword} // Use API keyword (no spaces) as dataKey
+                      stroke={color}
+                      strokeWidth={strokeWidth}
+                      dot={false}
+                      activeDot={{ r: 4, fill: color }}
+                      name={kw.keyword} // Display name with spaces
+                    />
+                  );
                 }).filter(Boolean);
+                
+                // If there are no trend lines, don't render the chart (even if price exists)
+                if (trendLines.length === 0) {
+                  return null;
+                }
+                
+                return trendLines;
               })()}
               {hasStockData && isPriceEnabled && priceRange && (
                 <Line
