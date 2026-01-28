@@ -704,18 +704,31 @@ export function TickerTrendsCard({ tickerGroup, filteredKeywords = [], isWideLay
 
   // Hide cards when the filtered keywords have no matching data
   const normalizeKeyword = (k: string) => k.replace(/\s+/g, '').toLowerCase();
-  const hasFilteredKeywordData = safeFilteredKeywords.some(kw =>
+  
+  // Check if any of the filtered keywords actually have data in Redis
+  const hasFilteredKeywordData = safeFilteredKeywords.length > 0 && safeFilteredKeywords.some(kw =>
     foundKeywords.some(fk => normalizeKeyword(fk) === normalizeKeyword(kw.keyword))
   );
   
-  // Hide card if there are no trend keywords with data (only price data is not enough)
-  if (!hasFilteredKeywordData && !hasStockData) {
-    return null;
-  }
+  // If no filtered keywords were provided, check if any keywords have data
+  const hasAnyKeywordData = foundKeywords.length > 0;
   
-  // Hide card if there are no trend keywords but only price data (no trends = no chart)
-  if (!hasFilteredKeywordData && hasStockData) {
-    return null;
+  // Hide card if there are no trend keywords with data (only price data is not enough)
+  // If filteredKeywords were provided (label filter active), we must have matching data
+  // If no filteredKeywords (all labels), we need at least some keyword data
+  if (safeFilteredKeywords.length > 0) {
+    // Label filter is active - must have matching trend data
+    if (!hasFilteredKeywordData) {
+      return null; // Hide if no matching trend data (even if price exists)
+    }
+  } else {
+    // No label filter - need at least some trend data
+    if (!hasAnyKeywordData && !hasStockData) {
+      return null;
+    }
+    if (!hasAnyKeywordData && hasStockData) {
+      return null; // Hide if only price, no trends
+    }
   }
 
   return (
